@@ -1,22 +1,18 @@
-# Question Bank: Unit 1
+# 🕵️ Neighborhood Detective Quiz
 
-### Yes/No Questions
-1. Are you a boy? (Yes, I am / No, I am not)
-2. Is he a man? (Yes, he is / No, he is not)
+### ✅ Yes or No?
+1. Are you a boy? 👦 [ ] Yes  [ ] No
+2. Is your teacher a girl? 👧 [ ] Yes  [ ] No
 
-### Wh- Questions
-1. What is your name?
-2. Who is that? (It is a girl/woman)
+### ❓ Discovery Questions (Wh- Questions)
+1. **What** is your name? (My name is ________)
+2. **Who** is that? (Pointing to a man) ➡️ It is a ________.
 
-### Fill in the Blank
-1. I _______ a girl. (am / is)
+### 🧩 Fill the Gaps
+1. I _______ a student. (am / are)
 2. You _______ my friend. (is / are)
-
-### Choose the Correct Answer
-1. She is a (man / woman).
-2. I am in the (farm / neighborhood).
+3. She is a _______. (woman / boy)
 
 ---
-### Answer Key
-* **Fill:** 1. am | 2. are
-* **Choose:** 1. woman | 2. neighborhood
+### 🔑 Teacher's Answer Key
+1. (Student's Choice) | 2. (Context) | 3. Name | 4. Man | 5. am | 6. are | 7. woman
