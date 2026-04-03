@@ -1,0 +1,24 @@
+{
+  "name": "english-zone-ksa",
+  "version": "1.0.0",
+  "description": "هذا التقييم مصمم لـ: - قياس تقدمك في اللغة الإنجليزية كلغة ثانية (ESL) - تعزيز دوافعك الذاتية (Self-Determination Theory) - مساعدتك على معرفة نقاط قوتك ومجالات تحسينك",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anassarhan78-png/english-zone-ksa.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/anassarhan78-png/english-zone-ksa/issues"
+  },
+  "homepage": "https://github.com/anassarhan78-png/english-zone-ksa#readme",
+  "dependencies": {
+    "marked": "^17.0.5"
+  }
+}

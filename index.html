@@ -6,18 +6,15 @@
     <title>English Zone KSA – النظام التعليمي للمستقبل</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- إضافة marked من CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    
-    <!-- خلفية مستقبلية متحركة -->
     <div class="stars"></div>
     <div class="twinkling"></div>
     <div class="gradient-bg"></div>
 
-    <!-- واجهة زجاجية رئيسية -->
     <div class="glass-container">
-        
-        <!-- الهيدر -->
         <header class="glass-header">
             <div class="logo">
                 <div class="logo-icon">🇸🇦</div>
@@ -42,7 +39,6 @@
             </div>
         </header>
 
-        <!-- القسم النظري (SDT + ESL) -->
         <section class="glass-section theory">
             <h2 class="section-title">🧠 الأساس النظري</h2>
             <div class="theory-grid">
@@ -68,26 +64,26 @@
             </div>
         </section>
 
-        <!-- الكتب -->
         <section class="glass-section books">
             <h2 class="section-title">📚 الكتب</h2>
             <div class="books-grid">
                 <div class="book-category">
                     <h3>🧒 أطفال</h3>
                     <div class="book-list">
-                        <div class="book-item">English Time 1</div>
-                        <div class="book-item">English Time 2</div>
-                        <div class="book-item">English Time 3</div>
-                        <div class="book-item">English Time 4</div>
+                        <!-- إضافة روابط للمعاينة مع مسارات الملفات -->
+                        <div class="book-item book-link" data-path="books/english-time/english-time-1/unit-1/dictation.md">English Time 1 (الوحدة 1 - Dictation)</div>
+                        <div class="book-item book-link" data-path="books/english-time/english-time-2/unit-1/dictation.md">English Time 2 (الوحدة 1 - Dictation)</div>
+                        <div class="book-item book-link" data-path="books/english-time/english-time-3/unit-1/dictation.md">English Time 3 (الوحدة 1 - Dictation)</div>
+                        <div class="book-item book-link" data-path="books/english-time/english-time-4/unit-1/dictation.md">English Time 4 (الوحدة 1 - Dictation)</div>
                     </div>
                 </div>
                 <div class="book-category">
                     <h3>🧑 مراهقون</h3>
                     <div class="book-list">
-                        <div class="book-item">Interchange Intro</div>
-                        <div class="book-item">Interchange 1</div>
-                        <div class="book-item">Interchange 2</div>
-                        <div class="book-item">Interchange 3</div>
+                        <div class="book-item coming-soon">Interchange Intro</div>
+                        <div class="book-item coming-soon">Interchange 1</div>
+                        <div class="book-item coming-soon">Interchange 2</div>
+                        <div class="book-item coming-soon">Interchange 3</div>
                     </div>
                 </div>
                 <div class="book-category">
@@ -99,48 +95,23 @@
             </div>
         </section>
 
-        <!-- النظام الأسبوعي -->
-        <section class="glass-section flow">
-            <h2 class="section-title">📅 نظام الأيام</h2>
-            <div class="flow-timeline">
-                <div class="flow-day">
-                    <div class="day-number">1</div>
-                    <div class="day-name">Dictation</div>
-                    <div class="day-time">⏱️ 10-15 د</div>
-                </div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-day">
-                    <div class="day-number">2</div>
-                    <div class="day-name">Writing</div>
-                    <div class="day-time">⏱️ 15-20 د</div>
-                </div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-day">
-                    <div class="day-number">3</div>
-                    <div class="day-name">Presentation</div>
-                    <div class="day-time">⏱️ 20-30 د</div>
-                </div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-day">
-                    <div class="day-number">4</div>
-                    <div class="day-name">Question Bank</div>
-                    <div class="day-time">⏱️ 10-15 د</div>
-                </div>
+        <!-- منطقة عرض المحتوى الديناميكي -->
+        <section class="glass-section content-viewer">
+            <h2 class="section-title">📄 معاينة المحتوى</h2>
+            <div id="content-area" style="background: rgba(0,0,0,0.4); border-radius: 24px; padding: 1.5rem; margin-top: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                <p style="text-align:center; color: rgba(255,255,255,0.6);">👈 اضغط على أي كتاب أو وحدة لعرض المحتوى هنا</p>
             </div>
         </section>
 
-        <!-- القاعدة الذهبية -->
         <div class="golden-rule">
             <span>❗</span>
             <p>استخدام الكلمات والتراكيب من الوحدة فقط</p>
         </div>
 
-        <!-- الفوتر -->
         <footer class="glass-footer">
             <p>© 2026 <strong>أنس عبدالرحمن</strong> – <strong>English Zone KSA</strong></p>
             <p>MIT License – مفتوح المصدر للمستقبل</p>
         </footer>
-
     </div>
 
     <script src="script.js"></script>
