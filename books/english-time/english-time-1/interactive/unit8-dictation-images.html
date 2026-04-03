@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 8 Dictation - At the Supermarket</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #e6f7e6;
+            margin: 0;
+            padding: 20px;
+            direction: ltr;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            border-radius: 48px;
+            padding: 25px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2b5e2b;
+            text-align: center;
+        }
+        .conversation {
+            background: #d9f0d9;
+            border-radius: 32px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .grammar {
+            background: #e0f2fe;
+            border-radius: 28px;
+            padding: 12px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+            margin: 25px 0;
+        }
+        .card {
+            background: #fffaf0;
+            border-radius: 32px;
+            padding: 18px;
+            text-align: center;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+        }
+        .card img {
+            width: 110px;
+            height: 110px;
+            object-fit: contain;
+            margin: 10px auto;
+            display: block;
+            background: #fff9db;
+            border-radius: 28px;
+            padding: 8px;
+        }
+        .word-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #3b5e1e;
+            margin: 8px 0;
+        }
+        .audio-btn {
+            background: #3b82f6;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            padding: 6px 12px;
+            border-radius: 40px;
+            cursor: pointer;
+            margin: 8px 0;
+        }
+        .card input {
+            width: 90%;
+            padding: 10px;
+            margin: 12px 0 6px;
+            border-radius: 60px;
+            border: 2px solid #e2e8f0;
+            text-align: center;
+        }
+        .correct { background: #d1fae5; border-color: #10b981; }
+        .wrong { background: #fee2e2; border-color: #ef4444; }
+        .check-btn {
+            background: #2a9d8f;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1.2rem;
+            border-radius: 60px;
+            cursor: pointer;
+        }
+        .result {
+            background: #e9f5f2;
+            padding: 18px;
+            border-radius: 32px;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .practice-area {
+            background: #fef3c7;
+            border-radius: 32px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🛒 Unit 8: At the Supermarket</h1>
+    <div class="conversation">
+        <p>🗣️ <strong>Conversation:</strong><br>
+        A: May I borrow a pen?<br>
+        B: Sure. Here you are.<br>
+        A: You are welcome.</p>
+    </div>
+    <div class="grammar">
+        <p>📘 <strong>Grammar: Do you like...? Yes, I do. / No, I don't.</strong><br>
+        ✔ Do you like apples? → Yes, I do. 🍎<br>
+        ✔ Do you like cucumbers? → No, I don't. 🥒</p>
+    </div>
+    <div class="grid" id="wordsGrid"></div>
+    <div style="text-align:center;">
+        <button id="checkAll" class="check-btn">✅ Check Spelling</button>
+    </div>
+    <div id="resultArea" class="result">✨ Press the button to check your spelling ✨</div>
+    <div class="practice-area">
+        <p>💬 <strong>Practice "Do you like...?"</strong><br>
+        Choose an item: 
+        <select id="foodSelect">
+            <option value="apples">apples 🍎</option>
+            <option value="oranges">oranges 🍊</option>
+            <option value="bananas">bananas 🍌</option>
+            <option value="cucumbers">cucumbers 🥒</option>
+            <option value="potatoes">potatoes 🥔</option>
+            <option value="carrots">carrots 🥕</option>
+        </select>
+        <button id="askBtn">❓ Ask me</button>
+        <button id="answerYes">✅ Yes, I do</button>
+        <button id="answerNo">❌ No, I don't</button>
+        <span id="likeFeedback" style="margin-left: 15px; font-weight:bold;"></span>
+        </p>
+    </div>
+</div>
+
+<script>
+    const items = [
+        { word: "apples", emoji: "🍎", img: "apples.jpg" },
+        { word: "oranges", emoji: "🍊", img: "oranges.jpg" },
+        { word: "bananas", emoji: "🍌", img: "bananas.jpg" },
+        { word: "cucumbers", emoji: "🥒", img: "cucumbers.jpg" },
+        { word: "potatoes", emoji: "🥔", img: "potatoes.jpg" },
+        { word: "carrots", emoji: "🥕", img: "carrots.jpg" }
+    ];
+
+    const grid = document.getElementById('wordsGrid');
+    function speakWord(word) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.8;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    items.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        const imgSrc = `../images/${item.img}`;
+        card.innerHTML = `
+            <div class="word-title">${item.emoji} ${item.word}</div>
+            <img src="${imgSrc}" alt="${item.word}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E${item.emoji}%3C%2Ftext%3E%3C%2Fsvg%3E'">
+            <div><button class="audio-btn" data-word="${item.word}">🔊 Speak</button></div>
+            <input type="text" id="input-${idx}" placeholder="Type '${item.word}'" autocomplete="off">
+        `;
+        grid.appendChild(card);
+    });
+
+    document.querySelectorAll('.audio-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            speakWord(btn.getAttribute('data-word'));
+        });
+    });
+
+    // Check spelling
+    document.getElementById('checkAll').addEventListener('click', () => {
+        let score = 0;
+        const total = items.length;
+        for (let i = 0; i < total; i++) {
+            const input = document.getElementById(`input-${i}`);
+            const userAnswer = input.value.trim().toLowerCase();
+            const correct = items[i].word.toLowerCase();
+            if (userAnswer === correct) {
+                score++;
+                input.classList.add('correct');
+                input.classList.remove('wrong');
+            } else {
+                input.classList.add('wrong');
+                input.classList.remove('correct');
+            }
+        }
+        const resultDiv = document.getElementById('resultArea');
+        if (score === total) {
+            resultDiv.innerHTML = `🎉 Perfect! ${score}/${total} — Supermarket Champion! 🏆🛒`;
+        } else {
+            resultDiv.innerHTML = `📊 Your score: ${score}/${total}. ${score > total/2 ? '👍 Good! Keep practicing food names.' : '🔊 Listen again and write carefully.'}`;
+        }
+    });
+
+    // Practice Do you like...?
+    const select = document.getElementById('foodSelect');
+    const likeFeedback = document.getElementById('likeFeedback');
+    document.getElementById('askBtn').addEventListener('click', () => {
+        const food = select.value;
+        likeFeedback.innerHTML = `❓ Do you like ${food}?`;
+    });
+    document.getElementById('answerYes').addEventListener('click', () => {
+        if (likeFeedback.innerHTML.includes('Do you like')) {
+            likeFeedback.innerHTML += ` → Yes, I do. 😋`;
+        } else {
+            likeFeedback.innerHTML = `Click "Ask me" first!`;
+        }
+    });
+    document.getElementById('answerNo').addEventListener('click', () => {
+        if (likeFeedback.innerHTML.includes('Do you like')) {
+            likeFeedback.innerHTML += ` → No, I don't. 😕`;
+        } else {
+            likeFeedback.innerHTML = `Click "Ask me" first!`;
+        }
+    });
+</script>
+</body>
+</html>
