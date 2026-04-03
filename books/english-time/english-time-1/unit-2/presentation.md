@@ -1,10 +1,13 @@
-# Presentation: Nature Walk
+# 🎤 Show & Tell: Meadow Reporter
 
-**Topic:** Describing things in the meadow.
-**Time:** 30-60 Seconds
+**Topic:** Presenting your nature drawing.
+**Time:** ⏱️ 30-45 Seconds of Fame!
 
-### Structure
-1.  **Greeting:** "Hello! Look at the meadow."
-2.  **Description:** "I see a green tree. It is a pretty flower."
-3.  **Observation:** "The sun is in the sky."
-4.  **Closing:** "I love nature! Thank you."
+### 📜 The Script (Read & Act)
+1. **Intro:** "Hello class! Look at my beautiful meadow!" (Show your drawing 🖼️)
+2. **Detail 1:** "I see a green tree. It is very big."
+3. **Detail 2:** "The sun is yellow. The clouds are white."
+4. **Outro:** "I love the meadow. Thank you! Goodbye!" (Wave 👋)
+
+---
+*⭐ Fun Rule: The presenter must wear a "Nature Explorer" hat (even a paper one)!*
