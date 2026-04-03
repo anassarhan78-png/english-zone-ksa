@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>English Zone KSA - المكتبة التفاعلية</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #f1f5f9; margin: 0; padding: 20px; direction: rtl; }
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
         .header { background: #1e40af; color: white; padding: 20px; text-align: center; }
         .flex { display: flex; flex-wrap: wrap; }
-        .sidebar { width: 300px; background: #f9fafb; padding: 20px; border-left: 1px solid #e5e7eb; }
+        .sidebar { width: 300px; background: #f9fafb; padding: 20px; border-left: 1px solid #e5e7eb; max-height: 80vh; overflow-y: auto; }
         .main { flex: 1; padding: 30px; background: white; }
         .unit { margin-bottom: 25px; border-bottom: 1px solid #e5e7eb; padding-bottom: 15px; }
         .file-btn { background: #e2e8f0; border: none; padding: 5px 12px; margin: 4px; border-radius: 20px; cursor: pointer; font-size: 13px; text-decoration: none; display: inline-block; color: black; }
@@ -21,12 +22,12 @@
 <div class="container">
     <div class="header">
         <h2>📚 English Zone KSA - المكتبة التفاعلية</h2>
-        <p>اختر الوحدة ثم اضغط على النشاط المطلوب</p>
+        <p>اختر الوحدة ثم النشاط</p>
     </div>
     <div class="flex">
         <div class="sidebar" id="sidebar"></div>
         <div class="main" id="mainContent">
-            <div style="text-align:center; color:#6b7280;">👈 اختر وحدة ونشاطاً من القائمة</div>
+            <div style="text-align:center; color:#6b7280;">👈 اختر وحدة ونشاطاً</div>
         </div>
     </div>
 </div>
@@ -42,14 +43,14 @@
             const div = document.createElement('div');
             div.className = 'unit';
             div.innerHTML = `<h4>الوحدة ${u}</h4>`;
-            // رابط dictation التفاعلي
+            // زر dictation التفاعلي
             const interactiveBtn = document.createElement('a');
             interactiveBtn.href = `${interactiveBase}/unit${u}-dictation.html`;
             interactiveBtn.target = "_blank";
             interactiveBtn.textContent = '🎨 Dictation (تفاعلي)';
             interactiveBtn.className = 'file-btn interactive-link';
             div.appendChild(interactiveBtn);
-            // باقي الأزرار للملفات العادية
+            // باقي الملفات العادية
             const files = ['dictation.md', 'writing.md', 'presentation.md', 'rubric.md', 'questions.md'];
             files.forEach(f => {
                 const btn = document.createElement('button');
@@ -78,6 +79,5 @@
 
     buildSidebar();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
 </html>
