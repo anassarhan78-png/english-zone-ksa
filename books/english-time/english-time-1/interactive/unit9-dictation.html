@@ -1,86 +1,136 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>🎨 Dictation تفاعلي - الوحدة 9</title>
+    <title>🎪 Circus Dictation - Unit 9</title>
     <style>
         * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: linear-gradient(135deg, #f5f7fa, #c3cfe2); margin: 0; padding: 20px; direction: rtl; }
-        .container { max-width: 1200px; margin: auto; background: white; border-radius: 48px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-        h1 { background: linear-gradient(90deg, #f59e0b, #ef4444); -webkit-background-clip: text; background-clip: text; color: transparent; text-align: center; }
-        .word-box { background: #fef9c3; border-radius: 32px; padding: 20px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-        .word { background: white; border-radius: 60px; padding: 8px 20px; font-weight: bold; }
-        .draw-area { background: #fff7ed; border-radius: 24px; padding: 20px; margin: 15px 0; border: 2px dashed #f97316; }
-        canvas { background: white; border-radius: 16px; display: block; margin: 10px auto; cursor: crosshair; }
-        .sentence-input { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 10px 0; }
-        .sentence-input label { font-weight: bold; width: 120px; }
-        input { flex: 1; padding: 8px 12px; border-radius: 40px; border: 1px solid #ccc; }
-        button { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; margin: 5px; }
-        .result { background: #fef3c7; padding: 15px; border-radius: 28px; margin-top: 20px; text-align: center; font-weight: bold; }
-        .clear-btn { background: #6b7280; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff1f2; margin: 0; padding: 20px; direction: ltr; }
+        .container { max-width: 1000px; margin: auto; background: white; border-radius: 48px; padding: 25px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); border: 8px solid #fb7185; }
+        h1 { color: #9f1239; text-align: center; font-size: 2.2rem; text-transform: uppercase; }
+        .game-rules { background: #ffe4e6; border-radius: 28px; padding: 15px; margin: 20px 0; border-left: 6px solid #f43f5e; }
+        .word-card { background: #fafaf9; border-radius: 24px; padding: 15px; margin: 20px 0; border: 2px solid #fecdd3; }
+        canvas { background: white; border: 2px solid #f43f5e; border-radius: 16px; display: block; margin: 10px 0; cursor: crosshair; width: 100%; max-width: 280px; height: auto; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 40px; border: 1px solid #fda4af; font-size: 1.1rem; }
+        button { background: #e11d48; color: white; border: none; padding: 12px 30px; border-radius: 40px; font-size: 1.1rem; cursor: pointer; margin-top: 15px; display: block; width: 100%; font-weight: bold; }
+        button:hover { background: #be123c; }
+        .correct { background: #dcfce7; border-color: #16a34a; }
+        .wrong { background: #fee2e2; border-color: #dc2626; }
+        .result { background: #ffe4e6; padding: 20px; border-radius: 28px; margin-top: 20px; text-align: center; font-weight: bold; font-size: 1.2rem; color: #9f1239; }
+        .grammar { background: #f0fdfa; border-radius: 20px; padding: 15px; margin: 15px 0; border: 1px solid #5eead4; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>🎨 Face Dictation - الوحدة 9</h1>
-    <div class="word-box"><div class="word">👦 Boy</div><div class="word">👧 Girl</div><div class="word">👨 Man</div><div class="word">👩 Woman</div><div class="word">🤝 Friend</div></div>
-    <div id="exercises"></div>
-    <div style="text-align:center"><button id="checkBtn">✅ تحقق</button><button id="clearBtn" class="clear-btn">🧽 مسح</button></div>
+    <h1>🎪 Unit 9: At the Circus 🤡</h1>
+    
+    <div class="game-rules">
+        <p><strong>🎮 How to Play "The Circus Show":</strong></p>
+        <ul>
+            <li>1️⃣ <strong>The Artist:</strong> Draw a tɑll or short person in the circus ring.</li>
+            <li>2️⃣ <strong>The Description:</strong> Answer: "Is she tɑll?" → "Yes, she is."</li>
+            <li>3️⃣ <strong>Phonetic Check:</strong> Use <strong>ɑ</strong> in "Tɑll", "Smɑll", and "Fɑt".</li>
+        </ul>
+    </div>
+
+    <div class="grammar">
+        <p>📘 <strong>Grammar: Describing People</strong></p>
+        <p>✔ <strong>He is</strong> tɑll. / <strong>She is</strong> short.<br>
+           ✔ <strong>Is he</strong> old? → Yes, <strong>he is</strong>.<br>
+           ✔ <strong>Is she</strong> young? → No, <strong>she isn't</strong>.</p>
+    </div>
+
+    <div id="tasks"></div>
+    
+    <button id="checkBtn">🎫 Check My Circus Tickets</button>
     <div id="result" class="result"></div>
 </div>
+
 <script>
-const exercises = [
-    { sentence: "I am a boy.", expected: "i am a boy", drawHint: "👦" },
-    { sentence: "You are a girl.", expected: "you are a girl", drawHint: "👧" },
-    { sentence: "He is a man.", expected: "he is a man", drawHint: "👨" },
-    { sentence: "She is a woman.", expected: "she is a woman", drawHint: "👩" },
-    { sentence: "You are my friend.", expected: "you are my friend", drawHint: "❤️" }
-];
-const container = document.getElementById('exercises');
-exercises.forEach((ex, idx) => {
-    const div = document.createElement('div');
-    div.className = 'draw-area';
-    div.innerHTML = `<div style="display:flex; justify-content:space-between"><span style="font-size:1.5rem">${ex.drawHint}</span><span>${ex.sentence}</span></div>
-        <canvas id="canvas-${idx}" width="300" height="150" style="width:100%; max-width:300px; height:auto; background:white; border:1px solid #ccc;"></canvas>
-        <div class="sentence-input"><label>📝 اكتب الجملة:</label><input type="text" id="input-${idx}" placeholder="مثال: I am a boy"></div>`;
-    container.appendChild(div);
-});
-function initCanvas(id) {
-    const canvas = document.getElementById(id);
-    const ctx = canvas.getContext('2d');
-    let drawing = false;
-    const start = (e) => { drawing = true; ctx.beginPath(); getCoords(e, (x,y)=>{ctx.moveTo(x,y); ctx.lineTo(x,y); ctx.stroke();}); };
-    const draw = (e) => { if(!drawing) return; getCoords(e, (x,y)=>{ctx.lineTo(x,y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x,y);}); };
-    const stop = () => { drawing = false; ctx.beginPath(); };
-    const getCoords = (e, callback) => {
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-        let clientX, clientY;
-        if(e.touches) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; e.preventDefault(); }
-        else { clientX = e.clientX; clientY = e.clientY; }
-        callback((clientX - rect.left)*scaleX, (clientY - rect.top)*scaleY);
-    };
-    canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', draw); canvas.addEventListener('mouseup', stop); canvas.addEventListener('mouseleave', stop);
-    canvas.addEventListener('touchstart', start); canvas.addEventListener('touchmove', draw); canvas.addEventListener('touchend', stop);
-    ctx.fillStyle = 'white'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.strokeStyle = '#000'; ctx.lineWidth = 2;
-}
-for(let i=0;i<exercises.length;i++) initCanvas();
-document.getElementById('clearBtn').onclick = () => {
-    for(let i=0;i<exercises.length;i++) {
-        const c = document.getElementById(), ctx = c.getContext('2d');
-        ctx.fillStyle='white'; ctx.fillRect(0,0,c.width,c.height); ctx.beginPath();
+    const adjectives = [
+        { word: "tɑll", emoji: "🦒" },
+        { word: "short", emoji: "📏" },
+        { word: "fɑt", emoji: "🐘" },
+        { word: "thin", emoji: "🦯" },
+        { word: "old", emoji: "👴" },
+        { word: "young", emoji: "👶" }
+    ];
+
+    const container = document.getElementById('tasks');
+    adjectives.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = 'word-card';
+        card.innerHTML = `
+            <p><strong>${item.emoji} Draw someone who is ${item.word}:</strong></p>
+            <canvas id="canvas-${idx}" width="280" height="120"></canvas>
+            <p><strong>📝 Describe the person (use ɑ):</strong></p>
+            <input type="text" id="input-${idx}" placeholder="Write the adjective here...">
+        `;
+        container.appendChild(card);
+    });
+
+    // Drawing Logic
+    for (let i = 0; i < adjectives.length; i++) {
+        const canvas = document.getElementById(`canvas-${i}`);
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        let drawing = false;
+
+        const getPos = (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: (clientX - rect.left) * (canvas.width / rect.width),
+                y: (clientY - rect.top) * (canvas.height / rect.height)
+            };
+        };
+
+        const start = (e) => { drawing = true; ctx.beginPath(); const pos = getPos(e); ctx.moveTo(pos.x, pos.y); if(e.touches) e.preventDefault(); };
+        const end = () => drawing = false;
+        const move = (e) => {
+            if (!drawing) return;
+            const pos = getPos(e);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.strokeStyle = '#e11d48';
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+        };
+
+        canvas.addEventListener('mousedown', start);
+        canvas.addEventListener('mouseup', end);
+        canvas.addEventListener('mousemove', move);
+        canvas.addEventListener('touchstart', start);
+        canvas.addEventListener('touchend', end);
+        canvas.addEventListener('touchmove', move);
     }
-};
-document.getElementById('checkBtn').onclick = () => {
-    let score=0;
-    for(let i=0;i<exercises.length;i++) {
-        const inp = document.getElementById();
-        if(inp.value.trim().toLowerCase().replace(/\.$/, '') === exercises[i].expected) { score++; inp.style.backgroundColor='#d1fae5'; }
-        else inp.style.backgroundColor='#fee2e2';
-    }
-    document.getElementById('result').innerHTML = `🎉 نتيجتك: ${score} من ${exercises.length} ✅ ${score===exercises.length ? '🏆 ممتاز!' : '📖 حاول مرة أخرى'}`;
-};
+
+    document.getElementById('checkBtn').addEventListener('click', () => {
+        let score = 0;
+        adjectives.forEach((item, i) => {
+            const input = document.getElementById(`input-${i}`);
+            const userAnswer = input.value.trim().toLowerCase();
+            const target = item.word;
+            
+            if (userAnswer === target || userAnswer === target.replace(/ɑ/g, 'a')) {
+                score++;
+                input.classList.add('correct');
+                input.classList.remove('wrong');
+            } else {
+                input.classList.add('wrong');
+                input.classList.remove('correct');
+            }
+        });
+
+        const resultDiv = document.getElementById('result');
+        if (score === adjectives.length) {
+            resultDiv.innerHTML = `🤡 Spectacular! ${score}/${adjectives.length} - You are a Circus Master, Anas! 🎪🌟`;
+        } else {
+            resultDiv.innerHTML = `📊 Ticket Score: ${score}/${adjectives.length}. Remember 'tɑll' and 'fɑt' use ɑ!`;
+        }
+    });
 </script>
 </body>
 </html>
