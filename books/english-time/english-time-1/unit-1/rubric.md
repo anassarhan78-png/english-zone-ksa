@@ -1,18 +1,16 @@
-# Assessment Rubric: Unit 1
+# 🏆 Neighborhood Hero Rubric
 
-| Category | Points | Criteria |
+| Skill | Stars (1-5 ⭐) | Teacher's Super Note |
 | :--- | :--- | :--- |
-| **Speaking** | 10 | Clarity of sounds and correct use of "I am/You are". |
-| **Writing** | 10 | Correct spelling of unit words and punctuation. |
-| **Presentation** | 5 | Eye contact and confidence during the 30-60s talk. |
-| **Question Bank** | 5 | Ability to answer Yes/No and Wh- questions correctly. |
-| **SDT (Self-Determination)** | 15 | Autonomy, competence, and relatedness in tasks. |
+| **Speaking** | ⭐⭐⭐⭐⭐ | Clear "I am" and "You are"? |
+| **Writing** | ⭐⭐⭐⭐⭐ | Correct "ɑ" and spelling? |
+| **Presentation** | ⭐⭐⭐⭐⭐ | Loud voice and big smile? |
+| **Question Bank** | ⭐⭐⭐⭐⭐ | Man vs Woman identified? |
+| **SDT (Choice)** | ⭐⭐⭐⭐⭐ | Chose their own drawing style? |
 
-### ESL Proficiency Levels
-* **Beginner (0-20):** Needs high support.
-* **Intermediate (21-35):** Good grasp of basic sentences.
-* **Advanced (36-45):** Fluent and accurate within unit scope.
+### 🏅 Badges to Win:
+* [ ] **Best Friend Badge** (Friendly voice)
+* [ ] **Handwriting King** (Neat letters)
+* [ ] **Phonetic Master** (Perfect "ɑ" usage)
 
-### Teacher Feedback
-* **Strengths:** ________________________________________
-* **Areas for Growth:** ________________________________
+> **Feedback:** "You are a neighborhood superstar! 🌟"
