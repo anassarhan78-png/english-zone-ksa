@@ -1,0 +1,347 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0a0f1a 0%, #0f172a 50%, #1e1b4b 100%);
+    min-height: 100vh;
+    padding: 2rem;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* خلفية النجوم المتحركة */
+.stars, .twinkling {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.stars {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="100" cy="100" r="1.5" fill="white"/><circle cx="300" cy="50" r="1" fill="white"/><circle cx="500" cy="150" r="2" fill="white"/><circle cx="700" cy="80" r="1" fill="white"/><circle cx="900" cy="200" r="1.5" fill="white"/><circle cx="200" cy="300" r="1" fill="white"/><circle cx="800" cy="400" r="2" fill="white"/><circle cx="400" cy="500" r="1" fill="white"/><circle cx="600" cy="600" r="1.5" fill="white"/><circle cx="100" cy="700" r="1" fill="white"/><circle cx="900" cy="800" r="2" fill="white"/></svg>') repeat;
+    animation: starsMove 200s linear infinite;
+    opacity: 0.6;
+}
+
+.twinkling {
+    background: transparent;
+    animation: twinkle 4s ease-in-out infinite;
+}
+
+@keyframes starsMove {
+    from { transform: translateY(0); }
+    to { transform: translateY(-1000px); }
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+}
+
+.gradient-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(59,130,246,0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* حاوية زجاجية رئيسية */
+.glass-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    backdrop-filter: blur(16px);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 48px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+}
+
+/* الهيدر الزجاجي */
+.glass-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 3rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-icon {
+    font-size: 3rem;
+}
+
+.logo-text h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.logo-text h1 span {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.logo-text p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+.header-stats {
+    display: flex;
+    gap: 2rem;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* الأقسام الزجاجية */
+.glass-section {
+    padding: 3rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, #fff, #cbd5e1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* بطاقات النظرية */
+.theory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.theory-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.theory-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.3);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.theory-card h3 {
+    color: white;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.theory-card ul {
+    list-style: none;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.theory-card ul li {
+    padding: 0.3rem 0;
+}
+
+/* الكتب */
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.book-category {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 24px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.book-category h3 {
+    color: white;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.book-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.book-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.book-item:hover {
+    background: rgba(59, 130, 246, 0.3);
+    transform: translateX(5px);
+}
+
+.coming-soon {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+/* الخط الزمني للنظام */
+.flow-timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.flow-day {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    min-width: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.flow-day:hover {
+    transform: scale(1.05);
+    background: rgba(59, 130, 246, 0.2);
+    border-color: #3b82f6;
+}
+
+.day-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.day-name {
+    color: white;
+    font-weight: 600;
+    margin: 0.3rem 0;
+}
+
+.day-time {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.flow-arrow {
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* القاعدة الذهبية */
+.golden-rule {
+    margin: 2rem 3rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+    border-radius: 24px;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    backdrop-filter: blur(10px);
+}
+
+.golden-rule span {
+    font-size: 2rem;
+}
+
+.golden-rule p {
+    color: #fbbf24;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* الفوتر */
+.glass-footer {
+    padding: 2rem 3rem;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+}
+
+/* استجابة للشاشات الصغيرة */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+    
+    .glass-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .flow-timeline {
+        flex-direction: column;
+    }
+    
+    .flow-arrow {
+        transform: rotate(90deg);
+    }
+    
+    .section-title {
+        font-size: 1.4rem;
+    }
+}
