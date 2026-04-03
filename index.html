@@ -2,64 +2,103 @@
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>English Zone KSA - معاينة المحتوى</title>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <title>English Zone KSA - المكتبة</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0f172a; color: #eee; padding: 2rem; margin: 0; }
-        .container { max-width: 1200px; margin: auto; background: #1e293b; border-radius: 1rem; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        .sidebar { background: #0f172a; padding: 1rem; border-left: 1px solid #334155; width: 300px; float: right; height: 80vh; overflow-y: auto; }
-        .content { padding: 2rem; margin-right: 320px; min-height: 80vh; overflow-y: auto; background: #0f172a; }
-        h1, h2 { color: #fbbf24; }
-        a { color: #3b82f6; text-decoration: none; display: block; margin: 0.5rem 0; cursor: pointer; }
-        a:hover { text-decoration: underline; }
-        hr { border-color: #334155; }
-        .file-link { background: #1e293b; padding: 0.3rem 0.5rem; border-radius: 0.5rem; margin: 0.2rem 0; }
-        .file-link:hover { background: #334155; }
-        @media (max-width: 768px) { .sidebar { width: 100%; float: none; height: auto; } .content { margin-right: 0; } }
+        body { font-family: 'Segoe UI', Arial; background: #f4f4f4; margin: 0; padding: 20px; direction: rtl; }
+        .container { max-width: 1200px; margin: auto; background: white; border-radius: 16px; box-shadow: 0 0 20px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: #1e3a8a; color: white; padding: 20px; text-align: center; }
+        .content { display: flex; flex-wrap: wrap; }
+        .sidebar { width: 300px; background: #f8fafc; padding: 20px; border-left: 1px solid #e2e8f0; }
+        .main { flex: 1; padding: 20px; background: white; min-height: 500px; }
+        .unit { margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; }
+        .unit h3 { color: #1e3a8a; margin-bottom: 10px; }
+        .file-link { display: inline-block; background: #e2e8f0; padding: 6px 12px; margin: 4px; border-radius: 20px; font-size: 14px; cursor: pointer; transition: 0.2s; }
+        .file-link:hover { background: #1e3a8a; color: white; }
+        pre { background: #f1f5f9; padding: 15px; border-radius: 8px; overflow-x: auto; white-space: pre-wrap; font-family: monospace; }
+        @media (max-width: 700px) { .sidebar { width: 100%; } }
     </style>
 </head>
 <body>
 <div class="container">
-    <div style="background:#0f172a; padding:1rem; text-align:center; border-bottom:1px solid #334155;">
-        <h1>📚 English Zone KSA</h1>
-        <p>اختر ملفًا من القائمة لعرض محتواه مباشرة</p>
+    <div class="header">
+        <h1>📚 English Zone KSA - المكتبة التفاعلية</h1>
+        <p>اختر ملفاً لعرض محتواه مباشرة</p>
     </div>
-    <div class="sidebar">
-        <h2>🧒 English Time 1</h2>
-        <h3>📖 الوحدة 1 - In the Neighborhood</h3>
-        <div class="file-link" data-url="https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/unit-1/dictation.md">📝 Dictation</div>
-        <div class="file-link" data-url="https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/unit-1/writing.md">✍️ Writing</div>
-        <div class="file-link" data-url="https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/unit-1/presentation.md">🎤 Presentation</div>
-        <div class="file-link" data-url="https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/unit-1/rubric.md">📊 Rubric</div>
-        <div class="file-link" data-url="https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/unit-1/questions.md">❓ Questions</div>
-        <hr>
-        <p class="file-link" data-url="https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/README.md">🏠 الرئيسية (README)</p>
-    </div>
-    <div class="content" id="content-area">
-        <p style="text-align:center; color:#94a3b8;">👈 اختر ملفًا من القائمة لعرضه هنا بشكل منسق</p>
+    <div class="content">
+        <div class="sidebar" id="sidebar">
+            <h3>🧒 English Time 1</h3>
+            <div id="units-list"></div>
+        </div>
+        <div class="main" id="main-content">
+            <p style="color: gray;">👈 اختر ملفاً من القائمة لعرضه هنا</p>
+        </div>
     </div>
 </div>
 <script>
-    const contentDiv = document.getElementById('content-area');
-    const links = document.querySelectorAll('.file-link');
-    async function loadMarkdown(url) {
-        contentDiv.innerHTML = '<div style="text-align:center;">⏳ جاري التحميل...</div>';
+    // بيانات الوحدات (يمكنك زيادتها لاحقاً)
+    const units = [
+        { num: 1, name: "In the Neighborhood" },
+        { num: 2, name: "In the Meadow" },
+        { num: 3, name: "On the Farm" },
+        { num: 4, name: "At the Stationery Store" },
+        { num: 5, name: "At School" },
+        { num: 6, name: "In Gym Class" },
+        { num: 7, name: "At the Food Court" },
+        { num: 8, name: "At the Supermarket" },
+        { num: 9, name: "At the Circus" },
+        { num: 10, name: "Around Town" }
+    ];
+    const fileTypes = [
+        { name: "Dictation", file: "dictation.md" },
+        { name: "Writing", file: "writing.md" },
+        { name: "Presentation", file: "presentation.md" },
+        { name: "Rubric", file: "rubric.md" },
+        { name: "Questions", file: "questions.md" }
+    ];
+    const repoBase = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1";
+
+    function buildSidebar() {
+        const container = document.getElementById('units-list');
+        units.forEach(unit => {
+            const unitDiv = document.createElement('div');
+            unitDiv.className = 'unit';
+            unitDiv.innerHTML = `<h3>الوحدة ${unit.num}: ${unit.name}</h3>`;
+            fileTypes.forEach(ft => {
+                const link = document.createElement('span');
+                link.className = 'file-link';
+                link.textContent = ft.name;
+                const url = `${repoBase}/unit-${unit.num}/${ft.file}`;
+                link.onclick = () => loadFile(url);
+                unitDiv.appendChild(link);
+            });
+            container.appendChild(unitDiv);
+        });
+    }
+
+    async function loadFile(url) {
+        const main = document.getElementById('main-content');
+        main.innerHTML = '<p>⏳ جاري التحميل...</p>';
         try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error('فشل التحميل');
-            const text = await response.text();
-            const html = marked.parse(text);
-            contentDiv.innerHTML = html;
-        } catch (err) {
-            contentDiv.innerHTML = '<p style="color:#ef4444;">❌ خطأ في تحميل الملف. تأكد من الاتصال بالإنترنت والرابط صحيح.</p>';
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('الملف غير موجود');
+            const text = await res.text();
+            // عرض المحتوى بشكل خام مع الحفاظ على التنسيق (pre)
+            main.innerHTML = `<pre>${escapeHtml(text)}</pre>`;
+        } catch(e) {
+            main.innerHTML = `<p style="color:red;">❌ خطأ: ${e.message}</p>`;
         }
     }
-    links.forEach(link => {
-        link.addEventListener('click', () => {
-            const url = link.getAttribute('data-url');
-            if (url) loadMarkdown(url);
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
         });
-    });
+    }
+
+    buildSidebar();
 </script>
 </body>
 </html>
