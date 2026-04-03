@@ -1,17 +1,16 @@
-# Assessment Rubric: Unit 2
+# 🏆 Level Up: Meadow Mastery
 
-| Category | Points | Criteria |
+| Skill Category | Rating (Stars ⭐) | Teacher's Feedback |
 | :--- | :--- | :--- |
-| **Speaking** | 10 | Correct pronunciation of "th" and "fl" sounds. |
-| **Writing** | 10 | Identifying colors and nature objects correctly. |
-| **Presentation** | 5 | Ability to point and describe images/objects. |
-| **Question Bank** | 5 | Answering questions about the meadow correctly. |
-| **SDT (Self-Determination)** | 15 | Engagement and interest in nature topics. |
+| **Speaking (Nature)** | ⭐⭐⭐⭐⭐ | Did they say "Flower" & "Tree" clearly? |
+| **Writing (Accuracy)**| ⭐⭐⭐⭐⭐ | Is the "ɑ" used correctly? |
+| **Presentation (Style)**| ⭐⭐⭐⭐⭐ | Did they show their drawing with pride? |
+| **Questions (Logic)** | ⭐⭐⭐⭐⭐ | Do they know the color of the sun? |
+| **SDT (Motivation)** | ⭐⭐⭐⭐⭐ | Did the student enjoy the drawing? |
 
-### ESL Proficiency Levels
-* **Emerging:** Identifies single words.
-* **Developing:** Uses "It is a..." correctly.
-* **Succeeding:** Connects ideas about the meadow.
+### 🏅 Badges Earned:
+* [ ] **Nature Guard** (Perfect spelling)
+* [ ] **Picasso Junior** (Best drawing)
+* [ ] **Super Speaker** (Loud and clear)
 
-### Teacher Feedback
-* **Notes:** ___________________________________________
+> **Final Note:** "You are growing like a beautiful flower! 🌻"
