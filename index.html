@@ -2,45 +2,38 @@
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>English Zone KSA - أسئلة تفاعلية</title>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <title>English Zone KSA - المكتبة التفاعلية</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f4f8; margin: 0; padding: 20px; direction: rtl; }
-        .container { max-width: 1300px; margin: auto; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f1f5f9; margin: 0; padding: 20px; direction: rtl; }
+        .container { max-width: 1200px; margin: auto; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
         .header { background: #1e40af; color: white; padding: 20px; text-align: center; }
         .flex { display: flex; flex-wrap: wrap; }
-        .sidebar { width: 300px; background: #f9fafb; padding: 20px; border-left: 1px solid #e5e7eb; max-height: 80vh; overflow-y: auto; }
+        .sidebar { width: 300px; background: #f9fafb; padding: 20px; border-left: 1px solid #e5e7eb; }
         .main { flex: 1; padding: 30px; background: white; }
         .unit { margin-bottom: 25px; border-bottom: 1px solid #e5e7eb; padding-bottom: 15px; }
-        .unit h4 { margin: 0 0 10px; color: #1e3a8a; }
-        .file-btn { background: #e2e8f0; border: none; padding: 5px 12px; margin: 4px; border-radius: 20px; cursor: pointer; font-size: 13px; }
+        .file-btn { background: #e2e8f0; border: none; padding: 5px 12px; margin: 4px; border-radius: 20px; cursor: pointer; font-size: 13px; text-decoration: none; display: inline-block; color: black; }
         .file-btn:hover { background: #1e40af; color: white; }
-        .quiz-area { background: #fefce8; padding: 20px; border-radius: 20px; margin-top: 20px; }
-        .question-block { background: #fef3c7; padding: 15px; margin: 15px 0; border-radius: 16px; border-right: 5px solid #f59e0b; }
-        .quiz-option { margin: 10px 0; }
-        input, select { padding: 6px 12px; border-radius: 20px; border: 1px solid #ccc; margin: 5px; }
-        .check-btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 30px; cursor: pointer; font-size: 16px; margin-top: 20px; }
-        .check-btn:hover { background: #059669; }
-        .result-box { background: #dbeafe; padding: 10px; border-radius: 16px; margin-top: 20px; font-weight: bold; text-align: center; }
+        .interactive-link { background: #f59e0b; color: white; }
+        .interactive-link:hover { background: #d97706; }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h2>📚 English Zone KSA - بنك الأسئلة التفاعلي</h2>
-        <p>اختر الوحدة ثم اضغط على "❓ أسئلة"</p>
+        <h2>📚 English Zone KSA - المكتبة التفاعلية</h2>
+        <p>اختر الوحدة ثم اضغط على النشاط المطلوب</p>
     </div>
     <div class="flex">
         <div class="sidebar" id="sidebar"></div>
         <div class="main" id="mainContent">
-            <div style="text-align:center; color:#6b7280;">👈 اختر ملف الأسئلة من القائمة</div>
+            <div style="text-align:center; color:#6b7280;">👈 اختر وحدة ونشاطاً من القائمة</div>
         </div>
     </div>
 </div>
 <script>
-    // بيانات الوحدات من 1 إلى 10
     const units = [1,2,3,4,5,6,7,8,9,10];
     const repoBase = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1";
+    const interactiveBase = "https://anassarhan78-png.github.io/english-zone-ksa/books/english-time/english-time-1/interactive";
 
     function buildSidebar() {
         const sidebar = document.getElementById('sidebar');
@@ -49,89 +42,42 @@
             const div = document.createElement('div');
             div.className = 'unit';
             div.innerHTML = `<h4>الوحدة ${u}</h4>`;
-            const btn = document.createElement('button');
-            btn.textContent = '❓ أسئلة';
-            btn.className = 'file-btn';
-            btn.onclick = () => loadQuestions(u);
-            div.appendChild(btn);
+            // رابط dictation التفاعلي
+            const interactiveBtn = document.createElement('a');
+            interactiveBtn.href = `${interactiveBase}/unit${u}-dictation.html`;
+            interactiveBtn.target = "_blank";
+            interactiveBtn.textContent = '🎨 Dictation (تفاعلي)';
+            interactiveBtn.className = 'file-btn interactive-link';
+            div.appendChild(interactiveBtn);
+            // باقي الأزرار للملفات العادية
+            const files = ['dictation.md', 'writing.md', 'presentation.md', 'rubric.md', 'questions.md'];
+            files.forEach(f => {
+                const btn = document.createElement('button');
+                btn.textContent = f.replace('.md', '');
+                btn.className = 'file-btn';
+                btn.onclick = () => loadMarkdown(`${repoBase}/unit-${u}/${f}`);
+                div.appendChild(btn);
+            });
             sidebar.appendChild(div);
         });
     }
 
-    async function loadQuestions(unitNum) {
+    async function loadMarkdown(url) {
         const main = document.getElementById('mainContent');
-        main.innerHTML = '<div style="text-align:center;">⏳ جاري تحميل الأسئلة...</div>';
-        const url = `${repoBase}/unit-${unitNum}/questions.md`;
+        main.innerHTML = '<div style="text-align:center;">⏳ جاري التحميل...</div>';
         try {
             const res = await fetch(url);
             if (!res.ok) throw new Error('الملف غير موجود');
-            let md = await res.text();
-            // تحويل Markdown إلى HTML
-            let html = marked.parse(md);
-            // إضافة أزرار التفاعل فوق المحتوى
-            main.innerHTML = `
-                <div class="quiz-area">
-                    <h3>📝 الأسئلة التفاعلية - الوحدة ${unitNum}</h3>
-                    <div id="quizHtml">${html}</div>
-                    <button class="check-btn" onclick="checkAnswers()">✅ تصحيح الإجابات</button>
-                    <div id="resultDisplay" class="result-box"></div>
-                </div>
-            `;
-            // بعد إضافة HTML، نقوم بتحويل العناصر إلى تفاعلية
-            makeInteractive();
+            const md = await res.text();
+            const html = marked.parse(md);
+            main.innerHTML = `<div class="markdown-body">${html}</div>`;
         } catch(e) {
             main.innerHTML = `<div style="color:red;">❌ خطأ: ${e.message}</div>`;
         }
     }
 
-    function makeInteractive() {
-        // 1. تحويل [ Yes ] / [ No ] إلى أزرار راديو
-        const containers = document.querySelectorAll('#quizHtml');
-        containers.forEach(container => {
-            let inner = container.innerHTML;
-            // استبدال [ Yes ] / [ No ]
-            inner = inner.replace(/\[ Yes \] \/ \[ No \]/g, `
-                <div class="quiz-option">
-                    <label><input type="radio" name="yn" value="yes"> ✅ نعم</label>
-                    <label><input type="radio" name="yn" value="no"> ❌ لا</label>
-                </div>
-            `);
-            // استبدال (__________) بحقل إدخال
-            inner = inner.replace(/\(__________\)/g, '<input type="text" class="fill-input" placeholder="اكتب إجابتك">');
-            // استبدال (ɑm / ɑre) بقائمة منسدلة
-            inner = inner.replace(/\(ɑm \/ ɑre\)/g, '<select class="choice-select"><option value="">اختر</option><option value="am">am</option><option value="are">are</option></select>');
-            // استبدال (Fine, __________ __________) بحقلين
-            inner = inner.replace(/\(Fine, __________ __________\)/g, 'Fine, <input type="text" class="fill-input" placeholder="كلمة1"> <input type="text" class="fill-input" placeholder="كلمة2">');
-            container.innerHTML = inner;
-        });
-    }
-
-    window.checkAnswers = function() {
-        let score = 0;
-        let total = 0;
-        // 1. فحص أزرار Yes/No (نتوقع الإجابة "yes" لأول سؤال)
-        const ynRadios = document.querySelectorAll('input[name="yn"]');
-        const selected = Array.from(ynRadios).find(r => r.checked);
-        if (selected && selected.value === 'yes') score++;
-        total++;
-        // 2. فحص حقول الإدخال بناءً على الإجابات المتوقعة (حسب المثال الذي أرسلته)
-        const inputs = document.querySelectorAll('.fill-input');
-        const expectedAnswers = ["thank you", "Digger", "am", "are", "morning"];
-        inputs.forEach((inp, idx) => {
-            if (idx < expectedAnswers.length && inp.value.trim().toLowerCase() === expectedAnswers[idx].toLowerCase()) score++;
-            total++;
-        });
-        // 3. فحص القوائم المنسدلة
-        const selects = document.querySelectorAll('.choice-select');
-        const selectExpected = ["am", "are"];
-        selects.forEach((sel, idx) => {
-            if (idx < selectExpected.length && sel.value === selectExpected[idx]) score++;
-            total++;
-        });
-        document.getElementById('resultDisplay').innerHTML = `✔️ نتيجتك: ${score} من ${total}`;
-    };
-
     buildSidebar();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
 </html>
