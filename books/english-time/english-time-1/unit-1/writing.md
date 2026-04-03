@@ -1,12 +1,17 @@
-# Writing Activity: My Neighborhood
+# 🆔 My Neighborhood ID Card
 
-### Task
-Write 3 sentences about yourself and a friend in the neighborhood.
+### 🖍️ Mission: "Create Your Character!"
+*Fill in your data to introduce yourself to your neighbors.*
 
-### Example Model
-I am a boy. My name is Ali. You are my friend.
+---
+| 🖼️ Draw your Face here | ✍️ Write your Profile |
+| :--- | :--- |
+|           | 1. I am a __________. (boy / girl) |
+|   [ME]    | 2. My name is __________. |
+|           | 3. You are my __________. (friend) |
+---
 
-### Student Worksheet
-1. I am a __________. (boy / girl)
-2. My name is __________. (Write your name)
-3. You are my __________. (friend)
+### 💡 Model Example:
+"I am a boy. My name is Anas. You are my friend."
+
+> **Hero Task:** Use the special "ɑ" symbol instead of "a" in your name!
