@@ -2,40 +2,48 @@
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>English Zone KSA - المكتبة</title>
+    <title>English Zone KSA - المكتبة التفاعلية</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Arial; background: #f4f4f4; margin: 0; padding: 20px; direction: rtl; }
-        .container { max-width: 1200px; margin: auto; background: white; border-radius: 16px; box-shadow: 0 0 20px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background: #1e3a8a; color: white; padding: 20px; text-align: center; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f1f5f9; margin: 0; padding: 20px; direction: rtl; }
+        .container { max-width: 1400px; margin: auto; background: white; border-radius: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white; padding: 20px 30px; text-align: center; }
+        .header h1 { margin: 0; font-size: 1.8rem; }
+        .header p { margin: 5px 0 0; opacity: 0.9; }
         .content { display: flex; flex-wrap: wrap; }
-        .sidebar { width: 300px; background: #f8fafc; padding: 20px; border-left: 1px solid #e2e8f0; }
-        .main { flex: 1; padding: 20px; background: white; min-height: 500px; }
-        .unit { margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; }
-        .unit h3 { color: #1e3a8a; margin-bottom: 10px; }
-        .file-link { display: inline-block; background: #e2e8f0; padding: 6px 12px; margin: 4px; border-radius: 20px; font-size: 14px; cursor: pointer; transition: 0.2s; }
-        .file-link:hover { background: #1e3a8a; color: white; }
-        pre { background: #f1f5f9; padding: 15px; border-radius: 8px; overflow-x: auto; white-space: pre-wrap; font-family: monospace; }
-        @media (max-width: 700px) { .sidebar { width: 100%; } }
+        .sidebar { width: 320px; background: #f8fafc; border-left: 1px solid #e2e8f0; padding: 20px; max-height: 80vh; overflow-y: auto; }
+        .main { flex: 1; padding: 30px; background: #ffffff; min-height: 80vh; overflow-y: auto; }
+        .unit { margin-bottom: 25px; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; }
+        .unit h3 { color: #1e3a8a; margin: 0 0 10px 0; font-size: 1.2rem; }
+        .file-link { display: inline-block; background: #e2e8f0; padding: 6px 14px; margin: 4px 6px 4px 0; border-radius: 30px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; border: none; font-family: inherit; }
+        .file-link:hover { background: #1e3a8a; color: white; transform: translateY(-2px); }
+        .markdown-body { line-height: 1.6; color: #0f172a; }
+        .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: #1e3a8a; margin-top: 1.5em; }
+        .markdown-body table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+        .markdown-body th, .markdown-body td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: right; }
+        .markdown-body th { background: #f1f5f9; }
+        .markdown-body pre { background: #0f172a; color: #e2e8f0; padding: 15px; border-radius: 12px; overflow-x: auto; }
+        .markdown-body code { background: #f1f5f9; padding: 2px 6px; border-radius: 6px; font-family: monospace; }
+        @media (max-width: 700px) { .sidebar { width: 100%; max-height: none; } }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
         <h1>📚 English Zone KSA - المكتبة التفاعلية</h1>
-        <p>اختر ملفاً لعرض محتواه مباشرة</p>
+        <p>اختر ملفاً لعرض محتواه بشكل منسق وجميل</p>
     </div>
     <div class="content">
         <div class="sidebar" id="sidebar">
-            <h3>🧒 English Time 1</h3>
+            <h3 style="margin-top:0;">🧒 English Time 1</h3>
             <div id="units-list"></div>
         </div>
         <div class="main" id="main-content">
-            <p style="color: gray;">👈 اختر ملفاً من القائمة لعرضه هنا</p>
+            <div style="text-align:center; color:#64748b; padding: 50px;">👈 اختر ملفاً من القائمة لعرضه هنا</div>
         </div>
     </div>
 </div>
 <script>
-    // بيانات الوحدات (يمكنك زيادتها لاحقاً)
     const units = [
         { num: 1, name: "In the Neighborhood" },
         { num: 2, name: "In the Meadow" },
@@ -49,11 +57,11 @@
         { num: 10, name: "Around Town" }
     ];
     const fileTypes = [
-        { name: "Dictation", file: "dictation.md" },
-        { name: "Writing", file: "writing.md" },
-        { name: "Presentation", file: "presentation.md" },
-        { name: "Rubric", file: "rubric.md" },
-        { name: "Questions", file: "questions.md" }
+        { name: "📝 Dictation", file: "dictation.md" },
+        { name: "✍️ Writing", file: "writing.md" },
+        { name: "🎤 Presentation", file: "presentation.md" },
+        { name: "📊 Rubric", file: "rubric.md" },
+        { name: "❓ Questions", file: "questions.md" }
     ];
     const repoBase = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1";
 
@@ -64,38 +72,30 @@
             unitDiv.className = 'unit';
             unitDiv.innerHTML = `<h3>الوحدة ${unit.num}: ${unit.name}</h3>`;
             fileTypes.forEach(ft => {
-                const link = document.createElement('span');
-                link.className = 'file-link';
-                link.textContent = ft.name;
+                const btn = document.createElement('button');
+                btn.className = 'file-link';
+                btn.textContent = ft.name;
                 const url = `${repoBase}/unit-${unit.num}/${ft.file}`;
-                link.onclick = () => loadFile(url);
-                unitDiv.appendChild(link);
+                btn.onclick = () => loadAndRender(url);
+                unitDiv.appendChild(btn);
             });
             container.appendChild(unitDiv);
         });
     }
 
-    async function loadFile(url) {
-        const main = document.getElementById('main-content');
-        main.innerHTML = '<p>⏳ جاري التحميل...</p>';
+    async function loadAndRender(url) {
+        const mainDiv = document.getElementById('main-content');
+        mainDiv.innerHTML = '<div style="text-align:center; padding:50px;">⏳ جاري تحميل المحتوى...</div>';
         try {
-            const res = await fetch(url);
-            if (!res.ok) throw new Error('الملف غير موجود');
-            const text = await res.text();
-            // عرض المحتوى بشكل خام مع الحفاظ على التنسيق (pre)
-            main.innerHTML = `<pre>${escapeHtml(text)}</pre>`;
-        } catch(e) {
-            main.innerHTML = `<p style="color:red;">❌ خطأ: ${e.message}</p>`;
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const markdown = await response.text();
+            // تحويل Markdown إلى HTML باستخدام marked
+            const html = marked.parse(markdown);
+            mainDiv.innerHTML = `<div class="markdown-body">${html}</div>`;
+        } catch (error) {
+            mainDiv.innerHTML = `<div style="color:red; text-align:center; padding:50px;">❌ خطأ في تحميل الملف: ${error.message}</div>`;
         }
-    }
-
-    function escapeHtml(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
     }
 
     buildSidebar();
