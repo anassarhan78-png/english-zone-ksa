@@ -2,30 +2,64 @@
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>English Zone KSA - فهرس المحتوى</title>
+    <title>English Zone KSA - معاينة المحتوى</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; background: #0f172a; color: #eee; padding: 2rem; }
-        a { color: #3b82f6; text-decoration: none; display: block; margin: 0.5rem 0; }
-        a:hover { text-decoration: underline; }
-        .container { max-width: 800px; margin: auto; background: #1e293b; padding: 2rem; border-radius: 1rem; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0f172a; color: #eee; padding: 2rem; margin: 0; }
+        .container { max-width: 1200px; margin: auto; background: #1e293b; border-radius: 1rem; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .sidebar { background: #0f172a; padding: 1rem; border-left: 1px solid #334155; width: 300px; float: right; height: 80vh; overflow-y: auto; }
+        .content { padding: 2rem; margin-right: 320px; min-height: 80vh; overflow-y: auto; background: #0f172a; }
         h1, h2 { color: #fbbf24; }
+        a { color: #3b82f6; text-decoration: none; display: block; margin: 0.5rem 0; cursor: pointer; }
+        a:hover { text-decoration: underline; }
         hr { border-color: #334155; }
+        .file-link { background: #1e293b; padding: 0.3rem 0.5rem; border-radius: 0.5rem; margin: 0.2rem 0; }
+        .file-link:hover { background: #334155; }
+        @media (max-width: 768px) { .sidebar { width: 100%; float: none; height: auto; } .content { margin-right: 0; } }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📚 English Zone KSA - فهرس المحتوى</h1>
-    <p>انقر على أي رابط لمعاينة الملف مباشرة على GitHub (سيظهر بشكل منسق).</p>
-    <hr>
-    <h2>🧒 English Time 1</h2>
-    <p><strong>الوحدة 1 - In the Neighborhood</strong></p>
-    <a href="https://github.com/anassarhan78-png/english-zone-ksa/blob/main/books/english-time/english-time-1/unit-1/dictation.md" target="_blank">📝 Dictation</a>
-    <a href="https://github.com/anassarhan78-png/english-zone-ksa/blob/main/books/english-time/english-time-1/unit-1/writing.md" target="_blank">✍️ Writing</a>
-    <a href="https://github.com/anassarhan78-png/english-zone-ksa/blob/main/books/english-time/english-time-1/unit-1/presentation.md" target="_blank">🎤 Presentation</a>
-    <a href="https://github.com/anassarhan78-png/english-zone-ksa/blob/main/books/english-time/english-time-1/unit-1/rubric.md" target="_blank">📊 Rubric</a>
-    <a href="https://github.com/anassarhan78-png/english-zone-ksa/blob/main/books/english-time/english-time-1/unit-1/questions.md" target="_blank">❓ Questions</a>
-    <hr>
-    <p>✅ يمكنك إضافة بقية الوحدات بنفس النمط. هذا المثال للوحدة الأولى فقط.</p>
+    <div style="background:#0f172a; padding:1rem; text-align:center; border-bottom:1px solid #334155;">
+        <h1>📚 English Zone KSA</h1>
+        <p>اختر ملفًا من القائمة لعرض محتواه مباشرة</p>
+    </div>
+    <div class="sidebar">
+        <h2>🧒 English Time 1</h2>
+        <h3>📖 الوحدة 1 - In the Neighborhood</h3>
+        <div class="file-link" data-url="https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/unit-1/dictation.md">📝 Dictation</div>
+        <div class="file-link" data-url="https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/unit-1/writing.md">✍️ Writing</div>
+        <div class="file-link" data-url="https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/unit-1/presentation.md">🎤 Presentation</div>
+        <div class="file-link" data-url="https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/unit-1/rubric.md">📊 Rubric</div>
+        <div class="file-link" data-url="https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/unit-1/questions.md">❓ Questions</div>
+        <hr>
+        <p class="file-link" data-url="https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/README.md">🏠 الرئيسية (README)</p>
+    </div>
+    <div class="content" id="content-area">
+        <p style="text-align:center; color:#94a3b8;">👈 اختر ملفًا من القائمة لعرضه هنا بشكل منسق</p>
+    </div>
 </div>
+<script>
+    const contentDiv = document.getElementById('content-area');
+    const links = document.querySelectorAll('.file-link');
+    async function loadMarkdown(url) {
+        contentDiv.innerHTML = '<div style="text-align:center;">⏳ جاري التحميل...</div>';
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('فشل التحميل');
+            const text = await response.text();
+            const html = marked.parse(text);
+            contentDiv.innerHTML = html;
+        } catch (err) {
+            contentDiv.innerHTML = '<p style="color:#ef4444;">❌ خطأ في تحميل الملف. تأكد من الاتصال بالإنترنت والرابط صحيح.</p>';
+        }
+    }
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            const url = link.getAttribute('data-url');
+            if (url) loadMarkdown(url);
+        });
+    });
+</script>
 </body>
 </html>
