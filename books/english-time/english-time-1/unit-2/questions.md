@@ -1,22 +1,20 @@
-# Question Bank: Unit 2
+# 🕵️ The Meadow Mystery Quiz
 
-### Yes/No Questions
-1. Is the sky green? (No, it isn't)
-2. Is it a flower? (Yes, it is)
+### 🔴 Yes or No? (Circle One)
+1. Is the tree blue? 🌳 [ Yes ] / [ No ]
+2. Is the bird in the sky? 🐦 [ Yes ] / [ No ]
 
-### Wh- Questions
-1. What color is the sun? (It is yellow)
-2. What do you see in the tree? (I see a bird)
+### 🔍 Search & Find (Wh- Questions)
+1. **What** is this? (pointing to a flower) ➡️ It is a __________.
+2. **What** color is the sun? ➡️ It is __________.
 
-### Fill in the Blank
-1. It _______ a blue bird. (is / are)
-2. I see a white _______. (cloud / sun)
-
-### Choose the Correct Answer
-1. The (tree / sky) is green.
-2. Look at the (flower / man) in the meadow.
+### 🏗️ Sentence Builder (Fill in)
+1. It _______ a small bird. (am / is)
+2. I see _______ white cloud. (a / an)
+3. The sky _______ blue today. (is / are)
 
 ---
-### Answer Key
-* **Fill:** 1. is | 2. cloud
-* **Choose:** 1. tree | 2. flower
+### 🔑 Teacher Answer Key (Admin Only)
+* **Yes/No:** 1. No | 2. Yes
+* **Search:** 1. Flower | 2. Yellow
+* **Build:** 1. is | 2. a | 3. is
