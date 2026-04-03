@@ -1,16 +1,20 @@
-# Dictation: Unit 1 - In the Neighborhood
+# 🎨 Face Dictation: Unit 1 - In the Neighborhood
 
-### Keywords
-* Boy
-* Girl
-* Man
-* Woman
-* Neighborhood
-* Friend
+### 🧺 The Word Box (Keywords)
+* **Boy** (👦)
+* **Girl** (👧)
+* **Man** (👨)
+* **Woman** (👩)
+* **Friend** (🤝)
 
-### Sentences (Grammar: I am / You are)
-1. I am a boy.
-2. You are a girl.
-3. I am your friend.
-4. He is a man.
-5. She is a woman.
+### ✍️ Draw & Write Challenge (Grammar: I am / You are)
+> **Game Rules:** Draw a quick "stick figure" for the person, then write the sentence next to it!
+
+1. **I am a boy.** (Draw 👦 + Write)
+2. **You are a girl.** (Draw 👧 + Write)
+3. **He is a man.** (Draw 👨 + Write)
+4. **She is a woman.** (Draw 👩 + Write)
+5. **You are my friend.** (Draw ❤️ + Write)
+
+---
+*💡 Fun Tip: Write "Boy" in blue and "Girl" in pink!*
