@@ -5,139 +5,130 @@
     <title>English Zone KSA - أسئلة تفاعلية</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f1f5f9; margin: 0; padding: 20px; direction: rtl; }
-        .container { max-width: 1400px; margin: auto; background: white; border-radius: 24px; box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white; padding: 20px 30px; text-align: center; }
-        .content { display: flex; flex-wrap: wrap; }
-        .sidebar { width: 320px; background: #f8fafc; border-left: 1px solid #e2e8f0; padding: 20px; max-height: 80vh; overflow-y: auto; }
-        .main { flex: 1; padding: 30px; background: #ffffff; min-height: 80vh; overflow-y: auto; }
-        .unit { margin-bottom: 25px; border-bottom: 1px solid #e2e8f0; padding-bottom: 15px; }
-        .unit h3 { color: #1e3a8a; margin: 0 0 10px 0; }
-        .file-link { display: inline-block; background: #e2e8f0; padding: 6px 14px; margin: 4px 6px 4px 0; border-radius: 30px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; border: none; }
-        .file-link:hover { background: #1e3a8a; color: white; }
-        .markdown-body { line-height: 1.6; color: #0f172a; }
-        .markdown-body h1, .markdown-body h2 { color: #1e3a8a; }
-        .markdown-body table { border-collapse: collapse; width: 100%; margin: 1em 0; }
-        .markdown-body th, .markdown-body td { border: 1px solid #cbd5e1; padding: 8px; text-align: right; }
-        .question-container { background: #f8fafc; padding: 15px; margin: 15px 0; border-radius: 16px; border-right: 5px solid #3b82f6; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f4f8; margin: 0; padding: 20px; direction: rtl; }
+        .container { max-width: 1300px; margin: auto; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: #1e40af; color: white; padding: 20px; text-align: center; }
+        .flex { display: flex; flex-wrap: wrap; }
+        .sidebar { width: 300px; background: #f9fafb; padding: 20px; border-left: 1px solid #e5e7eb; max-height: 80vh; overflow-y: auto; }
+        .main { flex: 1; padding: 30px; background: white; }
+        .unit { margin-bottom: 25px; border-bottom: 1px solid #e5e7eb; padding-bottom: 15px; }
+        .unit h4 { margin: 0 0 10px; color: #1e3a8a; }
+        .file-btn { background: #e2e8f0; border: none; padding: 5px 12px; margin: 4px; border-radius: 20px; cursor: pointer; font-size: 13px; }
+        .file-btn:hover { background: #1e40af; color: white; }
+        .quiz-area { background: #fefce8; padding: 20px; border-radius: 20px; margin-top: 20px; }
+        .question-block { background: #fef3c7; padding: 15px; margin: 15px 0; border-radius: 16px; border-right: 5px solid #f59e0b; }
         .quiz-option { margin: 10px 0; }
-        .quiz-option label { margin-left: 15px; }
-        button.check-btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 30px; cursor: pointer; margin-top: 20px; font-size: 1rem; }
-        button.check-btn:hover { background: #059669; }
-        .result { background: #e0f2fe; padding: 10px; border-radius: 12px; margin-top: 15px; font-weight: bold; }
-        input, select { padding: 6px 12px; border-radius: 20px; border: 1px solid #cbd5e1; margin: 5px; font-family: inherit; }
-        hr { margin: 20px 0; }
+        input, select { padding: 6px 12px; border-radius: 20px; border: 1px solid #ccc; margin: 5px; }
+        .check-btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 30px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+        .check-btn:hover { background: #059669; }
+        .result-box { background: #dbeafe; padding: 10px; border-radius: 16px; margin-top: 20px; font-weight: bold; text-align: center; }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1>📚 English Zone KSA - أسئلة تفاعلية</h1>
-        <p>اختر ملف أسئلة (Questions) لتجربة تفاعلية كاملة</p>
+        <h2>📚 English Zone KSA - بنك الأسئلة التفاعلي</h2>
+        <p>اختر الوحدة ثم اضغط على "❓ أسئلة"</p>
     </div>
-    <div class="content">
+    <div class="flex">
         <div class="sidebar" id="sidebar"></div>
-        <div class="main" id="main-content">
-            <div style="text-align:center; color:#64748b; padding: 50px;">👈 اختر ملف Questions من القائمة</div>
+        <div class="main" id="mainContent">
+            <div style="text-align:center; color:#6b7280;">👈 اختر ملف الأسئلة من القائمة</div>
         </div>
     </div>
 </div>
 <script>
-    const units = Array.from({length: 10}, (_, i) => ({ num: i+1, name: `Unit ${i+1}` }));
-    const fileTypes = [
-        { name: "📝 Dictation", file: "dictation.md" },
-        { name: "✍️ Writing", file: "writing.md" },
-        { name: "🎤 Presentation", file: "presentation.md" },
-        { name: "📊 Rubric", file: "rubric.md" },
-        { name: "❓ Questions (تفاعلي)", file: "questions.md" }
-    ];
+    // بيانات الوحدات من 1 إلى 10
+    const units = [1,2,3,4,5,6,7,8,9,10];
     const repoBase = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1";
 
     function buildSidebar() {
-        const container = document.getElementById('sidebar');
-        container.innerHTML = '<h3>🧒 English Time 1</h3>';
-        units.forEach(unit => {
-            const unitDiv = document.createElement('div');
-            unitDiv.className = 'unit';
-            unitDiv.innerHTML = `<h3>الوحدة ${unit.num}</h3>`;
-            fileTypes.forEach(ft => {
-                const btn = document.createElement('button');
-                btn.className = 'file-link';
-                btn.textContent = ft.name;
-                const url = `${repoBase}/unit-${unit.num}/${ft.file}`;
-                btn.onclick = () => loadFile(url, ft.name.includes('تفاعلي'));
-                unitDiv.appendChild(btn);
-            });
-            container.appendChild(unitDiv);
+        const sidebar = document.getElementById('sidebar');
+        sidebar.innerHTML = '<h3>🧒 English Time 1</h3>';
+        units.forEach(u => {
+            const div = document.createElement('div');
+            div.className = 'unit';
+            div.innerHTML = `<h4>الوحدة ${u}</h4>`;
+            const btn = document.createElement('button');
+            btn.textContent = '❓ أسئلة';
+            btn.className = 'file-btn';
+            btn.onclick = () => loadQuestions(u);
+            div.appendChild(btn);
+            sidebar.appendChild(div);
         });
     }
 
-    async function loadFile(url, isInteractive) {
-        const mainDiv = document.getElementById('main-content');
-        mainDiv.innerHTML = '<div style="text-align:center;">⏳ جاري التحميل...</div>';
+    async function loadQuestions(unitNum) {
+        const main = document.getElementById('mainContent');
+        main.innerHTML = '<div style="text-align:center;">⏳ جاري تحميل الأسئلة...</div>';
+        const url = `${repoBase}/unit-${unitNum}/questions.md`;
         try {
             const res = await fetch(url);
             if (!res.ok) throw new Error('الملف غير موجود');
-            let markdown = await res.text();
-            let html = marked.parse(markdown);
-            if (isInteractive) {
-                html = makeInteractive(html, markdown);
-            }
-            mainDiv.innerHTML = `<div class="markdown-body">${html}</div>`;
-            if (isInteractive) attachQuizEvents();
+            let md = await res.text();
+            // تحويل Markdown إلى HTML
+            let html = marked.parse(md);
+            // إضافة أزرار التفاعل فوق المحتوى
+            main.innerHTML = `
+                <div class="quiz-area">
+                    <h3>📝 الأسئلة التفاعلية - الوحدة ${unitNum}</h3>
+                    <div id="quizHtml">${html}</div>
+                    <button class="check-btn" onclick="checkAnswers()">✅ تصحيح الإجابات</button>
+                    <div id="resultDisplay" class="result-box"></div>
+                </div>
+            `;
+            // بعد إضافة HTML، نقوم بتحويل العناصر إلى تفاعلية
+            makeInteractive();
         } catch(e) {
-            mainDiv.innerHTML = `<div style="color:red;">❌ خطأ: ${e.message}</div>`;
+            main.innerHTML = `<div style="color:red;">❌ خطأ: ${e.message}</div>`;
         }
     }
 
-    function makeInteractive(html, rawMarkdown) {
-        // تحويل الأنماط إلى عناصر تفاعلية
+    function makeInteractive() {
         // 1. تحويل [ Yes ] / [ No ] إلى أزرار راديو
-        let processed = html.replace(/\[ Yes \] \/ \[ No \]/g, (match) => {
-            return `<div class="quiz-option"><label><input type="radio" name="yn" value="yes"> ✅ نعم</label> <label><input type="radio" name="yn" value="no"> ❌ لا</label></div>`;
+        const containers = document.querySelectorAll('#quizHtml');
+        containers.forEach(container => {
+            let inner = container.innerHTML;
+            // استبدال [ Yes ] / [ No ]
+            inner = inner.replace(/\[ Yes \] \/ \[ No \]/g, `
+                <div class="quiz-option">
+                    <label><input type="radio" name="yn" value="yes"> ✅ نعم</label>
+                    <label><input type="radio" name="yn" value="no"> ❌ لا</label>
+                </div>
+            `);
+            // استبدال (__________) بحقل إدخال
+            inner = inner.replace(/\(__________\)/g, '<input type="text" class="fill-input" placeholder="اكتب إجابتك">');
+            // استبدال (ɑm / ɑre) بقائمة منسدلة
+            inner = inner.replace(/\(ɑm \/ ɑre\)/g, '<select class="choice-select"><option value="">اختر</option><option value="am">am</option><option value="are">are</option></select>');
+            // استبدال (Fine, __________ __________) بحقلين
+            inner = inner.replace(/\(Fine, __________ __________\)/g, 'Fine, <input type="text" class="fill-input" placeholder="كلمة1"> <input type="text" class="fill-input" placeholder="كلمة2">');
+            container.innerHTML = inner;
         });
-        // 2. تحويل (__________) إلى حقل إدخال
-        processed = processed.replace(/\(__________\)/g, `<input type="text" class="fill-blank" placeholder="اكتب إجابتك">`);
-        // 3. تحويل (ɑm / ɑre) إلى قائمة منسدلة
-        processed = processed.replace(/\(ɑm \/ ɑre\)/g, `<select class="choice"><option value="">اختر</option><option value="am">am</option><option value="are">are</option></select>`);
-        // 4. تحويل (Fine, __________ __________) إلى حقلين
-        processed = processed.replace(/\(Fine, __________ __________\)/g, `Fine, <input type="text" class="fill-blank" placeholder="كلمة1"> <input type="text" class="fill-blank" placeholder="كلمة2">`);
-        // 5. إضافة زر التحقق
-        processed += `<br><button class="check-btn" onclick="checkAnswers()">✅ تحقق من إجاباتي</button><div id="quiz-result" class="result"></div>`;
-        return processed;
-    }
-
-    function attachQuizEvents() {
-        // يمكن إضافة أي تهيئة إضافية
     }
 
     window.checkAnswers = function() {
         let score = 0;
         let total = 0;
-        // 1. فحص أزرار Yes/No (يجب أن تكون الإجابة Yes لأول سؤال مثلاً)
+        // 1. فحص أزرار Yes/No (نتوقع الإجابة "yes" لأول سؤال)
         const ynRadios = document.querySelectorAll('input[name="yn"]');
-        const selectedYn = Array.from(ynRadios).find(r => r.checked);
-        if (selectedYn && selectedYn.value === 'yes') score++;
+        const selected = Array.from(ynRadios).find(r => r.checked);
+        if (selected && selected.value === 'yes') score++;
         total++;
-        // 2. فحص حقول الإكمال (نقارن مع النص الموجود في الملف الأصلي - نأخذ إجابات نموذجية من سياق السؤال)
-        const blanks = document.querySelectorAll('.fill-blank');
-        // هذه إجابات نموذجية (يمكن تحسينها لاحقاً)
-        const expected = ["thank you", "Digger", "am", "are", "morning"];
-        blanks.forEach((input, idx) => {
-            if (idx < expected.length && input.value.trim().toLowerCase() === expected[idx].toLowerCase()) score++;
+        // 2. فحص حقول الإدخال بناءً على الإجابات المتوقعة (حسب المثال الذي أرسلته)
+        const inputs = document.querySelectorAll('.fill-input');
+        const expectedAnswers = ["thank you", "Digger", "am", "are", "morning"];
+        inputs.forEach((inp, idx) => {
+            if (idx < expectedAnswers.length && inp.value.trim().toLowerCase() === expectedAnswers[idx].toLowerCase()) score++;
             total++;
         });
-        // فحص القوائم المنسدلة
-        const selects = document.querySelectorAll('.choice');
-        const selectAnswers = ['am', 'are'];
+        // 3. فحص القوائم المنسدلة
+        const selects = document.querySelectorAll('.choice-select');
+        const selectExpected = ["am", "are"];
         selects.forEach((sel, idx) => {
-            if (idx < selectAnswers.length && sel.value === selectAnswers[idx]) score++;
+            if (idx < selectExpected.length && sel.value === selectExpected[idx]) score++;
             total++;
         });
-        const resultDiv = document.getElementById('quiz-result');
-        if (resultDiv) {
-            resultDiv.innerHTML = `نتيجتك: ${score} من ${total} ✔️`;
-        }
+        document.getElementById('resultDisplay').innerHTML = `✔️ نتيجتك: ${score} من ${total}`;
     };
 
     buildSidebar();
