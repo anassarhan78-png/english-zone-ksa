@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>🎤 Presentation تفاعلي - الوحدة '</unit>'</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #fef3c7, #fce7f3); margin: 0; padding: 20px; direction: rtl; }
+        .container { max-width: 900px; margin: auto; background: white; border-radius: 48px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #ea580c; }
+        .script-box { background: #f1f5f9; border-radius: 32px; padding: 20px; margin: 20px 0; }
+        textarea { width: 100%; padding: 15px; border-radius: 24px; border: 2px solid #cbd5e1; font-family: inherit; font-size: 1rem; }
+        button { background: #f97316; color: white; border: none; padding: 12px 24px; border-radius: 40px; cursor: pointer; margin: 10px; }
+        .timer { font-size: 2rem; font-weight: bold; text-align: center; background: #e2e8f0; border-radius: 60px; padding: 10px; margin: 20px auto; width: 150px; }
+        .feedback { background: #dbeafe; padding: 15px; border-radius: 28px; margin-top: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎤 تدريب العرض التقديمي - الوحدة ${unit}</h1>
+    <div class="script-box">
+        <h3>📜 النص المقترح:</h3>
+        <p>Hello, my name is _____. I like _____. Thank you.</p>
+        <textarea id="script" rows="4" placeholder="اكتب نص العرض الخاص بك هنا..."></textarea>
+    </div>
+    <button id="startTimer">⏱️ ابدأ التوقيت (30 ثانية)</button>
+    <div class="timer" id="timerDisplay">00:00</div>
+    <button id="checkBtn">🔍 تحليل العرض</button>
+    <div id="feedback" class="feedback"></div>
+</div>
+<script>
+    let timerInterval = null;
+    let seconds = 0;
+    const timerDiv = document.getElementById('timerDisplay');
+    const startBtn = document.getElementById('startTimer');
+    startBtn.onclick = () => {
+        if(timerInterval) clearInterval(timerInterval);
+        seconds = 0;
+        updateTimer();
+        timerInterval = setInterval(() => { seconds++; updateTimer(); if(seconds>=30) clearInterval(timerInterval); }, 1000);
+    };
+    function updateTimer() { let mins = Math.floor(seconds/60); let secs = seconds%60; timerDiv.innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`; }
+    document.getElementById('checkBtn').onclick = () => {
+        const script = document.getElementById('script').value.trim();
+        let score = 0;
+        if(script.length > 20) score++;
+        if(script.includes('Hello') || script.includes('مرحباً')) score++;
+        if(script.includes('Thank you') || script.includes('شكراً')) score++;
+        if(seconds >= 25 && seconds <= 35) score++;
+        document.getElementById('feedback').innerHTML = `🌟 نقاط التحضير: ${score} من 4 ${score===4 ? 'ممتاز! جاهز للعرض الحقيقي 🎉' : 'حاول تحسين النص أو التوقيت'}`;
+    };
+</script>
+</body>
+</html>

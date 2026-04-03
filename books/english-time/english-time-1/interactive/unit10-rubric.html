@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>📊 Rubric تفاعلي - الوحدة '</unit>'</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f0fdf4; margin: 0; padding: 20px; direction: rtl; }
+        .container { max-width: 800px; margin: auto; background: white; border-radius: 48px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #16a34a; }
+        .criteria { background: #fef9c3; border-radius: 32px; padding: 20px; margin: 20px 0; }
+        .slider-container { margin: 15px 0; }
+        input[type="range"] { width: 80%; margin: 10px 0; }
+        .score { font-weight: bold; color: #1e40af; }
+        button { background: #16a34a; color: white; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
+        .total { background: #d1fae5; padding: 15px; border-radius: 28px; margin-top: 20px; text-align: center; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📊 التقييم الذاتي - الوحدة ${unit}</h1>
+    <div class="criteria">
+        <h3>🗣️ التحدث</h3>
+        <div class="slider-container">النطق: <input type="range" id="pron" min="0" max="2" step="0.5" value="1"> <span id="pronVal">1</span></div>
+        <div class="slider-container">الطلاقة: <input type="range" id="flu" min="0" max="2" step="0.5" value="1"> <span id="fluVal">1</span></div>
+        <div class="slider-container">الثقة: <input type="range" id="conf" min="0" max="2" step="0.5" value="1"> <span id="confVal">1</span></div>
+        <h3>✍️ الكتابة</h3>
+        <div class="slider-container">المفردات: <input type="range" id="voc" min="0" max="2" step="0.5" value="1"> <span id="vocVal">1</span></div>
+        <div class="slider-container">القواعد: <input type="range" id="gram" min="0" max="2" step="0.5" value="1"> <span id="gramVal">1</span></div>
+        <div class="slider-container">الترقيم: <input type="range" id="punc" min="0" max="2" step="0.5" value="1"> <span id="puncVal">1</span></div>
+    </div>
+    <button id="calcBtn">📈 احسب مجموع النقاط</button>
+    <div id="totalScore" class="total"></div>
+</div>
+<script>
+    const ranges = ['pron','flu','conf','voc','gram','punc'];
+    ranges.forEach(id => {
+        const slider = document.getElementById(id);
+        const span = document.getElementById(id+'Val');
+        slider.oninput = () => { span.innerText = slider.value; };
+    });
+    document.getElementById('calcBtn').onclick = () => {
+        let total = 0;
+        ranges.forEach(id => { total += parseFloat(document.getElementById(id).value); });
+        const max = ranges.length * 2; // 6*2=12
+        const percent = (total/max)*100;
+        let level = '';
+        if(percent>=90) level='ممتاز (Advanced)';
+        else if(percent>=75) level='جيد جداً (High Intermediate)';
+        else if(percent>=60) level='جيد (Intermediate)';
+        else level='يحتاج تحسين (Beginner)';
+        document.getElementById('totalScore').innerHTML = `⭐ مجموع نقاطك: ${total} من ${max} (${Math.round(percent)}%) - المستوى: ${level}`;
+    };
+</script>
+</body>
+</html>

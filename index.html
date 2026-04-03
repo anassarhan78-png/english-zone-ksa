@@ -2,27 +2,28 @@
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>English Zone KSA - المكتبة التفاعلية</title>
+    <title>English Zone KSA - المكتبة التفاعلية الكاملة</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #f1f5f9; margin: 0; padding: 20px; direction: rtl; }
-        .container { max-width: 1200px; margin: auto; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        .container { max-width: 1400px; margin: auto; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
         .header { background: #1e40af; color: white; padding: 20px; text-align: center; }
         .flex { display: flex; flex-wrap: wrap; }
-        .sidebar { width: 300px; background: #f9fafb; padding: 20px; border-left: 1px solid #e5e7eb; max-height: 80vh; overflow-y: auto; }
+        .sidebar { width: 350px; background: #f9fafb; padding: 20px; border-left: 1px solid #e5e7eb; max-height: 85vh; overflow-y: auto; }
         .main { flex: 1; padding: 30px; background: white; }
-        .unit { margin-bottom: 25px; border-bottom: 1px solid #e5e7eb; padding-bottom: 15px; }
-        .file-btn { background: #e2e8f0; border: none; padding: 5px 12px; margin: 4px; border-radius: 20px; cursor: pointer; font-size: 13px; text-decoration: none; display: inline-block; color: black; }
+        .unit { margin-bottom: 30px; border-bottom: 1px solid #e5e7eb; padding-bottom: 15px; }
+        .file-btn { background: #e2e8f0; border: none; padding: 5px 12px; margin: 4px; border-radius: 20px; cursor: pointer; font-size: 12px; text-decoration: none; display: inline-block; color: black; }
         .file-btn:hover { background: #1e40af; color: white; }
         .interactive-link { background: #f59e0b; color: white; }
         .interactive-link:hover { background: #d97706; }
+        .skill-group { margin: 10px 0; }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h2>📚 English Zone KSA - المكتبة التفاعلية</h2>
-        <p>اختر الوحدة ثم النشاط</p>
+        <h2>📚 English Zone KSA - جميع الأنشطة التفاعلية</h2>
+        <p>اختر الوحدة ثم النشاط التفاعلي (Dictation, Writing, Presentation, Rubric, Quiz)</p>
     </div>
     <div class="flex">
         <div class="sidebar" id="sidebar"></div>
@@ -38,23 +39,31 @@
 
     function buildSidebar() {
         const sidebar = document.getElementById('sidebar');
-        sidebar.innerHTML = '<h3>🧒 English Time 1</h3>';
+        sidebar.innerHTML = '<h3>🧒 English Time 1 - جميع الوحدات</h3>';
         units.forEach(u => {
             const div = document.createElement('div');
             div.className = 'unit';
             div.innerHTML = `<h4>الوحدة ${u}</h4>`;
-            // زر dictation التفاعلي
-            const interactiveBtn = document.createElement('a');
-            interactiveBtn.href = `${interactiveBase}/unit${u}-dictation.html`;
-            interactiveBtn.target = "_blank";
-            interactiveBtn.textContent = '🎨 Dictation (تفاعلي)';
-            interactiveBtn.className = 'file-btn interactive-link';
-            div.appendChild(interactiveBtn);
-            // باقي الملفات العادية
-            const files = ['dictation.md', 'writing.md', 'presentation.md', 'rubric.md', 'questions.md'];
-            files.forEach(f => {
+            const skills = [
+                { name: '🎨 Dictation', file: `unit${u}-dictation.html` },
+                { name: '✍️ Writing', file: `unit${u}-writing.html` },
+                { name: '🎤 Presentation', file: `unit${u}-presentation.html` },
+                { name: '📊 Rubric', file: `unit${u}-rubric.html` },
+                { name: '❓ Quiz', file: `unit${u}-questions.html` }
+            ];
+            skills.forEach(skill => {
+                const link = document.createElement('a');
+                link.href = `${interactiveBase}/${skill.file}`;
+                link.target = "_blank";
+                link.textContent = skill.name;
+                link.className = 'file-btn interactive-link';
+                div.appendChild(link);
+            });
+            // إضافة الأزرار للملفات العادية (اختياري)
+            const normalFiles = ['dictation.md', 'writing.md', 'presentation.md', 'rubric.md', 'questions.md'];
+            normalFiles.forEach(f => {
                 const btn = document.createElement('button');
-                btn.textContent = f.replace('.md', '');
+                btn.textContent = f.replace('.md', ' (نص)');
                 btn.className = 'file-btn';
                 btn.onclick = () => loadMarkdown(`${repoBase}/unit-${u}/${f}`);
                 div.appendChild(btn);
