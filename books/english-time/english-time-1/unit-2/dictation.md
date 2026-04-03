@@ -1,16 +1,21 @@
-# Dictation: Unit 2 - In the Meadow
+# ✍️ The Nature Artist Dictation
 
-### Keywords
-* Bird
-* Flower
-* Tree
-* Cloud
-* Sky
-* Sun
+### 🌲 Forest Vocabulary (Keywords)
+* **Bird** (🐦)
+* **Flower** (🌻)
+* **Tree** (🌳)
+* **Cloud** (☁️)
+* **Sky** (🌌)
+* **Sun** (☀️)
 
-### Sentences (Grammar: Singular/Plural - It is a...)
-1. It is a bird.
-2. It is a red flower.
-3. I see a green tree.
-4. Look at the sun.
-5. The sky is blue.
+### 🧩 Grammar Mission: "It is a..."
+> **How to Play:** The teacher speaks, and the student draws the item in the box before writing the sentence.
+
+1. **It is a bird.** (Draw 🐦 then write)
+2. **It is a yellow flower.** (Draw 🌻 then write)
+3. **It is a green tree.** (Draw 🌳 then write)
+4. **The sun is big.** (Draw ☀️ then write)
+5. **The sky is blue.** (Color 🌌 then write)
+
+---
+*💡 Interaction Tip: Give a "Golden Star" sticker to any student who uses the "ɑ" symbol correctly in their sentences!*
