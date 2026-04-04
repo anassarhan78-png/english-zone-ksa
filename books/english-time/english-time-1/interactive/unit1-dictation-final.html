@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit 1 - Dictation with Pictures</title>
+    <title>Unit 1 - Dictation</title>
     <script type="importmap">
         {
             "imports": {
@@ -13,109 +13,31 @@
     </script>
     <style>
         * { box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: #f0f7ff;
-            margin: 0;
-            padding: 20px;
-            direction: ltr;
-        }
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            background: white;
-            border-radius: 40px;
-            padding: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f7ff; margin: 0; padding: 20px; direction: ltr; }
+        .container { max-width: 1000px; margin: auto; background: white; border-radius: 40px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         h1 { text-align: center; color: #d45a1e; }
-        .word-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 25px 0;
-        }
-        .word-card {
-            background: #fffaf0;
-            border-radius: 28px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-        }
-        .word-emoji {
-            font-size: 3rem;
-            display: block;
-        }
-        .word-text {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #1e3a8a;
-            margin: 10px 0;
-        }
-        .image-container {
-            margin: 10px auto;
-            min-height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .image-container img {
-            max-width: 100px;
-            max-height: 100px;
-            border-radius: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        button {
-            background: #3b82f6;
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin: 5px;
-        }
-        input {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 60px;
-            border: 2px solid #e2e8f0;
-            text-align: center;
-            font-size: 1rem;
-        }
+        .word-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin: 25px 0; }
+        .word-card { background: #fffaf0; border-radius: 28px; padding: 15px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        .word-emoji { font-size: 3rem; display: block; }
+        .word-text { font-size: 1.3rem; font-weight: bold; color: #1e3a8a; margin: 10px 0; }
+        .image-box { margin: 10px auto; min-height: 100px; display: flex; justify-content: center; align-items: center; }
+        .image-box img { max-width: 100px; max-height: 100px; border-radius: 20px; }
+        .fallback-emoji { font-size: 3rem; }
+        button { background: #3b82f6; border: none; color: white; padding: 8px 16px; border-radius: 40px; font-size: 1rem; cursor: pointer; margin: 5px; }
+        input { width: 90%; padding: 10px; margin: 10px 0; border-radius: 60px; border: 2px solid #e2e8f0; text-align: center; font-size: 1rem; }
         .correct { background: #d1fae5; border-color: #10b981; }
         .wrong { background: #fee2e2; border-color: #ef4444; }
-        .check-btn {
-            background: #10b981;
-            font-size: 1.1rem;
-            padding: 10px 24px;
-            display: block;
-            margin: 20px auto;
-        }
-        .result {
-            background: #e0e7ff;
-            padding: 15px;
-            border-radius: 28px;
-            text-align: center;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        .info-note {
-            background: #fef3c7;
-            padding: 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+        .check-btn { background: #10b981; font-size: 1.1rem; padding: 10px 24px; display: block; margin: 20px auto; }
+        .result { background: #e0e7ff; padding: 15px; border-radius: 28px; text-align: center; font-weight: bold; margin-top: 20px; }
+        .info { background: #fef3c7; padding: 10px; border-radius: 20px; margin-bottom: 20px; text-align: center; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>📝 Unit 1: Hello, I'm Annie</h1>
-    <div class="info-note" id="imageStatus">
-        ⏳ جاري تحميل الصور...
+    <div class="info">
+        📁 الصور المطلوبة في مجلد <code>books/english-time/english-time-1/images/</code><br>
+        annie.jpg , ted.jpg , digger.jpg , boy.jpg , girl.jpg , dog.jpg
     </div>
     <div class="word-grid" id="wordsGrid"></div>
     <button id="checkAll" class="check-btn">✅ Check All Answers</button>
@@ -136,7 +58,6 @@
 
     const grid = document.getElementById('wordsGrid');
     const imageBase = "../images/";
-    let imagesLoaded = 0;
 
     async function speakWord(word, buttonElement) {
         if (!buttonElement) return;
@@ -153,7 +74,6 @@
                 buttonElement.disabled = false;
             };
         } catch (error) {
-            console.error(error);
             buttonElement.innerHTML = "❌ Error";
             setTimeout(() => {
                 buttonElement.innerHTML = originalText;
@@ -165,41 +85,28 @@
     words.forEach((item, idx) => {
         const card = document.createElement('div');
         card.className = 'word-card';
+        // بناء كتلة الصورة مع محاولة تحميل وعرض بديل تلقائي
+        const imgSrc = imageBase + item.img;
         card.innerHTML = `
             <div class="word-emoji">${item.emoji}</div>
             <div class="word-text">${item.word}</div>
-            <div class="image-container">
-                <img src="${imageBase}${item.img}" alt="${item.word}" onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size:2rem;\\'>${item.emoji}</div><div style=\\'font-size:0.7rem; color:#999;\\'>⚠️ صورة مفقودة</div>';">
+            <div class="image-box">
+                <img src="${imgSrc}" alt="${item.word}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'fallback-emoji\\'>${item.emoji}</div><div style=\\'font-size:0.7rem;\\'>⚠️ no image</div>';">
             </div>
             <button class="speak-btn" data-word="${item.word}">🔊 Speak</button>
             <input type="text" id="input-${idx}" placeholder="Type '${item.word}'" autocomplete="off">
         `;
         grid.appendChild(card);
-        
-        // Check image load status
-        const img = card.querySelector('img');
-        if (img) {
-            img.onload = () => {
-                imagesLoaded++;
-                document.getElementById('imageStatus').innerHTML = `✅ تم تحميل ${imagesLoaded} من ${words.length} صورة.`;
-            };
-            img.onerror = () => {
-                imagesLoaded++;
-                document.getElementById('imageStatus').innerHTML = `⚠️ ${imagesLoaded} من ${words.length} - بعض الصور غير موجودة (الملفات المطلوبة: ${words.map(w=>w.img).join(', ')})`;
-            };
-        }
     });
 
-    // attach speak events after DOM is ready
-    setTimeout(() => {
-        document.querySelectorAll('.speak-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const word = btn.getAttribute('data-word');
-                speakWord(word, btn);
-            });
+    // ربط أزرار النطق بعد إضافتها للصفحة
+    document.querySelectorAll('.speak-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const word = btn.getAttribute('data-word');
+            speakWord(word, btn);
         });
-    }, 100);
+    });
 
     document.getElementById('checkAll').addEventListener('click', () => {
         let score = 0;
