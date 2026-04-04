@@ -44,13 +44,19 @@
             const div = document.createElement('div');
             div.className = 'unit';
             div.innerHTML = `<h4>الوحدة ${u}</h4>`;
-            const skills = [
-                { name: '🎨 Dictation', file: `unit${u}-dictation.html` },
-                { name: '✍️ Writing', file: `unit${u}-writing.html` },
-                { name: '🎤 Presentation', file: `unit${u}-presentation.html` },
-                { name: '📊 Rubric', file: `unit${u}-rubric.html` },
-                { name: '❓ Quiz', file: `unit${u}-questions.html` }
-            ];
+            const skills = [];
+            // Dictation: use final version for unit1, otherwise use existing (will be upgraded later)
+            if (u === 1) {
+                skills.push({ name: '🎨 Dictation (نهائي)', file: 'unit1-dictation-final.html' });
+            } else {
+                skills.push({ name: '🎨 Dictation', file: `unit${u}-dictation.html` });
+            }
+            // باقي المهارات (مؤقتة، سيتم تحديثها لاحقاً)
+            skills.push({ name: '✍️ Writing', file: `unit${u}-writing.html` });
+            skills.push({ name: '🎤 Presentation', file: `unit${u}-presentation.html` });
+            skills.push({ name: '📊 Rubric', file: `unit${u}-rubric.html` });
+            skills.push({ name: '❓ Quiz', file: `unit${u}-questions.html` });
+            
             skills.forEach(skill => {
                 const link = document.createElement('a');
                 link.href = `${interactiveBase}/${skill.file}`;
