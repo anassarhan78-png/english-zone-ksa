@@ -21,7 +21,7 @@
         .word-emoji { font-size: 3rem; display: block; }
         .word-text { font-size: 1.3rem; font-weight: bold; color: #1e3a8a; margin: 10px 0; }
         .image-box { margin: 10px auto; min-height: 100px; display: flex; justify-content: center; align-items: center; }
-        .image-box img { max-width: 100px; max-height: 100px; border-radius: 20px; }
+        .image-box img { max-width: 100px; max-height: 100px; border-radius: 20px; object-fit: contain; }
         .fallback-emoji { font-size: 3rem; }
         button { background: #3b82f6; border: none; color: white; padding: 8px 16px; border-radius: 40px; font-size: 1rem; cursor: pointer; margin: 5px; }
         input { width: 90%; padding: 10px; margin: 10px 0; border-radius: 60px; border: 2px solid #e2e8f0; text-align: center; font-size: 1rem; }
@@ -36,8 +36,8 @@
 <div class="container">
     <h1>📝 Unit 1: Hello, I'm Annie</h1>
     <div class="info">
-        📁 الصور المطلوبة في مجلد <code>books/english-time/english-time-1/images/</code><br>
-        annie.jpg , ted.jpg , digger.jpg , boy.jpg , girl.jpg , dog.jpg
+        ✅ الصور المطلوبة في مجلد <code>books/english-time/english-time-1/images/</code><br>
+        annie.jpg / annie.jpeg , ted.jpg / ted.jpeg , digger.jpg / digger.jpeg , boy.jpg / boy.jpeg , girl.jpg / girl.jpeg , dog.jpg / dog.jpeg
     </div>
     <div class="word-grid" id="wordsGrid"></div>
     <button id="checkAll" class="check-btn">✅ Check All Answers</button>
@@ -48,12 +48,12 @@
     import { EdgeTTS } from '@edge-tts/universal';
 
     const words = [
-        { word: "Annie", emoji: "👧", img: "annie.jpg" },
-        { word: "Ted", emoji: "👦", img: "ted.jpg" },
-        { word: "Digger", emoji: "🐶", img: "digger.jpg" },
-        { word: "boy", emoji: "👦", img: "boy.jpg" },
-        { word: "girl", emoji: "👧", img: "girl.jpg" },
-        { word: "dog", emoji: "🐕", img: "dog.jpg" }
+        { word: "Annie", emoji: "👧", imgBase: "annie" },
+        { word: "Ted", emoji: "👦", imgBase: "ted" },
+        { word: "Digger", emoji: "🐶", imgBase: "digger" },
+        { word: "boy", emoji: "👦", imgBase: "boy" },
+        { word: "girl", emoji: "👧", imgBase: "girl" },
+        { word: "dog", emoji: "🐕", imgBase: "dog" }
     ];
 
     const grid = document.getElementById('wordsGrid');
@@ -82,24 +82,66 @@
         }
     }
 
+    // دالة لمحاولة تحميل الصور بامتداد jpg أو jpeg
+    function createImageElement(baseName, emoji, container) {
+        const extensions = ['.jpg', '.jpeg'];
+        let attempt = 0;
+        const img = document.createElement('img');
+        img.alt = baseName;
+        img.style.maxWidth = '100px';
+        img.style.maxHeight = '100px';
+        img.style.borderRadius = '20px';
+        
+        const tryLoad = () => {
+            if (attempt >= extensions.length) {
+                // فشل كلا الامتدادين، عرض الإيموجي كبديل
+                container.innerHTML = `<div class="fallback-emoji">${emoji}</div><div style="font-size:0.7rem;">⚠️ image missing</div>`;
+                return;
+            }
+            img.src = imageBase + baseName + extensions[attempt];
+            img.onload = () => {
+                container.innerHTML = '';
+                container.appendChild(img);
+            };
+            img.onerror = () => {
+                attempt++;
+                tryLoad();
+            };
+        };
+        tryLoad();
+    }
+
     words.forEach((item, idx) => {
         const card = document.createElement('div');
         card.className = 'word-card';
-        // بناء كتلة الصورة مع محاولة تحميل وعرض بديل تلقائي
-        const imgSrc = imageBase + item.img;
+        // إنشاء حاوية الصورة
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'image-box';
+        createImageElement(item.imgBase, item.emoji, imageContainer);
+        
         card.innerHTML = `
             <div class="word-emoji">${item.emoji}</div>
             <div class="word-text">${item.word}</div>
-            <div class="image-box">
-                <img src="${imgSrc}" alt="${item.word}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'fallback-emoji\\'>${item.emoji}</div><div style=\\'font-size:0.7rem;\\'>⚠️ no image</div>';">
-            </div>
-            <button class="speak-btn" data-word="${item.word}">🔊 Speak</button>
-            <input type="text" id="input-${idx}" placeholder="Type '${item.word}'" autocomplete="off">
         `;
+        card.appendChild(imageContainer);
+        
+        const speakBtn = document.createElement('button');
+        speakBtn.className = 'speak-btn';
+        speakBtn.setAttribute('data-word', item.word);
+        speakBtn.textContent = '🔊 Speak';
+        card.appendChild(speakBtn);
+        
+        const inputField = document.createElement('input');
+        inputField.type = 'text';
+        inputField.id = `input-${idx}`;
+        inputField.placeholder = `Type '${item.word}'`;
+        inputField.autocomplete = 'off';
+        card.appendChild(inputField);
+        
         grid.appendChild(card);
     });
 
-    // ربط أزرار النطق بعد إضافتها للصفحة
+    // ربط أزرار النطق
     document.querySelectorAll('.speak-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
