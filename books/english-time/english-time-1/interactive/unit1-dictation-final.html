@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit 1 - Dictation</title>
+    <title>Unit 1 Dictation</title>
     <script type="importmap">
         {
             "imports": {
@@ -13,166 +13,94 @@
     </script>
     <style>
         * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f7ff; margin: 0; padding: 20px; direction: ltr; }
-        .container { max-width: 1000px; margin: auto; background: white; border-radius: 40px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f7ff; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; background: white; border-radius: 40px; padding: 25px; }
         h1 { text-align: center; color: #d45a1e; }
-        .word-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin: 25px 0; }
-        .word-card { background: #fffaf0; border-radius: 28px; padding: 15px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
-        .word-emoji { font-size: 3rem; display: block; }
-        .word-text { font-size: 1.3rem; font-weight: bold; color: #1e3a8a; margin: 10px 0; }
-        .image-box { margin: 10px auto; min-height: 100px; display: flex; justify-content: center; align-items: center; }
-        .image-box img { max-width: 100px; max-height: 100px; border-radius: 20px; object-fit: contain; }
-        .fallback-emoji { font-size: 3rem; }
-        button { background: #3b82f6; border: none; color: white; padding: 8px 16px; border-radius: 40px; font-size: 1rem; cursor: pointer; margin: 5px; }
-        input { width: 90%; padding: 10px; margin: 10px 0; border-radius: 60px; border: 2px solid #e2e8f0; text-align: center; font-size: 1rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin: 20px 0; }
+        .card { background: #fffaf0; border-radius: 28px; padding: 15px; text-align: center; }
+        .emoji { font-size: 3rem; }
+        .word { font-size: 1.3rem; font-weight: bold; margin: 10px 0; }
+        .image-box { min-height: 110px; display: flex; justify-content: center; align-items: center; }
+        .image-box img { max-width: 100px; max-height: 100px; border-radius: 20px; }
+        button { background: #3b82f6; border: none; color: white; padding: 6px 12px; border-radius: 40px; cursor: pointer; margin: 5px; }
+        input { width: 90%; padding: 8px; margin: 8px 0; border-radius: 60px; border: 2px solid #e2e8f0; text-align: center; }
         .correct { background: #d1fae5; border-color: #10b981; }
         .wrong { background: #fee2e2; border-color: #ef4444; }
         .check-btn { background: #10b981; font-size: 1.1rem; padding: 10px 24px; display: block; margin: 20px auto; }
-        .result { background: #e0e7ff; padding: 15px; border-radius: 28px; text-align: center; font-weight: bold; margin-top: 20px; }
-        .info { background: #fef3c7; padding: 10px; border-radius: 20px; margin-bottom: 20px; text-align: center; font-size: 0.9rem; }
+        .result { background: #e0e7ff; padding: 15px; border-radius: 28px; text-align: center; margin-top: 20px; }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>📝 Unit 1: Hello, I'm Annie</h1>
-    <div class="info">
-        ✅ الصور المطلوبة في مجلد <code>books/english-time/english-time-1/images/</code><br>
-        annie.jpg / annie.jpeg , ted.jpg / ted.jpeg , digger.jpg / digger.jpeg , boy.jpg / boy.jpeg , girl.jpg / girl.jpeg , dog.jpg / dog.jpeg
-    </div>
-    <div class="word-grid" id="wordsGrid"></div>
-    <button id="checkAll" class="check-btn">✅ Check All Answers</button>
-    <div id="resultArea" class="result">✨ Press the button to check your spelling ✨</div>
+    <div class="grid" id="grid"></div>
+    <button id="checkBtn" class="check-btn">✅ Check All Answers</button>
+    <div id="result" class="result">✨ Press the button ✨</div>
 </div>
-
 <script type="module">
     import { EdgeTTS } from '@edge-tts/universal';
-
     const words = [
-        { word: "Annie", emoji: "👧", imgBase: "annie" },
-        { word: "Ted", emoji: "👦", imgBase: "ted" },
-        { word: "Digger", emoji: "🐶", imgBase: "digger" },
-        { word: "boy", emoji: "👦", imgBase: "boy" },
-        { word: "girl", emoji: "👧", imgBase: "girl" },
-        { word: "dog", emoji: "🐕", imgBase: "dog" }
+        { word: "Annie", emoji: "👧", img: "annie.jpg" },
+        { word: "Ted", emoji: "👦", img: "ted.jpg" },
+        { word: "Digger", emoji: "🐶", img: "digger.jpg" },
+        { word: "boy", emoji: "👦", img: "boy.jpg" },
+        { word: "girl", emoji: "👧", img: "girl.jpg" },
+        { word: "dog", emoji: "🐕", img: "dog.jpg" }
     ];
+    const grid = document.getElementById('grid');
+    const base = "../images/";
+    const cacheBuster = Date.now();
 
-    const grid = document.getElementById('wordsGrid');
-    const imageBase = "../images/";
-
-    async function speakWord(word, buttonElement) {
-        if (!buttonElement) return;
-        const originalText = buttonElement.innerHTML;
-        buttonElement.innerHTML = "⏳ ...";
-        buttonElement.disabled = true;
+    async function speak(word, btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = "⏳...";
+        btn.disabled = true;
         try {
             const tts = new EdgeTTS();
-            const result = await tts.synthesize(word, "en-US-JennyNeural");
-            const audio = new Audio(URL.createObjectURL(result.audio));
-            audio.play();
-            audio.onended = () => {
-                buttonElement.innerHTML = originalText;
-                buttonElement.disabled = false;
-            };
-        } catch (error) {
-            buttonElement.innerHTML = "❌ Error";
-            setTimeout(() => {
-                buttonElement.innerHTML = originalText;
-                buttonElement.disabled = false;
-            }, 1500);
-        }
+            const res = await tts.synthesize(word, "en-US-JennyNeural");
+            new Audio(URL.createObjectURL(res.audio)).play();
+        } catch(e) { console.error(e); }
+        btn.innerHTML = orig;
+        btn.disabled = false;
     }
 
-    // دالة لمحاولة تحميل الصور بامتداد jpg أو jpeg
-    function createImageElement(baseName, emoji, container) {
-        const extensions = ['.jpg', '.jpeg'];
-        let attempt = 0;
-        const img = document.createElement('img');
-        img.alt = baseName;
-        img.style.maxWidth = '100px';
-        img.style.maxHeight = '100px';
-        img.style.borderRadius = '20px';
-        
-        const tryLoad = () => {
-            if (attempt >= extensions.length) {
-                // فشل كلا الامتدادين، عرض الإيموجي كبديل
-                container.innerHTML = `<div class="fallback-emoji">${emoji}</div><div style="font-size:0.7rem;">⚠️ image missing</div>`;
-                return;
-            }
-            img.src = imageBase + baseName + extensions[attempt];
-            img.onload = () => {
-                container.innerHTML = '';
-                container.appendChild(img);
-            };
-            img.onerror = () => {
-                attempt++;
-                tryLoad();
-            };
-        };
-        tryLoad();
-    }
-
-    words.forEach((item, idx) => {
+    words.forEach((w, i) => {
         const card = document.createElement('div');
-        card.className = 'word-card';
-        // إنشاء حاوية الصورة
-        const imageContainer = document.createElement('div');
-        imageContainer.className = 'image-box';
-        createImageElement(item.imgBase, item.emoji, imageContainer);
-        
+        card.className = 'card';
+        const imgSrc = `${base}${w.img}?v=${cacheBuster}`;
         card.innerHTML = `
-            <div class="word-emoji">${item.emoji}</div>
-            <div class="word-text">${item.word}</div>
+            <div class="emoji">${w.emoji}</div>
+            <div class="word">${w.word}</div>
+            <div class="image-box"><img src="${imgSrc}" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\\'font-size:2rem;\\'>${w.emoji}</div>'"></div>
+            <button class="speak" data-word="${w.word}">🔊 Speak</button>
+            <input id="in-${i}" placeholder="Type '${w.word}'">
         `;
-        card.appendChild(imageContainer);
-        
-        const speakBtn = document.createElement('button');
-        speakBtn.className = 'speak-btn';
-        speakBtn.setAttribute('data-word', item.word);
-        speakBtn.textContent = '🔊 Speak';
-        card.appendChild(speakBtn);
-        
-        const inputField = document.createElement('input');
-        inputField.type = 'text';
-        inputField.id = `input-${idx}`;
-        inputField.placeholder = `Type '${item.word}'`;
-        inputField.autocomplete = 'off';
-        card.appendChild(inputField);
-        
         grid.appendChild(card);
     });
 
-    // ربط أزرار النطق
-    document.querySelectorAll('.speak-btn').forEach(btn => {
+    document.querySelectorAll('.speak').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const word = btn.getAttribute('data-word');
-            speakWord(word, btn);
+            speak(btn.getAttribute('data-word'), btn);
         });
     });
 
-    document.getElementById('checkAll').addEventListener('click', () => {
+    document.getElementById('checkBtn').onclick = () => {
         let score = 0;
-        const total = words.length;
-        for (let i = 0; i < total; i++) {
-            const input = document.getElementById(`input-${i}`);
-            const userAnswer = input.value.trim().toLowerCase();
-            const correct = words[i].word.toLowerCase();
-            if (userAnswer === correct) {
+        words.forEach((w, i) => {
+            const inp = document.getElementById(`in-${i}`);
+            if (inp.value.trim().toLowerCase() === w.word.toLowerCase()) {
                 score++;
-                input.classList.add('correct');
-                input.classList.remove('wrong');
+                inp.classList.add('correct');
+                inp.classList.remove('wrong');
             } else {
-                input.classList.add('wrong');
-                input.classList.remove('correct');
+                inp.classList.add('wrong');
+                inp.classList.remove('correct');
             }
-        }
-        const resultDiv = document.getElementById('resultArea');
-        if (score === total) {
-            resultDiv.innerHTML = `🎉 Perfect! ${score}/${total} — Excellent! 🏆`;
-        } else {
-            resultDiv.innerHTML = `📊 Your score: ${score}/${total}. Try again!`;
-        }
-    });
+        });
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = score === words.length ? `🎉 Perfect! ${score}/${words.length} 🏆` : `📊 Score: ${score}/${words.length}. Try again.`;
+    };
 </script>
 </body>
 </html>
