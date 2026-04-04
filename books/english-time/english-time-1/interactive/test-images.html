@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Images</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        .image-card { display: inline-block; width: 150px; margin: 10px; text-align: center; border: 1px solid #ccc; padding: 10px; border-radius: 8px; }
+        img { max-width: 100px; max-height: 100px; }
+        .success { color: green; }
+        .fail { color: red; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>اختبار الصور - Unit 1</h1>
+    <div id="images"></div>
+</div>
+<script>
+    const images = [
+        "annie.jpg", "ted.jpg", "digger.jpg", "boy.jpg", "girl.jpg", "dog.jpg"
+    ];
+    const base = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/images/";
+    const container = document.getElementById('images');
+    images.forEach(img => {
+        const div = document.createElement('div');
+        div.className = 'image-card';
+        const imgElement = new Image();
+        imgElement.src = base + img;
+        imgElement.onload = () => {
+            div.innerHTML = `<img src="${base + img}"><br>${img}<br><span class="success">✅ موجودة</span>`;
+        };
+        imgElement.onerror = () => {
+            div.innerHTML = `<div style="font-size:3rem;">❌</div>${img}<br><span class="fail">⚠️ غير موجودة أو الاسم غير مطابق</span>`;
+        };
+        div.appendChild(imgElement);
+        container.appendChild(div);
+    });
+</script>
+</body>
+</html>
