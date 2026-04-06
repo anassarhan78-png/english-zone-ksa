@@ -60,7 +60,6 @@
         const imgUrl = base + imgFile;
         const emoji = emojiMap[w] || '📝';
         card.innerHTML = `
-            <div class="emoji">${emoji}</div>
             <div class="word">${w}</div>
             <div class="image-area">
                 <img src="${imgUrl}" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\\'font-size:2rem;\'>${emoji}</div><div style=\\'font-size:0.7rem;\'>⚠️ missing</div>'">
