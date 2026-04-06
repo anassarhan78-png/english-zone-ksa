@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script type="importmap">
+        {
+            "imports": {
+                "@edge-tts/universal": "https://esm.sh/@edge-tts/universal@1.4.0"
+            }
+        }
+    </script>
     <meta charset="UTF-8">
     <title>Unit 4 Dictation</title>
     <style>
@@ -24,11 +31,36 @@
 <body>
 <div class="container">
     <h1>📝 Unit 4 Dictation</h1>
+    <div style="background:#f1f5f9; border-radius:28px; padding:15px; margin:20px 0; display:flex; flex-wrap:wrap; gap:15px; align-items:center; justify-content:center">
+        <label>🎤 Voice:</label>
+        <select id="voiceSelect">
+            <option value="en-US-JennyNeural">👧 Jenny (Natural Female)</option>
+            <option value="en-US-GuyNeural">👦 Guy (Natural Male)</option>
+            <option value="en-US-AriaNeural">🎵 Aria (Expressive)</option>
+        </select>
+        <label>⚡ Speed:</label>
+        <input type="range" id="rateSlider" min="0.5" max="1.5" step="0.05" value="0.9">
+        <span id="rateValue">0.9</span>
+        <label>📢 Pitch:</label>
+        <input type="range" id="pitchSlider" min="-0.5" max="0.5" step="0.05" value="0">
+        <span id="pitchValue">0</span>
+    </div>
     <div class="grid" id="grid"></div>
     <button id="checkAll" class="check-btn">✅ Check All Answers</button>
     <div id="result" class="result">✨ Press the button ✨</div>
 </div>
 <script>
+    // Voice controls setup
+    const voiceSelect = document.getElementById("voiceSelect");
+    const rateSlider = document.getElementById("rateSlider");
+    const pitchSlider = document.getElementById("pitchSlider");
+    const rateValue = document.getElementById("rateValue");
+    const pitchValue = document.getElementById("pitchValue");
+    if(voiceSelect) {
+        voiceSelect.addEventListener("change", (e) => { currentVoice = e.target.value; });
+    }
+    rateSlider.addEventListener("input", (e) => { currentRate = parseFloat(e.target.value); rateValue.innerText = currentRate; });
+    pitchSlider.addEventListener("input", (e) => { currentPitch = parseFloat(e.target.value); pitchValue.innerText = currentPitch; });
     const base = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/images/";
     const words = ["ruler","book","pencil","pencil case","pen","eraser"];
     const emojiMap = {
