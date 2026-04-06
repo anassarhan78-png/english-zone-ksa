@@ -2,16 +2,16 @@
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>English Zone KSA - المكتبة الرئيسية</title>
+    <title>English Zone KSA - جميع الأنشطة التفاعلية</title>
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; margin: 0; padding: 20px; direction: rtl; }
-        .container { max-width: 1200px; margin: auto; background: white; border-radius: 32px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        .container { max-width: 1400px; margin: auto; background: white; border-radius: 32px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); overflow: hidden; }
         .header { background: #1e3a8a; color: white; padding: 25px; text-align: center; }
         .header h1 { margin: 0; font-size: 1.8rem; }
         .header p { margin: 5px 0 0; opacity: 0.9; }
-        .content { display: flex; flex-wrap: wrap; }
-        .sidebar { width: 320px; background: #f8fafc; padding: 20px; border-left: 1px solid #e2e8f0; max-height: 80vh; overflow-y: auto; }
+        .flex { display: flex; flex-wrap: wrap; }
+        .sidebar { width: 350px; background: #f8fafc; padding: 20px; border-left: 1px solid #e2e8f0; max-height: 85vh; overflow-y: auto; }
         .main { flex: 1; padding: 30px; background: white; }
         .unit-card { background: #ffffff; border-radius: 20px; margin-bottom: 25px; padding: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         .unit-title { font-size: 1.3rem; font-weight: bold; color: #1e3a8a; margin-bottom: 12px; border-right: 4px solid #f59e0b; padding-right: 12px; }
@@ -21,7 +21,7 @@
         .btn-primary:hover { background: #d97706; transform: translateY(-2px); }
         .btn-secondary { background: #e2e8f0; }
         .btn-secondary:hover { background: #cbd5e1; }
-        .btn-disabled { background: #cbd5e1; color: #94a3b8; cursor: not-allowed; opacity: 0.6; pointer-events: none; }
+        .btn-text { background: #f1f5f9; font-size: 0.75rem; padding: 4px 10px; }
         .footer { text-align: center; padding: 15px; background: #f1f5f9; font-size: 0.8rem; color: #475569; border-top: 1px solid #e2e8f0; }
         @media (max-width: 700px) { .sidebar { width: 100%; max-height: none; } }
     </style>
@@ -29,22 +29,19 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>📚 English Zone KSA - المكتبة الرئيسية</h1>
-        <p>اختر الوحدة ثم اضغط على "Dictation" لبدء التمرين التفاعلي</p>
+        <h1>📚 English Zone KSA - جميع الأنشطة التفاعلية</h1>
+        <p>اختر الوحدة ثم النشاط المطلوب (Dictation, Writing, Presentation, Rubric, Quiz)</p>
     </div>
-    <div class="content">
-        <div class="sidebar">
-            <h3>🧒 English Time 1</h3>
-            <div id="unitsList"></div>
-        </div>
+    <div class="flex">
+        <div class="sidebar" id="sidebar"></div>
         <div class="main" id="mainContent">
             <div style="text-align:center; color:#64748b; padding: 40px;">
-                👈 اختر وحدة من القائمة ثم اضغط على "Dictation"
+                👈 اختر وحدة من القائمة ثم اضغط على أي نشاط
             </div>
         </div>
     </div>
     <div class="footer">
-        ✅ الإملاء التفاعلي يعمل بكامل الصور والصوت | باقي المهارات (Writing, Presentation, Rubric, Quiz) قيد التطوير
+        ✅ جميع الأنشطة تفاعلية وتعمل بالصوت والصور | الملفات النصية (MD) متاحة للاطلاع
     </div>
 </div>
 
@@ -53,30 +50,46 @@
     const repoBase = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1";
     const units = [1,2,3,4,5,6,7,8,9,10];
 
+    const skills = [
+        { name: "🎨 Dictation", file: "unit{unit}-final.html", interactive: true },
+        { name: "✍️ Writing", file: "unit{unit}-writing-escalating.html", interactive: true },
+        { name: "🎤 Presentation", file: "unit{unit}-presentation.html", interactive: true },
+        { name: "📊 Rubric", file: "unit{unit}-rubric.html", interactive: true },
+        { name: "❓ Quiz", file: "unit{unit}-quiz.html", interactive: true }
+    ];
+
+    const normalFiles = ['dictation.md', 'writing.md', 'presentation.md', 'rubric.md', 'questions.md'];
+
     function buildSidebar() {
-        const container = document.getElementById('unitsList');
-        container.innerHTML = '';
+        const sidebar = document.getElementById('sidebar');
+        sidebar.innerHTML = '<h3>🧒 English Time 1</h3>';
         units.forEach(u => {
             const unitDiv = document.createElement('div');
             unitDiv.className = 'unit-card';
-            unitDiv.innerHTML = `
-                <div class="unit-title">الوحدة ${u}</div>
-                <div class="btn-group">
-                    <a href="${interactiveBase}/unit${u}-final.html" target="_blank" class="btn btn-primary">🎨 Dictation (تفاعلي)</a>
-                    <button class="btn btn-disabled">✍️ Writing (قريباً)</button>
-                    <button class="btn btn-disabled">🎤 Presentation (قريباً)</button>
-                    <button class="btn btn-disabled">📊 Rubric (قريباً)</button>
-                    <button class="btn btn-disabled">❓ Quiz (قريباً)</button>
-                </div>
-                <div class="btn-group" style="margin-top: 8px;">
-                    <button class="btn btn-secondary" onclick="loadMarkdown('${repoBase}/unit-${u}/dictation.md')">📄 Dictation (نص)</button>
-                    <button class="btn btn-secondary" onclick="loadMarkdown('${repoBase}/unit-${u}/writing.md')">📄 Writing (نص)</button>
-                    <button class="btn btn-secondary" onclick="loadMarkdown('${repoBase}/unit-${u}/presentation.md')">📄 Presentation (نص)</button>
-                    <button class="btn btn-secondary" onclick="loadMarkdown('${repoBase}/unit-${u}/rubric.md')">📄 Rubric (نص)</button>
-                    <button class="btn btn-secondary" onclick="loadMarkdown('${repoBase}/unit-${u}/questions.md')">📄 Questions (نص)</button>
-                </div>
-            `;
-            container.appendChild(unitDiv);
+            unitDiv.innerHTML = `<div class="unit-title">الوحدة ${u}</div>`;
+            const btnGroup = document.createElement('div');
+            btnGroup.className = 'btn-group';
+            skills.forEach(skill => {
+                const link = document.createElement('a');
+                link.href = `${interactiveBase}/${skill.file.replace('{unit}', u)}`;
+                link.target = "_blank";
+                link.textContent = skill.name;
+                link.className = 'btn btn-primary';
+                btnGroup.appendChild(link);
+            });
+            unitDiv.appendChild(btnGroup);
+            // أزرار الملفات النصية
+            const textGroup = document.createElement('div');
+            textGroup.className = 'btn-group';
+            normalFiles.forEach(f => {
+                const btn = document.createElement('button');
+                btn.textContent = f.replace('.md', ' (نص)');
+                btn.className = 'btn btn-text';
+                btn.onclick = () => loadMarkdown(`${repoBase}/unit-${u}/${f}`);
+                textGroup.appendChild(btn);
+            });
+            unitDiv.appendChild(textGroup);
+            sidebar.appendChild(unitDiv);
         });
     }
 
@@ -87,7 +100,6 @@
             const res = await fetch(url);
             if (!res.ok) throw new Error('الملف غير موجود');
             const md = await res.text();
-            // تحويل Markdown إلى HTML بسيط
             const html = marked.parse(md);
             main.innerHTML = `<div style="background:#f8fafc; padding:20px; border-radius:24px;">${html}</div>`;
         } catch(e) {
