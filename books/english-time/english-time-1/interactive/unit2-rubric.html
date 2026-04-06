@@ -1,42 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Rubric - Unit 2: In the Meadow</title>
-    <style>
-        body{font-family:Arial;background:#eef2ff;padding:20px}
-        .container{max-width:700px;margin:auto;background:white;border-radius:40px;padding:25px}
-        h1{color:#d45a1e}
-        .criteria{background:#fef9c3;padding:15px;border-radius:24px;margin:15px 0}
-        .slider-row{margin:10px 0}
-        button{background:#10b981;color:white;border:none;padding:10px 20px;border-radius:30px;cursor:pointer}
-        .result{background:#e0e7ff;padding:15px;border-radius:24px;margin-top:20px}
-    </style>
+<html>
+<head><title>Rubric Unit 2</title>
+<style>
+body{font-family:Arial;background:#eef2ff;padding:20px}
+.container{max-width:600px;margin:auto;background:white;border-radius:40px;padding:25px}
+h1{color:#d45a1e}
+.criteria{background:#fef9c3;padding:15px;border-radius:24px;margin:15px 0}
+.slider-row{margin:10px 0}
+button{background:#10b981;color:white;border:none;padding:10px 20px;border-radius:30px;cursor:pointer}
+.result{background:#e0e7ff;padding:15px;border-radius:24px;margin-top:20px}
+</style>
 </head>
 <body>
 <div class="container">
-    <h1>📊 Rubric - Unit 2: In the Meadow</h1>
-    <div class="criteria">
-        <div class="slider-row">Speaking: <input type="range" id="speak" min="1" max="5" value="3"> <span id="speakVal">3</span></div>
-        <div class="slider-row">Writing: <input type="range" id="write" min="1" max="5" value="3"> <span id="writeVal">3</span></div>
-        <div class="slider-row">Vocabulary: <input type="range" id="vocab" min="1" max="5" value="3"> <span id="vocabVal">3</span></div>
-        <div class="slider-row">Listening: <input type="range" id="listen" min="1" max="5" value="3"> <span id="listenVal">3</span></div>
-        <div class="slider-row">Effort: <input type="range" id="effort" min="1" max="5" value="3"> <span id="effortVal">3</span></div>
-    </div>
-    <button onclick="calculate()">Calculate Score</button>
-    <div id="result" class="result"></div>
+<h1>📊 Rubric - Unit 2</h1>
+<div class="criteria">
+<div class="slider-row">Speaking: <input type="range" id="speak" min="1" max="5" value="3"> <span id="speakVal">3</span></div>
+<div class="slider-row">Writing: <input type="range" id="write" min="1" max="5" value="3"> <span id="writeVal">3</span></div>
+<div class="slider-row">Vocabulary: <input type="range" id="vocab" min="1" max="5" value="3"> <span id="vocabVal">3</span></div>
+<div class="slider-row">Listening: <input type="range" id="listen" min="1" max="5" value="3"> <span id="listenVal">3</span></div>
+<div class="slider-row">Effort: <input type="range" id="effort" min="1" max="5" value="3"> <span id="effortVal">3</span></div>
+</div>
+<button onclick="calculate()">Calculate Score</button>
+<div id="result" class="result"></div>
 </div>
 <script>
-    function update(id) { document.getElementById(id+'Val').innerText = document.getElementById(id).value; }
-    ['speak','write','vocab','listen','effort'].forEach(id => {
-        document.getElementById(id).oninput = () => update(id);
-    });
-    function calculate() {
-        let total = 0;
-        ['speak','write','vocab','listen','effort'].forEach(id => total += parseInt(document.getElementById(id).value));
-        let msg = total >= 20 ? "Excellent!" : (total >= 15 ? "Good!" : "Keep practicing!");
-        document.getElementById('result').innerHTML = `<strong>Score: ${total}/25</strong><br>${msg}`;
-    }
+function update(id){document.getElementById(id+'Val').innerText=document.getElementById(id).value;}
+['speak','write','vocab','listen','effort'].forEach(id=>{document.getElementById(id).oninput=()=>update(id);});
+function calculate(){
+ let total=0;
+ ['speak','write','vocab','listen','effort'].forEach(id=>total+=parseInt(document.getElementById(id).value));
+ let msg=total>=20?"Excellent!":(total>=15?"Good!":"Keep practicing!");
+ document.getElementById('result').innerHTML='<strong>Score: '+total+'/25</strong><br>'+msg;
+}
 </script>
 </body>
 </html>
