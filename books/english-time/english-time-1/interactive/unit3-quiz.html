@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz - Unit 3: On the Farm</title>
+    <style>
+        body{font-family:Arial;background:#eef2ff;padding:20px}
+        .container{max-width:700px;margin:auto;background:white;border-radius:40px;padding:25px}
+        h1{color:#d45a1e}
+        .question{background:#fef9c3;padding:15px;border-radius:24px;margin:15px 0}
+        button{background:#10b981;color:white;border:none;padding:10px 20px;border-radius:30px;cursor:pointer}
+        .result{background:#e0e7ff;padding:15px;border-radius:24px;margin-top:20px}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>❓ Quiz - Unit 3: On the Farm</h1>
+    <div class="question">1. Which animal says 'moo'? <br> <input type='radio' name='q1' value='cow'> cow 
+<input type='radio' name='q1' value='duck'> duck 
+<input type='radio' name='q1' value='horse'> horse </div>
+    <div class="question">2. Complete: "A _______ gives us eggs." <br><input type="text" id="q2" placeholder="Your answer"></div>
+    <div class="question">3. Choose: "Is a horse big? (yes/no)" <br> <input type='radio' name='q3' value='yes'> yes 
+<input type='radio' name='q3' value='no'> no </div>
+    <button onclick="checkQuiz()">Submit</button>
+    <div id="result" class="result"></div>
+</div>
+<script>
+    function checkQuiz() {
+        let score = 0;
+        let q1 = document.querySelector('input[name="q1"]:checked');
+        if(q1 && q1.value === "cow") score++;
+        let q2 = document.getElementById('q2').value.trim().toLowerCase();
+        if(q2 === "chicken") score++;
+        let q3 = document.querySelector('input[name="q3"]:checked');
+        if(q3 && q3.value === "yes") score++;
+        document.getElementById('result').innerHTML = `You got ${score}/3 correct. ${score===3 ? "Perfect!" : "Try again."}`;
+    }
+</script>
+</body>
+</html>
