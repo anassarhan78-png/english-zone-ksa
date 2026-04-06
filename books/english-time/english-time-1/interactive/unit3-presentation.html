@@ -1,52 +1,109 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>🎤 Presentation تفاعلي - الوحدة '</unit>'</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 3 - Presentation Practice</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #fef3c7, #fce7f3); margin: 0; padding: 20px; direction: rtl; }
-        .container { max-width: 900px; margin: auto; background: white; border-radius: 48px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #ea580c; }
-        .script-box { background: #f1f5f9; border-radius: 32px; padding: 20px; margin: 20px 0; }
-        textarea { width: 100%; padding: 15px; border-radius: 24px; border: 2px solid #cbd5e1; font-family: inherit; font-size: 1rem; }
-        button { background: #f97316; color: white; border: none; padding: 12px 24px; border-radius: 40px; cursor: pointer; margin: 10px; }
-        .timer { font-size: 2rem; font-weight: bold; text-align: center; background: #e2e8f0; border-radius: 60px; padding: 10px; margin: 20px auto; width: 150px; }
-        .feedback { background: #dbeafe; padding: 15px; border-radius: 28px; margin-top: 20px; text-align: center; }
+        *{box-sizing:border-box}
+        body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2ff;margin:0;padding:20px}
+        .container{max-width:900px;margin:auto;background:white;border-radius:40px;padding:25px}
+        h1{color:#d45a1e;text-align:center}
+        .task{background:#fef3c7;padding:15px;border-radius:24px;margin:20px 0}
+        .script-box{background:#e0e7ff;padding:12px;border-radius:20px;margin:15px 0}
+        textarea{width:100%;padding:12px;border-radius:20px;border:2px solid #e2e8f0;font-family:monospace;font-size:1rem;margin:10px 0}
+        .timer{font-size:2rem;font-weight:bold;text-align:center;background:#f1f5f9;padding:10px;border-radius:40px;margin:15px auto;width:200px}
+        button{background:#3b82f6;border:none;color:white;padding:10px 20px;border-radius:30px;cursor:pointer;margin:5px;font-size:1rem}
+        .checklist{background:#d9f99d;padding:15px;border-radius:24px;margin:20px 0}
+        .checklist label{display:block;margin:8px 0}
+        .result{background:#f1f5f9;padding:15px;border-radius:24px;margin-top:20px;text-align:center}
+        .stars{font-size:1.5rem;letter-spacing:5px}
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>🎤 تدريب العرض التقديمي - الوحدة ${unit}</h1>
-    <div class="script-box">
-        <h3>📜 النص المقترح:</h3>
-        <p>Hello, my name is _____. I like _____. Thank you.</p>
-        <textarea id="script" rows="4" placeholder="اكتب نص العرض الخاص بك هنا..."></textarea>
+    <h1>🎤 Unit 3 - Presentation Practice</h1>
+    <div class="task">
+        <h3>📢 Your Task:</h3>
+        <p>Talk about three farm animals and what they do.</p>
+        <p>⏱️ Try to speak for about 25 seconds.</p>
     </div>
-    <button id="startTimer">⏱️ ابدأ التوقيت (30 ثانية)</button>
-    <div class="timer" id="timerDisplay">00:00</div>
-    <button id="checkBtn">🔍 تحليل العرض</button>
-    <div id="feedback" class="feedback"></div>
+    <div class="script-box">
+        <strong>💡 Example script (you can change it):</strong><br>
+        On the farm, the cow says moo. The horse runs. The duck swims.
+    </div>
+    <textarea id="userScript" rows="4" placeholder="Write your own script here..."></textarea>
+    <div>
+        <button id="startTimer">⏱️ Start Timer (25 sec)</button>
+        <button id="stopTimer">⏹️ Stop</button>
+        <div class="timer" id="timerDisplay">00:00</div>
+    </div>
+    <div class="checklist">
+        <h3>✅ Self-Check after you speak</h3>
+        <label><input type="checkbox" id="chk1"> I spoke for about 25 seconds</label>
+        <label><input type="checkbox" id="chk2"> I used words from the unit</label>
+        <label><input type="checkbox" id="chk3"> I spoke clearly and loudly</label>
+        <label><input type="checkbox" id="chk4"> I looked at the audience (or camera)</label>
+    </div>
+    <button id="checkBtn">✅ Evaluate My Presentation</button>
+    <div id="result" class="result">✨ Press the button after practicing ✨</div>
 </div>
 <script>
     let timerInterval = null;
-    let seconds = 0;
-    const timerDiv = document.getElementById('timerDisplay');
+    let secondsElapsed = 0;
+    const targetTime = 25;
+    const timerDisplay = document.getElementById('timerDisplay');
     const startBtn = document.getElementById('startTimer');
+    const stopBtn = document.getElementById('stopTimer');
+
+    function updateTimerDisplay() {
+        let mins = Math.floor(secondsElapsed / 60);
+        let secs = secondsElapsed % 60;
+        timerDisplay.innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+    }
+
     startBtn.onclick = () => {
         if(timerInterval) clearInterval(timerInterval);
-        seconds = 0;
-        updateTimer();
-        timerInterval = setInterval(() => { seconds++; updateTimer(); if(seconds>=30) clearInterval(timerInterval); }, 1000);
+        secondsElapsed = 0;
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            secondsElapsed++;
+            updateTimerDisplay();
+            if(secondsElapsed >= targetTime + 5) {
+                clearInterval(timerInterval);
+                timerDisplay.style.background = "#fee2e2";
+            } else if(secondsElapsed >= targetTime) {
+                timerDisplay.style.background = "#d1fae5";
+            }
+        }, 1000);
     };
-    function updateTimer() { let mins = Math.floor(seconds/60); let secs = seconds%60; timerDiv.innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`; }
+    stopBtn.onclick = () => {
+        if(timerInterval) clearInterval(timerInterval);
+        timerInterval = null;
+    };
+
     document.getElementById('checkBtn').onclick = () => {
-        const script = document.getElementById('script').value.trim();
         let score = 0;
-        if(script.length > 20) score++;
-        if(script.includes('Hello') || script.includes('مرحباً')) score++;
-        if(script.includes('Thank you') || script.includes('شكراً')) score++;
-        if(seconds >= 25 && seconds <= 35) score++;
-        document.getElementById('feedback').innerHTML = `🌟 نقاط التحضير: ${score} من 4 ${score===4 ? 'ممتاز! جاهز للعرض الحقيقي 🎉' : 'حاول تحسين النص أو التوقيت'}`;
+        if(document.getElementById('chk1').checked) score++;
+        if(document.getElementById('chk2').checked) score++;
+        if(document.getElementById('chk3').checked) score++;
+        if(document.getElementById('chk4').checked) score++;
+        // Bonus if time was close
+        if(Math.abs(secondsElapsed - targetTime) <= 5) score++;
+        const totalPossible = 5;
+        const resultDiv = document.getElementById('result');
+        let stars = '';
+        if(score >= 5) stars = '🌟🌟🌟🌟🌟';
+        else if(score >= 4) stars = '🌟🌟🌟🌟';
+        else if(score >= 3) stars = '🌟🌟🌟';
+        else stars = '🌟🌟';
+        if(score >= 4) {
+            resultDiv.innerHTML = "<div class='stars'></div>🎉 Great presentation! You are a confident speaker! 🎤";
+        } else if(score >= 2) {
+            resultDiv.innerHTML = "<div class='stars'></div>👍 Good start. Practice again to improve your time and clarity.";
+        } else {
+            resultDiv.innerHTML = "<div class='stars'></div>📝 Keep practicing! Use the example script and try to speak a little longer.";
+        }
     };
 </script>
 </body>
