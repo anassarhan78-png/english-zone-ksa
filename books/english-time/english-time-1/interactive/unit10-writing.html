@@ -1,37 +1,39 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>✍️ Writing تفاعلي - الوحدة '</unit>'</title>
+    <title>Unit 10 - Writing Activity</title>
     <style>
-        * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: linear-gradient(135deg, #e0e7ff, #fce7f3); margin: 0; padding: 20px; direction: rtl; }
-        .container { max-width: 1000px; margin: auto; background: white; border-radius: 48px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        h1 { background: linear-gradient(90deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; text-align: center; }
-        .topic { background: #f3e8ff; border-radius: 32px; padding: 20px; margin: 20px 0; }
-        textarea { width: 100%; padding: 15px; border-radius: 24px; border: 2px solid #cbd5e1; font-family: inherit; font-size: 1rem; resize: vertical; margin: 10px 0; }
-        button { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; margin: 5px; }
-        .checklist { background: #fef9c3; padding: 20px; border-radius: 28px; margin-top: 20px; }
-        .result { background: #dbeafe; padding: 15px; border-radius: 28px; margin-top: 20px; text-align: center; font-weight: bold; }
+        *{box-sizing:border-box}
+        body{font-family:Arial,sans-serif;background:#eef2ff;margin:0;padding:20px}
+        .container{max-width:900px;margin:auto;background:white;border-radius:40px;padding:25px}
+        h1{color:#d45a1e;text-align:center}
+        .topic{background:#fef3c7;padding:15px;border-radius:24px;margin:20px 0}
+        textarea{width:100%;padding:12px;border-radius:20px;border:2px solid #e2e8f0;font-family:monospace;font-size:1rem;margin:10px 0}
+        .checklist{background:#e0e7ff;padding:15px;border-radius:24px;margin:20px 0}
+        .checklist label{display:block;margin:8px 0}
+        button{background:#10b981;border:none;color:white;padding:10px 20px;border-radius:30px;cursor:pointer;margin:10px}
+        .result{background:#f1f5f9;padding:15px;border-radius:24px;margin-top:20px;text-align:center}
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>✍️ Writing Challenge - الوحدة ${unit}</h1>
+    <h1>✍️ Unit 10 - Writing Practice</h1>
     <div class="topic">
-        <h3>📝 موضوع الكتابة:</h3>
-        <p>اكتب 3-5 جمل عن موضوع الوحدة (مثلاً: المدرسة، الحي، الطبيعة). استخدم المفردات الجديدة.</p>
+        <h3>📝 Topic:</h3>
+        <p>Write 3-5 sentences about the unit topic. Use the vocabulary you learned.</p>
+        <p><strong>Example:</strong> I see a tree. The flower is pretty. I like the park.</p>
     </div>
-    <textarea id="writingArea" rows="8" placeholder="اكتب نصك هنا..."></textarea>
-    <button id="checkBtn">✅ تقييم ذاتي</button>
+    <textarea id="writingArea" rows="8" placeholder="Write your sentences here..."></textarea>
     <div class="checklist">
-        <h3>📋 قائمة المراجعة</h3>
-        <label><input type="checkbox" id="chk1"> استخدمت 3 جمل على الأقل</label><br>
-        <label><input type="checkbox" id="chk2"> استخدمت كلمات الوحدة بشكل صحيح</label><br>
-        <label><input type="checkbox" id="chk3"> بدأت الجمل بحروف كبيرة وأنهيتها بنقاط</label><br>
-        <label><input type="checkbox" id="chk4"> الجمل مفهومة ومرتبة</label>
+        <h3>✅ Self-Checklist</h3>
+        <label><input type="checkbox" id="chk1"> I wrote at least 3 sentences</label>
+        <label><input type="checkbox" id="chk2"> I used words from the unit</label>
+        <label><input type="checkbox" id="chk3"> I started each sentence with a capital letter</label>
+        <label><input type="checkbox" id="chk4"> I ended each sentence with a period</label>
     </div>
-    <div id="result" class="result"></div>
+    <button id="checkBtn">✅ Evaluate My Writing</button>
+    <div id="result" class="result">✨ Press the button to check your progress ✨</div>
 </div>
 <script>
     document.getElementById('checkBtn').onclick = () => {
@@ -41,8 +43,16 @@
         if(document.getElementById('chk3').checked) score++;
         if(document.getElementById('chk4').checked) score++;
         const text = document.getElementById('writingArea').value.trim();
-        if(text.split(/[.?!]\s/).length >= 3) score++;
-        document.getElementById('result').innerHTML = `🎉 نقاطك: ${score} من 5 ${score===5 ? 'أحسنت! 🏆' : 'حاول تحسين النقاط المتبقية'}`;
+        const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+        if(sentences.length >= 3) score++;
+        const resultDiv = document.getElementById('result');
+        if(score >= 5) {
+            resultDiv.innerHTML = "🎉 Excellent! Your writing looks great. Keep practicing!";
+        } else if(score >= 3) {
+            resultDiv.innerHTML = "👍 Good start! Try to improve the missing points above.";
+        } else {
+            resultDiv.innerHTML = "📝 You need more practice. Review the unit vocabulary and try again.";
+        }
     };
 </script>
 </body>
