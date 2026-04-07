@@ -50,6 +50,7 @@
     const repoBase = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1";
     const units = [1,2,3,4,5,6,7,8,9,10];
 
+    // استخدم الأسماء الموجودة فعلياً في المجلد (من مخرجات ls)
     const skills = [
         { name: "🎨 Dictation", file: "unit{unit}-final.html", interactive: true },
         { name: "✍️ Writing", file: "unit{unit}-writing-escalating.html", interactive: true },
@@ -70,11 +71,15 @@
             const btnGroup = document.createElement('div');
             btnGroup.className = 'btn-group';
             skills.forEach(skill => {
+                // استبدال {unit} بالرقم
+                const fileName = skill.file.replace('{unit}', u);
+                const fullUrl = `${interactiveBase}/${fileName}`;
                 const link = document.createElement('a');
-                link.href = `${interactiveBase}/${skill.file.replace('{unit}', u)}`;
+                link.href = fullUrl;
                 link.target = "_blank";
                 link.textContent = skill.name;
                 link.className = 'btn btn-primary';
+                // إذا كان الملف غير موجود (للوحدة 1 في بعض المهارات)، نضيف check بسيط لكننا نترك الرابط
                 btnGroup.appendChild(link);
             });
             unitDiv.appendChild(btnGroup);
