@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unit 1 - Writing Practice</title>
+    <style>
+        *{box-sizing:border-box}
+        body{font-family:Arial,sans-serif;background:#eef2ff;padding:20px}
+        .container{max-width:800px;margin:auto;background:white;border-radius:48px;padding:25px}
+        h1{color:#d45a1e;text-align:center}
+        .task{background:#fef3c7;padding:15px;border-radius:24px;margin:20px 0}
+        .example{background:#e0e7ff;padding:12px;border-radius:20px;margin:15px 0;font-style:italic}
+        textarea{width:100%;padding:12px;border-radius:20px;border:2px solid #e2e8f0;font-family:monospace;font-size:1rem;margin:10px 0}
+        .checklist{background:#d9f99d;padding:15px;border-radius:24px;margin:20px 0}
+        .checklist label{display:block;margin:8px 0}
+        button{background:#10b981;color:white;border:none;padding:10px 20px;border-radius:30px;cursor:pointer;margin:10px}
+        .result{background:#f1f5f9;padding:15px;border-radius:24px;margin-top:20px;text-align:center}
+        .stars{font-size:1.5rem;letter-spacing:5px}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>✍️ Unit 1 - Writing Practice</h1>
+    <div class="task">
+        <h3>📝 Your Task:</h3>
+        <p>Introduce yourself like Annie or Ted. Write 2-3 sentences.</p>
+        <p>Use: I am ___. I am a boy/girl. I like my dog.</p>
+    </div>
+    <div class="example">
+        <strong>💡 Example:</strong><br>
+        Hello! I am Annie. I am a girl. I like my dog Digger.
+    </div>
+    <textarea id="writingArea" rows="6" placeholder="Write your sentences here..."></textarea>
+    <div class="checklist">
+        <h3>✅ Check your writing</h3>
+        <label><input type="checkbox" id="chk1"> I wrote 2-3 sentences</label>
+        <label><input type="checkbox" id="chk2"> I used words from Unit 1 (Annie, Ted, Digger, boy, girl, dog)</label>
+        <label><input type="checkbox" id="chk3"> I started with a capital letter</label>
+        <label><input type="checkbox" id="chk4"> I ended with a period</label>
+    </div>
+    <button id="checkBtn">✅ Evaluate My Writing</button>
+    <div id="result" class="result">✨ Press the button after writing ✨</div>
+</div>
+<script>
+    document.getElementById('checkBtn').onclick = () => {
+        let score = 0;
+        if(document.getElementById('chk1').checked) score++;
+        if(document.getElementById('chk2').checked) score++;
+        if(document.getElementById('chk3').checked) score++;
+        if(document.getElementById('chk4').checked) score++;
+        const text = document.getElementById('writingArea').value.trim();
+        const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+        if(sentences.length >= 2) score++;
+        const resultDiv = document.getElementById('result');
+        if(score >= 5) resultDiv.innerHTML = "🎉 Excellent! Great job! 🌟🌟🌟🌟🌟";
+        else if(score >= 3) resultDiv.innerHTML = "👍 Good! Try to improve the missing points.";
+        else resultDiv.innerHTML = "📝 Keep practicing! Use the example and try again.";
+    };
+</script>
+</body>
+</html>

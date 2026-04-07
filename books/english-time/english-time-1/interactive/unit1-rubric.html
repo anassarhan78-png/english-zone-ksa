@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unit 1 - Self Assessment Rubric</title>
+    <style>
+        body{font-family:Arial,sans-serif;background:#eef2ff;padding:20px}
+        .container{max-width:700px;margin:auto;background:white;border-radius:48px;padding:25px}
+        h1{color:#d45a1e;text-align:center}
+        .criteria{background:#fef9c3;padding:15px;border-radius:24px;margin:15px 0}
+        .criteria label{display:block;margin:10px 0}
+        input[type="range"]{width:80%}
+        button{background:#10b981;color:white;border:none;padding:10px 20px;border-radius:30px;cursor:pointer}
+        .result{background:#e0e7ff;padding:15px;border-radius:24px;margin-top:20px;text-align:center}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📊 Unit 1 - My Progress</h1>
+    <div class="criteria">
+        <label>🗣️ Speaking: <input type="range" id="speak" min="1" max="5" value="3"> <span id="speakVal">3</span></label>
+        <label>✍️ Writing: <input type="range" id="write" min="1" max="5" value="3"> <span id="writeVal">3</span></label>
+        <label>📖 Vocabulary: <input type="range" id="vocab" min="1" max="5" value="3"> <span id="vocabVal">3</span></label>
+        <label>🎧 Listening: <input type="range" id="listen" min="1" max="5" value="3"> <span id="listenVal">3</span></label>
+        <label>💪 Effort: <input type="range" id="effort" min="1" max="5" value="3"> <span id="effortVal">3</span></label>
+    </div>
+    <button onclick="calculate()">📈 Calculate My Score</button>
+    <div id="result" class="result"></div>
+</div>
+<script>
+    function update(id){ document.getElementById(id+'Val').innerText = document.getElementById(id).value; }
+    ['speak','write','vocab','listen','effort'].forEach(id => { document.getElementById(id).oninput = () => update(id); });
+    function calculate() {
+        let total = 0;
+        ['speak','write','vocab','listen','effort'].forEach(id => total += parseInt(document.getElementById(id).value));
+        let percent = (total/25)*100;
+        let msg = "";
+        if(percent>=90) msg = "Excellent! 🌟🌟🌟🌟🌟";
+        else if(percent>=75) msg = "Very good! 🌟🌟🌟🌟";
+        else if(percent>=60) msg = "Good! 🌟🌟🌟";
+        else msg = "Keep practicing! 🌟🌟";
+        document.getElementById('result').innerHTML = `<strong>Score: ${total}/25</strong><br>${msg}`;
+    }
+</script>
+</body>
+</html>

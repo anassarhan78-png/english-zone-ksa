@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unit 1 - Presentation Practice</title>
+    <style>
+        *{box-sizing:border-box}
+        body{font-family:Arial,sans-serif;background:#eef2ff;padding:20px}
+        .container{max-width:800px;margin:auto;background:white;border-radius:48px;padding:25px}
+        h1{color:#d45a1e;text-align:center}
+        .task{background:#fef3c7;padding:15px;border-radius:24px;margin:20px 0}
+        .script-box{background:#e0e7ff;padding:12px;border-radius:20px;margin:15px 0}
+        textarea{width:100%;padding:12px;border-radius:20px;border:2px solid #e2e8f0;font-family:monospace;margin:10px 0}
+        .timer{font-size:2rem;font-weight:bold;text-align:center;background:#f1f5f9;padding:10px;border-radius:40px;margin:15px auto;width:200px}
+        button{background:#3b82f6;color:white;border:none;padding:10px 20px;border-radius:30px;cursor:pointer;margin:5px}
+        .checklist{background:#d9f99d;padding:15px;border-radius:24px;margin:20px 0}
+        .checklist label{display:block;margin:8px 0}
+        .result{background:#f1f5f9;padding:15px;border-radius:24px;margin-top:20px;text-align:center}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎤 Unit 1 - Presentation Practice</h1>
+    <div class="task">
+        <h3>📢 Your Task:</h3>
+        <p>Introduce yourself. Say your name, age, and one thing you like.</p>
+        <p>⏱️ Try to speak for 20-30 seconds.</p>
+    </div>
+    <div class="script-box">
+        <strong>💡 Example script:</strong><br>
+        Hello, my name is Annie. I am a girl. I like my dog Digger.
+    </div>
+    <textarea id="userScript" rows="4" placeholder="Write your own script here..."></textarea>
+    <div>
+        <button id="startTimer">⏱️ Start Timer (30 sec)</button>
+        <button id="stopTimer">⏹️ Stop</button>
+        <div class="timer" id="timerDisplay">00:00</div>
+    </div>
+    <div class="checklist">
+        <h3>✅ Self-Check</h3>
+        <label><input type="checkbox" id="chk1"> I spoke for about 30 seconds</label>
+        <label><input type="checkbox" id="chk2"> I used words from Unit 1</label>
+        <label><input type="checkbox" id="chk3"> I spoke clearly and loudly</label>
+    </div>
+    <button id="checkBtn">✅ Evaluate My Presentation</button>
+    <div id="result" class="result">✨ Press the button after practicing ✨</div>
+</div>
+<script>
+    let timerInterval = null, seconds = 0;
+    const timerDisplay = document.getElementById('timerDisplay');
+    function updateTimer() {
+        let mins = Math.floor(seconds/60);
+        let secs = seconds%60;
+        timerDisplay.innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+    }
+    document.getElementById('startTimer').onclick = () => {
+        if(timerInterval) clearInterval(timerInterval);
+        seconds = 0;
+        updateTimer();
+        timerInterval = setInterval(() => { seconds++; updateTimer(); if(seconds>=35) clearInterval(timerInterval); }, 1000);
+    };
+    document.getElementById('stopTimer').onclick = () => { if(timerInterval) clearInterval(timerInterval); };
+    document.getElementById('checkBtn').onclick = () => {
+        let score = 0;
+        if(document.getElementById('chk1').checked) score++;
+        if(document.getElementById('chk2').checked) score++;
+        if(document.getElementById('chk3').checked) score++;
+        if(Math.abs(seconds-30)<=5) score++;
+        const resultDiv = document.getElementById('result');
+        if(score>=4) resultDiv.innerHTML = "🎉 Great presentation! You are confident! 🌟🌟🌟🌟🌟";
+        else if(score>=2) resultDiv.innerHTML = "👍 Good start. Practice more to improve.";
+        else resultDiv.innerHTML = "📝 Keep practicing! Use the example script.";
+    };
+</script>
+</body>
+</html>
