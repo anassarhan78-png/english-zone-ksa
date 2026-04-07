@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Unit 1 - Dictation Games</title>
+    <title>Unit 8 - Dictation Games</title>
     <style>
         *{box-sizing:border-box}
         body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2ff;margin:0;padding:20px}
@@ -26,7 +26,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>🎮 Unit 1: Dictation Games</h1>
+    <h1>🎮 Unit 8: Dictation Games</h1>
     <div class="game-selector">
         <button class="game-btn" data-game="hangman">🪢 Hangman</button>
         <button class="game-btn" data-game="missing">🔤 Missing Letter</button>
@@ -80,9 +80,9 @@
 </div>
 
 <script>
-    const words = ["Annie","Ted","Digger","boy","girl","dog"];
-    const sentences = ["My name is ______. (Annie/Ted)","______ is a dog. (Digger/Annie)","I am a ______. (boy/girl)","You are a ______. (girl/boy)","Good ______, teacher. (morning/night)"];
-    const gapAnswers = ["Annie","Digger","boy","girl","morning"];
+    const words = ["apples","oranges","bananas","cucumbers","potatoes","carrots"];
+    const sentences = ["A yellow fruit is ______. (banana/apple)","______ are orange and good for eyes. (Carrots/Oranges)","I make fries from ______. (potatoes/cucumbers)","______ are green and crunchy. (Cucumbers/Apples)","An ______ a day keeps the doctor away. (apple/orange)"];
+    const gapAnswers = ["banana","Carrots","potatoes","Cucumbers","apple"];
     const base = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/images/";
     const images = {};
     words.forEach(w => { images[w] = w.toLowerCase().replace(/ /g, '-') + '.jpg'; });
