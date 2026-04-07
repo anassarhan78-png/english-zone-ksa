@@ -1,195 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>Unit 3 - Dictation Games</title>
+    <title>English Zone KSA - جميع الأنشطة التفاعلية</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:Arial,sans-serif;background:#eef2ff;padding:20px}
-        .container{max-width:1200px;margin:auto;background:white;border-radius:48px;padding:25px}
-        h1{color:#d45a1e;text-align:center}
-        .game-selector{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:20px 0}
-        .game-btn{background:#e2e8f0;border:none;padding:10px 20px;border-radius:40px;cursor:pointer;font-weight:bold}
-        .game-btn.active{background:#f59e0b;color:white}
-        .game-panel{display:none;margin-top:20px}
-        .game-panel.active{display:block}
-        .word-card{background:#fffaf0;border-radius:24px;padding:15px;margin:15px 0;text-align:center}
-        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:15px}
-        button{background:#3b82f6;color:white;border:none;padding:8px 16px;border-radius:30px;cursor:pointer}
-        input,select{padding:8px;border-radius:30px;border:1px solid #ccc;margin:5px}
-        .correct{background:#d1fae5}
-        .wrong{background:#fee2e2}
-        .hangman-canvas{background:#fef9e3;border-radius:24px;margin:10px 0;display:block;margin-left:auto;margin-right:auto}
-        .hangman-word{font-size:2rem;letter-spacing:10px;font-family:monospace;text-align:center}
-        .message{font-weight:bold;margin:10px 0;text-align:center}
+        *{box-sizing:border-box}
+        body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f0f4f8;margin:0;padding:20px;direction:rtl}
+        .container{max-width:1400px;margin:auto;background:white;border-radius:32px;box-shadow:0 15px 30px rgba(0,0,0,0.1);overflow:hidden}
+        .header{background:#1e3a8a;color:white;padding:25px;text-align:center}
+        .header h1{margin:0;font-size:1.8rem}
+        .header p{margin:5px 0 0;opacity:0.9}
+        .flex{display:flex;flex-wrap:wrap}
+        .sidebar{width:350px;background:#f8fafc;padding:20px;border-left:1px solid #e2e8f0;max-height:85vh;overflow-y:auto}
+        .main{flex:1;padding:30px;background:white}
+        .unit-card{background:#ffffff;border-radius:20px;margin-bottom:25px;padding:15px;box-shadow:0 2px 6px rgba(0,0,0,0.05);border:1px solid #e2e8f0}
+        .unit-title{font-size:1.3rem;font-weight:bold;color:#1e3a8a;margin-bottom:12px;border-right:4px solid #f59e0b;padding-right:12px}
+        .btn-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+        .btn{background:#e2e8f0;border:none;padding:6px 14px;border-radius:30px;font-size:0.85rem;cursor:pointer;text-decoration:none;display:inline-block;color:#1e293b;transition:0.2s}
+        .btn-primary{background:#f59e0b;color:white;font-weight:bold}
+        .btn-primary:hover{background:#d97706;transform:translateY(-2px)}
+        .btn-secondary{background:#e2e8f0}
+        .btn-secondary:hover{background:#cbd5e1}
+        .btn-text{background:#f1f5f9;font-size:0.75rem;padding:4px 10px}
+        .footer{text-align:center;padding:15px;background:#f1f5f9;font-size:0.8rem;color:#475569;border-top:1px solid #e2e8f0}
+        @media (max-width:700px){.sidebar{width:100%;max-height:none}}
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>🎮 Unit 3 - Dictation Games</h1>
-    <div class="game-selector">
-        <button class="game-btn" data-game="hangman">🪢 Hangman</button>
-        <button class="game-btn" data-game="missing">🔤 Missing Letter</button>
-        <button class="game-btn" data-game="match">🃏 Match</button>
-        <button class="game-btn" data-game="gap">📝 Fill Gap</button>
-        <button class="game-btn" data-game="classic">🎧 Classic Dictation</button>
+    <div class="header">
+        <h1>📚 English Zone KSA - جميع الأنشطة التفاعلية</h1>
+        <p>اختر الوحدة ثم النشاط المطلوب (Dictation, Writing, Presentation, Rubric, Quiz)</p>
     </div>
-    <div id="hangman" class="game-panel"><h2>🪢 Hangman</h2><canvas id="hangmanCanvas" class="hangman-canvas" width="300" height="200" style="border:2px solid #f0c674; background:#fff8e7"></canvas><div class="hangman-word" id="hangmanWord">_ _ _ _ _</div><div id="hangmanMessage" class="message"></div><input type="text" id="hangmanLetter" maxlength="1" placeholder="Guess a letter"><button id="hangmanGuess">Guess</button><button id="hangmanReset">New Word</button><p>Wrong guesses: <span id="wrongLetters"></span></p></div>
-    <div id="missing" class="game-panel"><h2>🔤 Missing Letter</h2><div id="missingGrid" class="grid"></div><button id="checkMissing">Check Answers</button><div id="missingResult"></div></div>
-    <div id="match" class="game-panel"><h2>🃏 Match</h2><div id="matchGrid"></div><button id="checkMatch">Check Matches</button><div id="matchResult"></div></div>
-    <div id="gap" class="game-panel"><h2>📝 Fill Gap</h2><div id="gapGrid"></div><button id="checkGap">Check Answers</button><div id="gapResult"></div></div>
-    <div id="classic" class="game-panel"><h2>🎧 Classic Dictation</h2><div id="classicGrid" class="grid"></div><button id="checkClassic">Check All</button><div id="classicResult"></div></div>
+    <div class="flex">
+        <div class="sidebar" id="sidebar"></div>
+        <div class="main" id="mainContent">
+            <div style="text-align:center; color:#64748b; padding:40px;">👈 اختر وحدة من القائمة ثم اضغط على أي نشاط</div>
+        </div>
+    </div>
+    <div class="footer">✅ جميع الأنشطة تفاعلية وتعمل بالصوت والصور | الملفات النصية (MD) متاحة للاطلاع</div>
 </div>
+
 <script>
-    const words = ["cow","horse","chicken","goat","sheep","duck"];
-    const sentences = [
-        "The ______ says moo. (cow/duck)",
-        "A ______ gives us eggs. (chicken/horse)",
-        "I like to ride a ______. (horse/goat)",
-        "Wool comes from a ______. (sheep/cow)",
-        "The ______ swims in the pond. (duck/goat)"
+    const interactiveBase = "https://anassarhan78-png.github.io/english-zone-ksa/books/english-time/english-time-1/interactive";
+    const repoBase = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1";
+    const units = [1,2,3,4,5,6,7,8,9,10];
+
+    const skills = [
+        { name: "🎨 Dictation", file: "unit{unit}-final.html", interactive: true },
+        { name: "✍️ Writing", file: "unit{unit}-writing-escalating.html", interactive: true },
+        { name: "🎤 Presentation", file: "unit{unit}-presentation.html", interactive: true },
+        { name: "📊 Rubric", file: "unit{unit}-rubric.html", interactive: true },
+        { name: "❓ Quiz", file: "unit{unit}-quiz.html", interactive: true }
     ];
-    const gapAnswers = ["cow","chicken","horse","sheep","duck"];
-    const base = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/images/";
-    const images = {};
-    words.forEach(w => { images[w] = w.toLowerCase().replace(/ /g, '-') + ".jpg"; });
-    const wordArray = words, sentArray = sentences, ansArray = gapAnswers;
-    const canvas = document.getElementById('hangmanCanvas');
-    const ctx = canvas.getContext('2d');
-    let currentWord = "", guessed = [], wrong = [];
-    function drawHangman(step) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.lineWidth = 2; ctx.strokeStyle = "#3b2a1f";
-        ctx.beginPath(); ctx.moveTo(40,180); ctx.lineTo(260,180); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(100,180); ctx.lineTo(100,30); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(100,30); ctx.lineTo(200,30); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(200,30); ctx.lineTo(200,50); ctx.stroke();
-        if(step>=1){ ctx.beginPath(); ctx.arc(200,65,15,0,Math.PI*2); ctx.stroke(); }
-        if(step>=2){ ctx.beginPath(); ctx.moveTo(200,80); ctx.lineTo(200,130); ctx.stroke(); }
-        if(step>=3){ ctx.beginPath(); ctx.moveTo(200,95); ctx.lineTo(175,115); ctx.stroke(); }
-        if(step>=4){ ctx.beginPath(); ctx.moveTo(200,95); ctx.lineTo(225,115); ctx.stroke(); }
-        if(step>=5){ ctx.beginPath(); ctx.moveTo(200,130); ctx.lineTo(175,160); ctx.stroke(); }
-        if(step>=6){ ctx.beginPath(); ctx.moveTo(200,130); ctx.lineTo(225,160); ctx.stroke(); }
-    }
-    function updateHangman() {
-        let display = currentWord.split('').map(l=>guessed.includes(l)?l:'_').join(' ');
-        document.getElementById('hangmanWord').innerText = display;
-        document.getElementById('wrongLetters').innerText = wrong.join(',');
-        drawHangman(wrong.length);
-        if(display.replace(/ /g,'')===currentWord) document.getElementById('hangmanMessage').innerHTML = "🎉 You won!";
-        else if(wrong.length>=6) document.getElementById('hangmanMessage').innerHTML = "💀 Game over! Word was "+currentWord;
-        else document.getElementById('hangmanMessage').innerHTML = "";
-    }
-    function initHangman() { currentWord = wordArray[Math.floor(Math.random()*wordArray.length)].toLowerCase(); guessed=[]; wrong=[]; updateHangman(); }
-    document.getElementById('hangmanGuess')?.addEventListener('click',()=>{ let l=document.getElementById('hangmanLetter').value.toLowerCase(); if(!l) return; if(guessed.includes(l)||wrong.includes(l)) return; if(currentWord.includes(l)) guessed.push(l); else wrong.push(l); updateHangman(); document.getElementById('hangmanLetter').value=''; });
-    document.getElementById('hangmanReset')?.addEventListener('click',initHangman);
-    initHangman();
-    let missingItems = [];
-    function loadMissing(){
-        let cont = document.getElementById('missingGrid');
-        cont.innerHTML = '';
-        missingItems = [];
-        wordArray.forEach((w,i)=>{
-            let idx = Math.floor(Math.random()*w.length);
-            let disp = w.substring(0,idx)+'_'+w.substring(idx+1);
-            missingItems.push({disp:disp,correct:w[idx]});
-            let div = document.createElement('div');
-            div.className = 'word-card';
-            div.innerHTML = '<p>'+disp+'</p><input type="text" id="miss-'+i+'" maxlength="1">';
-            cont.appendChild(div);
+
+    const normalFiles = ['dictation.md', 'writing.md', 'presentation.md', 'rubric.md', 'questions.md'];
+
+    function buildSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.innerHTML = '<h3>🧒 English Time 1</h3>';
+        units.forEach(u => {
+            const unitDiv = document.createElement('div');
+            unitDiv.className = 'unit-card';
+            unitDiv.innerHTML = `<div class="unit-title">الوحدة ${u}</div>`;
+            const btnGroup = document.createElement('div');
+            btnGroup.className = 'btn-group';
+            skills.forEach(skill => {
+                const link = document.createElement('a');
+                link.href = `${interactiveBase}/${skill.file.replace('{unit}', u)}`;
+                link.target = "_blank";
+                link.textContent = skill.name;
+                link.className = 'btn btn-primary';
+                btnGroup.appendChild(link);
+            });
+            unitDiv.appendChild(btnGroup);
+            const textGroup = document.createElement('div');
+            textGroup.className = 'btn-group';
+            normalFiles.forEach(f => {
+                const btn = document.createElement('button');
+                btn.textContent = f.replace('.md', ' (نص)');
+                btn.className = 'btn btn-text';
+                btn.onclick = () => loadMarkdown(`${repoBase}/unit-${u}/${f}`);
+                textGroup.appendChild(btn);
+            });
+            unitDiv.appendChild(textGroup);
+            sidebar.appendChild(unitDiv);
         });
     }
-    document.getElementById('checkMissing').addEventListener('click',()=>{
-        let score = 0;
-        missingItems.forEach((item,i)=>{
-            let inp = document.getElementById('miss-'+i);
-            if(inp && inp.value.toLowerCase()===item.correct){ score++; inp.classList.add('correct'); }
-            else if(inp) inp.classList.add('wrong');
-        });
-        document.getElementById('missingResult').innerHTML = 'Score: '+score+'/'+missingItems.length;
-    });
-    loadMissing();
-    function shuffle(arr){ return arr.sort(()=>Math.random()-0.5); }
-    function loadMatch(){
-        let cont = document.getElementById('matchGrid');
-        let shuffledWords = shuffle([...wordArray]);
-        let shuffledImages = shuffle([...wordArray]);
-        cont.innerHTML = '<div class="grid">';
-        shuffledWords.forEach((w,i)=>{
-            cont.innerHTML += '<div class="word-card"><strong>'+w+'</strong><select id="match-'+i+'"><option value="">Select</option>'+
-                shuffledImages.map(img=>'<option value="'+img+'">'+img+'</option>').join('')+'</select></div>';
-        });
-        cont.innerHTML += '</div>';
-    }
-    document.getElementById('checkMatch').addEventListener('click',()=>{
-        let score = 0;
-        for(let i=0;i<wordArray.length;i++){
-            let sel = document.getElementById('match-'+i);
-            if(sel && sel.value===wordArray[i]) score++;
+
+    async function loadMarkdown(url) {
+        const main = document.getElementById('mainContent');
+        main.innerHTML = '<div style="text-align:center;">⏳ جاري التحميل...</div>';
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('الملف غير موجود');
+            const md = await res.text();
+            const html = marked.parse(md);
+            main.innerHTML = `<div style="background:#f8fafc; padding:20px; border-radius:24px;">${html}</div>`;
+        } catch(e) {
+            main.innerHTML = `<div style="color:red; text-align:center;">❌ خطأ: ${e.message}</div>`;
         }
-        document.getElementById('matchResult').innerHTML = 'Matched: '+score+'/'+wordArray.length;
-    });
-    loadMatch();
-    function loadGap(){
-        let cont = document.getElementById('gapGrid');
-        cont.innerHTML = '';
-        sentArray.forEach((s,i)=>{
-            let div = document.createElement('div');
-            div.className = 'word-card';
-            div.innerHTML = '<p>'+s+'</p><input type="text" id="gap-'+i+'" placeholder="Answer">';
-            cont.appendChild(div);
-        });
     }
-    document.getElementById('checkGap').addEventListener('click',()=>{
-        let score = 0;
-        for(let i=0;i<ansArray.length;i++){
-            let inp = document.getElementById('gap-'+i);
-            if(inp && inp.value.trim().toLowerCase()===ansArray[i].toLowerCase()){ score++; inp.classList.add('correct'); }
-            else if(inp) inp.classList.add('wrong');
-        }
-        document.getElementById('gapResult').innerHTML = 'Score: '+score+'/'+ansArray.length;
-    });
-    loadGap();
-    function speakWord(w){
-        let u = new SpeechSynthesisUtterance(w);
-        u.lang = 'en-US'; u.rate = 0.8;
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(u);
-    }
-    function loadClassic(){
-        let cont = document.getElementById('classicGrid');
-        cont.innerHTML = '';
-        wordArray.forEach((w,i)=>{
-            let imgSrc = base + images[w];
-            let div = document.createElement('div');
-            div.className = 'word-card';
-            div.innerHTML = '<img src="'+imgSrc+'" style="max-width:80px;border-radius:16px" onerror="this.style.display=\'none\'">'+
-                '<button class="speak-btn" data-word="'+w+'">🔊 Speak</button>'+
-                '<input type="text" id="classic-'+i+'" placeholder="Type word">';
-            cont.appendChild(div);
-        });
-        document.querySelectorAll('.speak-btn').forEach(btn=>btn.addEventListener('click',()=>speakWord(btn.getAttribute('data-word'))));
-    }
-    document.getElementById('checkClassic').addEventListener('click',()=>{
-        let score = 0;
-        wordArray.forEach((w,i)=>{
-            let inp = document.getElementById('classic-'+i);
-            if(inp && inp.value.trim().toLowerCase()===w.toLowerCase()){ score++; inp.classList.add('correct'); }
-            else if(inp) inp.classList.add('wrong');
-        });
-        document.getElementById('classicResult').innerHTML = 'Score: '+score+'/'+wordArray.length;
-    });
-    loadClassic();
-    let panels = ['hangman','missing','match','gap','classic'];
-    document.querySelectorAll('.game-btn').forEach(btn=>{
-        btn.addEventListener('click',()=>{
-            panels.forEach(p=>document.getElementById(p).classList.remove('active'));
-            document.getElementById(btn.dataset.game).classList.add('active');
-            document.querySelectorAll('.game-btn').forEach(b=>b.classList.remove('active'));
-            btn.classList.add('active');
-        });
-    });
-    document.querySelector('.game-btn').click();
+
+    buildSidebar();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
 </html>
