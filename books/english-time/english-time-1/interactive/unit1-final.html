@@ -45,9 +45,9 @@
     const sentences = ["My name is ______. (Annie/Ted)","______ is a dog. (Digger/Annie)","I am a ______. (boy/girl)","You are a ______. (girl/boy)","Good ______, teacher. (morning/night)"];
     const gapAnswers = ["Annie","Digger","boy","girl","morning"];
     const base = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/images/";
-    const images = {}; words.forEach(w => { images[w] = w.toLowerCase().replace(/ /g, '-') + ".jpg"; });
+    const images = {};
+    words.forEach(w => { images[w] = w.toLowerCase().replace(/ /g, '-') + ".jpg"; });
     const wordArray = words, sentArray = sentences, ansArray = gapAnswers;
-    // Hangman drawing code (same as previous)
     const canvas = document.getElementById('hangmanCanvas');
     const ctx = canvas.getContext('2d');
     let currentWord = "", guessed = [], wrong = [];
@@ -78,13 +78,112 @@
     document.getElementById('hangmanGuess')?.addEventListener('click',()=>{ let l=document.getElementById('hangmanLetter').value.toLowerCase(); if(!l) return; if(guessed.includes(l)||wrong.includes(l)) return; if(currentWord.includes(l)) guessed.push(l); else wrong.push(l); updateHangman(); document.getElementById('hangmanLetter').value=''; });
     document.getElementById('hangmanReset')?.addEventListener('click',initHangman);
     initHangman();
-    // Missing Letter, Match, Fill Gap, Classic (same logic as unit2 template, but with unit1 data)
-    // For brevity, I'll include the full working code from the unit2 template adapted for unit1.
-    // Since the full code is long, I trust that the previous working template for unit2 can be adapted.
-    // But to ensure functionality, I'll use a simplified version that works.
-    // (I'm aware of the length; the user wants a clean file, so I'll provide the complete script.)
-    // The complete script is too long to write manually here; but the principle is to copy the working unit2 script and replace the data arrays.
-    // Given the constraints, I'll output a minimal but complete version.
+    let missingItems = [];
+    function loadMissing(){
+        let cont = document.getElementById('missingGrid');
+        cont.innerHTML = '';
+        missingItems = [];
+        wordArray.forEach((w,i)=>{
+            let idx = Math.floor(Math.random()*w.length);
+            let disp = w.substring(0,idx)+'_'+w.substring(idx+1);
+            missingItems.push({disp:disp,correct:w[idx]});
+            let div = document.createElement('div');
+            div.className = 'word-card';
+            div.innerHTML = '<p>'+disp+'</p><input type="text" id="miss-'+i+'" maxlength="1">';
+            cont.appendChild(div);
+        });
+    }
+    document.getElementById('checkMissing').addEventListener('click',()=>{
+        let score = 0;
+        missingItems.forEach((item,i)=>{
+            let inp = document.getElementById('miss-'+i);
+            if(inp && inp.value.toLowerCase()===item.correct){ score++; inp.classList.add('correct'); }
+            else if(inp) inp.classList.add('wrong');
+        });
+        document.getElementById('missingResult').innerHTML = 'Score: '+score+'/'+missingItems.length;
+    });
+    loadMissing();
+    function shuffle(arr){ return arr.sort(()=>Math.random()-0.5); }
+    function loadMatch(){
+        let cont = document.getElementById('matchGrid');
+        let shuffledWords = shuffle([...wordArray]);
+        let shuffledImages = shuffle([...wordArray]);
+        cont.innerHTML = '<div class="grid">';
+        shuffledWords.forEach((w,i)=>{
+            cont.innerHTML += '<div class="word-card"><strong>'+w+'</strong><select id="match-'+i+'"><option value="">Select</option>'+
+                shuffledImages.map(img=>'<option value="'+img+'">'+img+'</option>').join('')+'</select></div>';
+        });
+        cont.innerHTML += '</div>';
+    }
+    document.getElementById('checkMatch').addEventListener('click',()=>{
+        let score = 0;
+        for(let i=0;i<wordArray.length;i++){
+            let sel = document.getElementById('match-'+i);
+            if(sel && sel.value===wordArray[i]) score++;
+        }
+        document.getElementById('matchResult').innerHTML = 'Matched: '+score+'/'+wordArray.length;
+    });
+    loadMatch();
+    function loadGap(){
+        let cont = document.getElementById('gapGrid');
+        cont.innerHTML = '';
+        sentArray.forEach((s,i)=>{
+            let div = document.createElement('div');
+            div.className = 'word-card';
+            div.innerHTML = '<p>'+s+'</p><input type="text" id="gap-'+i+'" placeholder="Answer">';
+            cont.appendChild(div);
+        });
+    }
+    document.getElementById('checkGap').addEventListener('click',()=>{
+        let score = 0;
+        for(let i=0;i<ansArray.length;i++){
+            let inp = document.getElementById('gap-'+i);
+            if(inp && inp.value.trim().toLowerCase()===ansArray[i].toLowerCase()){ score++; inp.classList.add('correct'); }
+            else if(inp) inp.classList.add('wrong');
+        }
+        document.getElementById('gapResult').innerHTML = 'Score: '+score+'/'+ansArray.length;
+    });
+    loadGap();
+    function speakWord(w){
+        let u = new SpeechSynthesisUtterance(w);
+        u.lang = 'en-US'; u.rate = 0.8;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(u);
+    }
+    function loadClassic(){
+        let cont = document.getElementById('classicGrid');
+        cont.innerHTML = '';
+        wordArray.forEach((w,i)=>{
+            let imgSrc = base + images[w];
+            let div = document.createElement('div');
+            div.className = 'word-card';
+            div.innerHTML = '<img src="'+imgSrc+'" style="max-width:80px;border-radius:16px" onerror="this.style.display=\'none\'">'+
+                '<button class="speak-btn" data-word="'+w+'">🔊 Speak</button>'+
+                '<input type="text" id="classic-'+i+'" placeholder="Type word">';
+            cont.appendChild(div);
+        });
+        document.querySelectorAll('.speak-btn').forEach(btn=>btn.addEventListener('click',()=>speakWord(btn.getAttribute('data-word'))));
+    }
+    document.getElementById('checkClassic').addEventListener('click',()=>{
+        let score = 0;
+        wordArray.forEach((w,i)=>{
+            let inp = document.getElementById('classic-'+i);
+            if(inp && inp.value.trim().toLowerCase()===w.toLowerCase()){ score++; inp.classList.add('correct'); }
+            else if(inp) inp.classList.add('wrong');
+        });
+        document.getElementById('classicResult').innerHTML = 'Score: '+score+'/'+wordArray.length;
+    });
+    loadClassic();
+    let panels = ['hangman','missing','match','gap','classic'];
+    document.querySelectorAll('.game-btn').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+            panels.forEach(p=>document.getElementById(p).classList.remove('active'));
+            document.getElementById(btn.dataset.game).classList.add('active');
+            document.querySelectorAll('.game-btn').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+    document.querySelector('.game-btn').click();
 </script>
 </body>
 </html>
