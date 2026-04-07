@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unit 1 - Dictation Games</title>
+    <style>
+        *{box-sizing:border-box}
+        body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2ff;margin:0;padding:20px}
+        .container{max-width:1200px;margin:auto;background:white;border-radius:48px;padding:25px}
+        h1{color:#d45a1e;text-align:center}
+        .game-selector{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:20px 0}
+        .game-btn{background:#e2e8f0;border:none;padding:10px 20px;border-radius:40px;cursor:pointer;font-weight:bold}
+        .game-btn.active{background:#f59e0b;color:white}
+        .game-panel{display:none;margin-top:20px}
+        .game-panel.active{display:block}
+        .word-card{background:#fffaf0;border-radius:24px;padding:15px;margin:15px 0;text-align:center}
+        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:15px}
+        button{background:#3b82f6;color:white;border:none;padding:8px 16px;border-radius:30px;cursor:pointer}
+        input,select{padding:8px;border-radius:30px;border:1px solid #ccc;margin:5px}
+        .correct{background:#d1fae5}
+        .wrong{background:#fee2e2}
+        .hangman-word{font-size:2rem;letter-spacing:10px;font-family:monospace}
+        .message{font-weight:bold;margin:10px 0}
+        .match-row{display:flex;justify-content:space-between;align-items:center;margin:10px 0}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎮 Unit 1: Dictation Games</h1>
+    <div class="game-selector">
+        <button class="game-btn" data-game="hangman">🪢 Hangman</button>
+        <button class="game-btn" data-game="missing">🔤 Missing Letter</button>
+        <button class="game-btn" data-game="match">🃏 Match</button>
+        <button class="game-btn" data-game="gap">📝 Fill the Gap</button>
+        <button class="game-btn" data-game="classic">🎧 Classic Dictation</button>
+    </div>
+
+    <!-- HANGMAN -->
+    <div id="hangman" class="game-panel">
+        <h2>🪢 Hangman</h2>
+        <div class="hangman-word" id="hangmanWord">_ _ _ _ _</div>
+        <div id="hangmanMessage" class="message"></div>
+        <input type="text" id="hangmanLetter" maxlength="1" placeholder="Guess a letter">
+        <button id="hangmanGuess">Guess</button>
+        <button id="hangmanReset">New Word</button>
+        <p>Wrong guesses: <span id="wrongLetters"></span></p>
+    </div>
+
+    <!-- MISSING LETTER -->
+    <div id="missing" class="game-panel">
+        <h2>🔤 Fill in the Missing Letter</h2>
+        <div id="missingGrid" class="grid"></div>
+        <button id="checkMissing">Check Answers</button>
+        <div id="missingResult"></div>
+    </div>
+
+    <!-- MATCH -->
+    <div id="match" class="game-panel">
+        <h2>🃏 Match the Word with the Picture</h2>
+        <div id="matchGrid"></div>
+        <button id="checkMatch">Check Matches</button>
+        <div id="matchResult"></div>
+    </div>
+
+    <!-- FILL THE GAP -->
+    <div id="gap" class="game-panel">
+        <h2>📝 Fill the Gap</h2>
+        <div id="gapGrid"></div>
+        <button id="checkGap">Check Answers</button>
+        <div id="gapResult"></div>
+    </div>
+
+    <!-- CLASSIC DICTATION -->
+    <div id="classic" class="game-panel">
+        <h2>🎧 Classic Dictation (Listen & Write)</h2>
+        <div id="classicGrid" class="grid"></div>
+        <button id="checkClassic">Check All</button>
+        <div id="classicResult"></div>
+    </div>
+</div>
+
+<script>
+    const words = ["Annie", "Ted", "Digger", "boy", "girl", "dog"];
+    const images = {
+        "Annie": "annie.jpg", "Ted": "ted.jpg", "Digger": "digger.jpg",
+        "boy": "boy.jpg", "girl": "girl.jpg", "dog": "dog.jpg"
+    };
+    const base = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1/images/";
+
+    // ---------- HANGMAN ----------
+    let currentWord = "";
+    let guessedLetters = [];
+    let wrongGuesses = [];
+    function initHangman() {
+        currentWord = words[Math.floor(Math.random() * words.length)].toLowerCase();
+        guessedLetters = [];
+        wrongGuesses = [];
+        updateHangmanDisplay();
+    }
+    function updateHangmanDisplay() {
+        let display = currentWord.split('').map(l => guessedLetters.includes(l) ? l : '_').join(' ');
+        document.getElementById('hangmanWord').innerText = display;
+        document.getElementById('wrongLetters').innerText = wrongGuesses.join(', ');
+        if (display.replace(/ /g, '') === currentWord) {
+            document.getElementById('hangmanMessage').innerHTML = "🎉 You won! Great job!";
+        } else if (wrongGuesses.length >= 6) {
+            document.getElementById('hangmanMessage').innerHTML = `💀 Game over! The word was "${currentWord}".`;
+        } else {
+            document.getElementById('hangmanMessage').innerHTML = "";
+        }
+    }
+    document.getElementById('hangmanGuess').onclick = () => {
+        let letter = document.getElementById('hangmanLetter').value.toLowerCase();
+        if (!letter) return;
+        if (guessedLetters.includes(letter) || wrongGuesses.includes(letter)) return;
+        if (currentWord.includes(letter)) {
+            guessedLetters.push(letter);
+        } else {
+            wrongGuesses.push(letter);
+        }
+        updateHangmanDisplay();
+        document.getElementById('hangmanLetter').value = '';
+    };
+    document.getElementById('hangmanReset').onclick = () => initHangman();
+    initHangman();
+
+    // ---------- MISSING LETTER ----------
+    const missingWords = words.map(w => w.toLowerCase());
+    const missingLetters = ['a', 'e', 'i', 'o', 'u'];
+    function getMissingWord(word) {
+        let idx = Math.floor(Math.random() * word.length);
+        return { display: word.substring(0, idx) + '_' + word.substring(idx+1), correct: word[idx], full: word };
+    }
+    let missingItems = [];
+    function loadMissing() {
+        const container = document.getElementById('missingGrid');
+        container.innerHTML = '';
+        missingItems = [];
+        missingWords.forEach((w, idx) => {
+            let miss = getMissingWord(w);
+            missingItems.push(miss);
+            let div = document.createElement('div');
+            div.className = 'word-card';
+            div.innerHTML = `
+                <p>${miss.display}</p>
+                <input type="text" id="miss-${idx}" placeholder="Missing letter" maxlength="1">
+            `;
+            container.appendChild(div);
+        });
+    }
+    document.getElementById('checkMissing').onclick = () => {
+        let score = 0;
+        missingItems.forEach((item, idx) => {
+            let input = document.getElementById(`miss-${idx}`);
+            if (input.value.toLowerCase() === item.correct) {
+                score++;
+                input.classList.add('correct');
+            } else {
+                input.classList.add('wrong');
+            }
+        });
+        document.getElementById('missingResult').innerHTML = `Score: ${score}/${missingItems.length}`;
+    };
+    loadMissing();
+
+    // ---------- MATCH (drag & drop simulation with select) ----------
+    let matchWords = [...words];
+    let matchImages = [...words];
+    function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+    function loadMatch() {
+        const container = document.getElementById('matchGrid');
+        let shuffledWords = shuffle([...matchWords]);
+        let shuffledImages = shuffle([...matchImages]);
+        container.innerHTML = '<div class="grid">';
+        shuffledWords.forEach((w, idx) => {
+            container.innerHTML += `<div class="word-card"><strong>${w}</strong><select id="match-${idx}"><option value="">Select</option>${shuffledImages.map(img => `<option value="${img}">${img}</option>`).join('')}</select></div>`;
+        });
+        container.innerHTML += '</div>';
+    }
+    document.getElementById('checkMatch').onclick = () => {
+        let score = 0;
+        for (let i = 0; i < matchWords.length; i++) {
+            let sel = document.getElementById(`match-${i}`);
+            if (sel && sel.value === matchWords[i]) score++;
+        }
+        document.getElementById('matchResult').innerHTML = `Matched correctly: ${score}/${matchWords.length}`;
+    };
+    loadMatch();
+
+    // ---------- FILL THE GAP ----------
+    const sentences = [
+        "My name is ______. (Annie/Ted)",
+        "______ is a dog. (Digger/Annie)",
+        "I am a ______. (boy/girl)",
+        "You are a ______. (girl/boy)",
+        "Good ______, teacher. (morning/night)"
+    ];
+    const gapAnswers = ["Annie", "Digger", "boy", "girl", "morning"];
+    function loadGap() {
+        const container = document.getElementById('gapGrid');
+        container.innerHTML = '';
+        sentences.forEach((s, idx) => {
+            let div = document.createElement('div');
+            div.className = 'word-card';
+            div.innerHTML = `<p>${s}</p><input type="text" id="gap-${idx}" placeholder="Your answer">`;
+            container.appendChild(div);
+        });
+    }
+    document.getElementById('checkGap').onclick = () => {
+        let score = 0;
+        for (let i = 0; i < gapAnswers.length; i++) {
+            let input = document.getElementById(`gap-${i}`);
+            if (input.value.trim().toLowerCase() === gapAnswers[i].toLowerCase()) {
+                score++;
+                input.classList.add('correct');
+            } else {
+                input.classList.add('wrong');
+            }
+        }
+        document.getElementById('gapResult').innerHTML = `Score: ${score}/${gapAnswers.length}`;
+    };
+    loadGap();
+
+    // ---------- CLASSIC DICTATION ----------
+    function speakWord(word) {
+        let utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.8;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+    }
+    function loadClassic() {
+        const container = document.getElementById('classicGrid');
+        container.innerHTML = '';
+        words.forEach((w, idx) => {
+            let div = document.createElement('div');
+            div.className = 'word-card';
+            div.innerHTML = `
+                <img src="${base}${images[w]}" style="max-width:80px;border-radius:16px" onerror="this.style.display='none'">
+                <button class="speak-btn" data-word="${w}">🔊 Speak</button>
+                <input type="text" id="classic-${idx}" placeholder="Type the word">
+            `;
+            container.appendChild(div);
+        });
+        document.querySelectorAll('.speak-btn').forEach(btn => {
+            btn.onclick = () => speakWord(btn.getAttribute('data-word'));
+        });
+    }
+    document.getElementById('checkClassic').onclick = () => {
+        let score = 0;
+        words.forEach((w, idx) => {
+            let input = document.getElementById(`classic-${idx}`);
+            if (input.value.trim().toLowerCase() === w.toLowerCase()) {
+                score++;
+                input.classList.add('correct');
+            } else {
+                input.classList.add('wrong');
+            }
+        });
+        document.getElementById('classicResult').innerHTML = `Score: ${score}/${words.length}`;
+    };
+    loadClassic();
+
+    // GAME SWITCHER
+    const panels = ['hangman', 'missing', 'match', 'gap', 'classic'];
+    document.querySelectorAll('.game-btn').forEach(btn => {
+        btn.onclick = () => {
+            panels.forEach(p => document.getElementById(p).classList.remove('active'));
+            document.getElementById(btn.dataset.game).classList.add('active');
+            document.querySelectorAll('.game-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        };
+    });
+    document.querySelector('.game-btn').click();
+</script>
+</body>
+</html>
