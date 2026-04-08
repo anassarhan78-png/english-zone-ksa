@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 1 Extra Activities</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: linear-gradient(135deg, #1e5f8e, #0d3b55); margin: 0; padding: 20px; }
+        .container { max-width: 1300px; margin: auto; background: white; border-radius: 45px; padding: 20px 30px; }
+        h1 { color: #ff8c42; text-align: center; }
+        .activity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; margin-top: 20px; }
+        .card { background: #fef7e0; border-radius: 35px; padding: 20px; border: 1px solid #ffcf9a; }
+        .card h2 { background: #ff8c42; display: inline-block; padding: 5px 20px; border-radius: 40px; color: white; font-size: 1.3rem; }
+        button { background: #ff8c42; border: none; color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; margin: 5px; }
+        input, select { padding: 8px; border-radius: 30px; border: 1px solid #ccc; margin: 5px; }
+        .image-preview { max-width: 100px; border-radius: 20px; margin: 8px; }
+        .correct-feedback { background: #c8e6d9; border-left: 6px solid #2e7d64; padding: 8px; border-radius: 20px; margin-top: 10px; }
+        .wrong-feedback { background: #ffe0e0; border-left: 6px solid #d9534f; padding: 8px; border-radius: 20px; margin-top: 10px; }
+        .crossword { display: grid; grid-template-columns: repeat(4, 50px); gap: 5px; justify-content: center; margin: 15px 0; }
+        .crossword input { width: 50px; height: 50px; text-align: center; font-size: 1.3rem; text-transform: uppercase; }
+        .drop-zone { border: 2px dashed #ff8c42; border-radius: 20px; padding: 12px; min-width: 120px; text-align: center; background: #fff5e6; display: inline-block; margin: 6px; }
+        .drag-word { background: #2c7da0; padding: 10px 15px; border-radius: 30px; cursor: pointer; display: inline-block; margin: 5px; color: white; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📘 English Time 2 - Unit 1 🎲 Extra Activities</h1>
+    <div class="activity-grid">
+        <!-- Unscramble -->
+        <div class="card"><h2>🔀 Unscramble</h2>
+            <div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div>
+            <input type="text" id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button>
+            <div id="scrambleResult"></div><button class="speak-btn" id="speakScramble">🔊 Speak</button>
+        </div>
+        <!-- Drag & Drop (simplified) -->
+        <div class="card"><h2>✂️ Cut & Paste</h2><div id="dragDropArea"></div><button id="checkDragDrop">Check</button><div id="dragDropResult"></div></div>
+        <!-- Write name -->
+        <div class="card"><h2>✍️ Write Name</h2><img id="writeImage" class="image-preview"><input type="text" id="writeNameInput"><button id="checkWriteName">Check</button><button id="newWriteName">Next</button><div id="writeNameResult"></div></div>
+        <!-- Puzzle -->
+        <div class="card"><h2>🧩 Puzzle</h2><img id="puzzleImage" class="image-preview"><div id="puzzleOptions"></div><button id="checkPuzzle">Check</button><button id="newPuzzle">Next</button><div id="puzzleResult"></div></div>
+        <!-- Circle -->
+        <div class="card"><h2>🔘 Circle</h2><img id="circleImage" class="image-preview"><div id="circleOptions"></div><button id="newCircle">Next</button><div id="circleResult"></div></div>
+        <!-- Crossword -->
+        <div class="card"><h2>🔠 Crossword</h2><div id="crosswordGrid" class="crossword"></div><button id="checkCrossword">Check</button><div id="crosswordResult"></div></div>
+        <!-- Label -->
+        <div class="card"><h2>🏷️ Label</h2><div id="labelContainer"></div><div id="labelWordsBank"></div><button id="checkLabels">Check</button><div id="labelResult"></div></div>
+    </div>
+</div>
+<script>
+    const words = ["mother","father","sister","brother","grandmother","grandfather"];
+    const imageBase = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-2/images/";
+    function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+    
+    // Unscramble
+    let currentScramble = "";
+    function getScrambled(w) { return w.split('').sort(()=>Math.random()-0.5).join(''); }
+    function updateScramble() { currentScramble = words[Math.floor(Math.random()*words.length)]; document.getElementById("scrambleWord").innerText = getScrambled(currentScramble); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
+    document.getElementById("checkScramble").onclick = () => { let ans = document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans===currentScramble) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${currentScramble}</div>`; };
+    document.getElementById("newScramble").onclick = updateScramble;
+    document.getElementById("speakScramble").onclick = () => speak(currentScramble);
+    updateScramble();
+    
+    // Drag & Drop (click-based)
+    let selectedWord = null;
+    function initDragDrop() {
+        let container = document.getElementById("dragDropArea");
+        container.innerHTML = "<div><strong>Click a word then click an image</strong></div>";
+        let wordDiv = document.createElement("div");
+        words.forEach(w => { let btn = document.createElement("button"); btn.innerText = w; btn.classList.add("drag-word"); btn.onclick = () => { selectedWord = w; }; wordDiv.appendChild(btn); });
+        container.appendChild(wordDiv);
+        let imgDiv = document.createElement("div");
+        words.forEach(w => { let zone = document.createElement("div"); zone.classList.add("drop-zone"); zone.innerHTML = `<img src="${imageBase+w}.jpg" style="max-width:80px"><br><span class="drop-label">???</span>`; zone.onclick = () => { if(selectedWord && selectedWord===w) { zone.querySelector(".drop-label").innerText = selectedWord; zone.style.background="#c8e6d9"; selectedWord=null; } else if(selectedWord) alert(`Wrong match! ${selectedWord} is not ${w}`); else alert("Click a word first"); }; imgDiv.appendChild(zone); });
+        container.appendChild(imgDiv);
+    }
+    document.getElementById("checkDragDrop").onclick = () => { let allOk=true; document.querySelectorAll(".drop-zone").forEach(z=>{ if(z.querySelector(".drop-label").innerText !== z.getAttribute("data-expected") && z.getAttribute("data-expected")) allOk=false; }); document.getElementById("dragDropResult").innerHTML = allOk ? "<div class='correct-feedback'>Perfect!</div>" : "<div class='wrong-feedback'>Some missing</div>"; };
+    initDragDrop();
+    
+    // Write name
+    let currentWrite = "";
+    function updateWrite() { currentWrite = words[Math.floor(Math.random()*words.length)]; document.getElementById("writeImage").src = imageBase+currentWrite+".jpg"; document.getElementById("writeNameInput").value=""; document.getElementById("writeNameResult").innerHTML=""; }
+    document.getElementById("checkWriteName").onclick = () => { let ans = document.getElementById("writeNameInput").value.trim().toLowerCase(); if(ans===currentWrite) document.getElementById("writeNameResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("writeNameResult").innerHTML=`<div class='wrong-feedback'>❌ ${currentWrite}</div>`; };
+    document.getElementById("newWriteName").onclick = updateWrite;
+    updateWrite();
+    
+    // Puzzle (multiple choice)
+    let currentPuzzle = "";
+    function updatePuzzle() { currentPuzzle = words[Math.floor(Math.random()*words.length)]; document.getElementById("puzzleImage").src = imageBase+currentPuzzle+".jpg"; let opts = new Set([currentPuzzle]); while(opts.size<3) opts.add(words[Math.floor(Math.random()*words.length)]); let html=""; Array.from(opts).sort(()=>Math.random()-0.5).forEach(o=>{ html+=`<label><input type="radio" name="puzzle" value="${o}"> ${o}</label>`; }); document.getElementById("puzzleOptions").innerHTML = html; document.getElementById("puzzleResult").innerHTML=""; }
+    document.getElementById("checkPuzzle").onclick = () => { let selected = document.querySelector('input[name="puzzle"]:checked'); if(selected && selected.value===currentPuzzle) document.getElementById("puzzleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("puzzleResult").innerHTML=`<div class='wrong-feedback'>❌ ${currentPuzzle}</div>`; };
+    document.getElementById("newPuzzle").onclick = updatePuzzle;
+    updatePuzzle();
+    
+    // Circle
+    let currentCircle = "";
+    function updateCircle() { currentCircle = words[Math.floor(Math.random()*words.length)]; document.getElementById("circleImage").src = imageBase+currentCircle+".jpg"; let opts = new Set([currentCircle]); while(opts.size<3) opts.add(words[Math.floor(Math.random()*words.length)]); let html=""; Array.from(opts).sort(()=>Math.random()-0.5).forEach(o=>{ html+=`<button class="circle-opt" data-val="${o}">${o}</button>`; }); document.getElementById("circleOptions").innerHTML = html; document.querySelectorAll(".circle-opt").forEach(btn=>{ btn.onclick = () => { if(btn.getAttribute("data-val")===currentCircle) document.getElementById("circleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("circleResult").innerHTML=`<div class='wrong-feedback'>❌ ${currentCircle}</div>`; }; }); }
+    document.getElementById("newCircle").onclick = updateCircle;
+    updateCircle();
+    
+    // Crossword (simple 4x4 with first 4 words)
+    const crosswordWords = ["mother","father","sister","brother"];
+    function buildCrossword() { let html=""; for(let i=0;i<4;i++){ for(let j=0;j<4;j++){ html+=`<input type="text" maxlength="1" id="cell_${i}_${j}" style="text-transform:uppercase">`; } html+=`<div style="width:100%"></div>`; } document.getElementById("crosswordGrid").innerHTML = html; for(let row=0;row<4;row++){ let w=crosswordWords[row]; for(let col=0;col<w.length;col++){ let cell=document.getElementById(`cell_${row}_${col}`); if(cell) cell.value=w[col].toUpperCase(); } } }
+    document.getElementById("checkCrossword").onclick = () => { let correct=true; for(let row=0;row<4;row++){ let w=crosswordWords[row]; for(let col=0;col<w.length;col++){ let cell=document.getElementById(`cell_${row}_${col}`); if(cell && cell.value.toLowerCase()!==w[col]) correct=false; } } document.getElementById("crosswordResult").innerHTML = correct ? "<div class='correct-feedback'>✅ Correct crossword</div>" : "<div class='wrong-feedback'>❌ Some letters wrong</div>"; };
+    buildCrossword();
+    
+    // Label pictures
+    function buildLabel() { let container = document.getElementById("labelContainer"); container.innerHTML=""; words.forEach((w,idx)=>{ let div=document.createElement("div"); div.style.textAlign="center"; div.innerHTML=`<img src="${imageBase+w}.jpg" style="max-width:80px"><br><input type="text" id="labelInput_${idx}" placeholder="Label">`; container.appendChild(div); }); let bank = document.getElementById("labelWordsBank"); bank.innerHTML=""; let shuffled=[...words].sort(()=>Math.random()-0.5); shuffled.forEach(w=>{ let btn=document.createElement("button"); btn.innerText=w; btn.onclick=()=>{ let firstEmpty=document.querySelector('#labelContainer input[value=""]'); if(firstEmpty) firstEmpty.value=w; else alert("No empty label"); }; bank.appendChild(btn); }); }
+    document.getElementById("checkLabels").onclick = () => { let allGood=true; words.forEach((w,idx)=>{ let inp=document.getElementById(`labelInput_${idx}`); if(inp.value.toLowerCase().trim()!==w) allGood=false; }); document.getElementById("labelResult").innerHTML = allGood ? "<div class='correct-feedback'>🏷️ All correct</div>" : "<div class='wrong-feedback'>Some labels wrong</div>"; };
+    buildLabel();
+</script>
+</body>
+</html>
