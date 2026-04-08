@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 2 Quiz</title>
+    <style>
+        body { background: linear-gradient(135deg, #1e5f8e, #0d3b55); margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; }
+        .container { max-width: 800px; margin: auto; background: white; border-radius: 40px; padding: 30px; }
+        h1 { color: #ff8c42; text-align: center; }
+        .question { background: #fef7e0; padding: 15px; border-radius: 25px; margin: 15px 0; }
+        button { background: #ff8c42; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
+        .result { background: #e9f0f5; padding: 15px; border-radius: 20px; margin-top: 20px; }
+        input, select { margin: 5px; padding: 5px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📝 Unit 2 Quiz - In the Classroom</h1>
+    <div id="quizQuestions">
+        <div class="question">1. What day comes after Monday?<br>
+            <input type="radio" name="q1" value="tuesday"> Tuesday<br>
+            <input type="radio" name="q1" value="wednesday"> Wednesday<br>
+            <input type="radio" name="q1" value="thursday"> Thursday
+        </div>
+        <div class="question">2. Complete the sentence: "She is ________." (picture of writing - use word)<br>
+            <input type="text" id="q2" placeholder="Enter action word">
+        </div>
+        <div class="question">3. Make negative: "He is sleeping." → He ________ sleeping.<br>
+            <select id="q3"><option value="">Select</option><option value="isn't">isn't</option><option value="not">not</option><option value="no">no</option></select>
+        </div>
+        <div class="question">4. Which word starts with the /l/ sound?<br>
+            <select id="q4"><option value="">Select</option><option value="rabbit">rabbit</option><option value="lemon">lemon</option><option value="red">red</option></select>
+        </div>
+        <div class="question">5. True or False: "Run" begins with the letter Rr.<br>
+            <select id="q5"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
+        </div>
+        <div class="question">6. What is the action in the picture? (type the word for "eat")<br>
+            <img src="https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-2/images/eat.jpg" style="max-width:100px"><br>
+            <input type="text" id="q6" placeholder="Write the word">
+        </div>
+    </div>
+    <button id="submitQuiz">Submit Quiz</button>
+    <div id="quizResult" class="result"></div>
+</div>
+<script>
+    document.getElementById('submitQuiz').onclick = () => {
+        let score = 0;
+        if (document.querySelector('input[name="q1"]:checked')?.value === 'tuesday') score++;
+        if (document.getElementById('q2').value.trim().toLowerCase() === 'writing') score++;
+        if (document.getElementById('q3').value === 'isn\'t') score++;
+        if (document.getElementById('q4').value === 'lemon') score++;
+        if (document.getElementById('q5').value === 'true') score++;
+        if (document.getElementById('q6').value.trim().toLowerCase() === 'eat') score++;
+        let percent = (score/6)*100;
+        let message = `You got ${score}/6 (${percent}%). `;
+        if (percent >= 80) message += "Excellent!";
+        else if (percent >= 60) message += "Good! Review your mistakes.";
+        else message += "Try again after studying the unit.";
+        document.getElementById('quizResult').innerHTML = message;
+    };
+</script>
+</body>
+</html>
