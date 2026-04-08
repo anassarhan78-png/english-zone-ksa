@@ -23,6 +23,11 @@
         .btn-secondary:hover { background: #cbd5e1; }
         .btn-text { background: #f1f5f9; font-size: 0.75rem; padding: 4px 10px; }
         .footer { text-align: center; padding: 15px; background: #f1f5f9; font-size: 0.8rem; color: #475569; border-top: 1px solid #e2e8f0; }
+        .et2-section { background: #fff8f0; border-radius: 32px; margin-top: 30px; padding: 20px; border: 1px solid #ffd89a; }
+        .et2-title { background: #ff8c42; color: white; padding: 15px; border-radius: 60px; text-align: center; margin-top: 0; }
+        .et2-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .button-group a.btn { background: #ff8c42; color: white; padding: 6px 14px; border-radius: 30px; text-decoration: none; display: inline-block; margin: 4px; font-size: 0.85rem; }
+        .button-group a.btn-gray { background: #6c757d; }
         @media (max-width: 700px) { .sidebar { width: 100%; max-height: none; } }
     </style>
 </head>
@@ -40,8 +45,38 @@
             </div>
         </div>
     </div>
+
+    <!-- ========== إضافة English Time 2 بشكل صحيح ========== -->
+    <div class="et2-section">
+        <h2 class="et2-title">📘 English Time 2</h2>
+        <div class="et2-grid">
+            <!-- وحدة 1 -->
+            <div class="unit-card">
+                <h3>Unit 1: At Home with Annie 🏠</h3>
+                <div class="button-group">
+                    <a href="books/english-time/english-time-2/interactive/unit1-final.html" target="_blank" class="btn">🎙️ Dictation</a>
+                    <a href="books/english-time/english-time-2/interactive/unit1-writing-escalating.html" target="_blank" class="btn">✍️ Writing</a>
+                    <a href="books/english-time/english-time-2/interactive/unit1-presentation.html" target="_blank" class="btn">🎤 Presentation</a>
+                    <a href="books/english-time/english-time-2/interactive/unit1-rubric.html" target="_blank" class="btn">📊 Rubric</a>
+                    <a href="books/english-time/english-time-2/interactive/unit1-quiz.html" target="_blank" class="btn">📝 Quiz</a>
+                    <a href="books/english-time/english-time-2/interactive/unit1-activities.html" target="_blank" class="btn btn-gray" style="background:#6c757d;">🎮 أنشطة إضافية</a>
+                </div>
+                <details>
+                    <summary>📄 عرض النصوص</summary>
+                    <a href="books/english-time/english-time-2/unit-1/dictation.md" target="_blank">Dictation</a> |
+                    <a href="books/english-time/english-time-2/unit-1/writing.md" target="_blank">Writing</a> |
+                    <a href="books/english-time/english-time-2/unit-1/presentation.md" target="_blank">Presentation</a> |
+                    <a href="books/english-time/english-time-2/unit-1/rubric.md" target="_blank">Rubric</a> |
+                    <a href="books/english-time/english-time-2/unit-1/quiz.md" target="_blank">Quiz</a>
+                </details>
+            </div>
+            <!-- يمكنك تكرار هذا القالب للوحدات 2 إلى 10 -->
+        </div>
+        <p style="text-align:center; margin-top:15px;">✨ باقي الوحدات ستضاف قريباً ✨</p>
+    </div>
+
     <div class="footer">
-        ✅ جميع الأنشطة التفاعلية تعمل | Dictation متكامل مع ألعاب متنوعة
+        ✅ جميع الأنشطة التفاعلية تعمل | Dictation متكامل مع ألعاب متنوعة | English Time 2 قيد الإضافة
     </div>
 </div>
 
@@ -50,7 +85,6 @@
     const repoBase = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-1";
     const units = [1,2,3,4,5,6,7,8,9,10];
 
-    // استخدم الأسماء الموجودة فعلياً في المجلد (من مخرجات ls)
     const skills = [
         { name: "🎨 Dictation", file: "unit{unit}-final.html", interactive: true },
         { name: "✍️ Writing", file: "unit{unit}-writing-escalating.html", interactive: true },
@@ -71,7 +105,6 @@
             const btnGroup = document.createElement('div');
             btnGroup.className = 'btn-group';
             skills.forEach(skill => {
-                // استبدال {unit} بالرقم
                 const fileName = skill.file.replace('{unit}', u);
                 const fullUrl = `${interactiveBase}/${fileName}`;
                 const link = document.createElement('a');
@@ -79,11 +112,9 @@
                 link.target = "_blank";
                 link.textContent = skill.name;
                 link.className = 'btn btn-primary';
-                // إذا كان الملف غير موجود (للوحدة 1 في بعض المهارات)، نضيف check بسيط لكننا نترك الرابط
                 btnGroup.appendChild(link);
             });
             unitDiv.appendChild(btnGroup);
-            // أزرار الملفات النصية
             const textGroup = document.createElement('div');
             textGroup.className = 'btn-group';
             normalFiles.forEach(f => {
@@ -117,23 +148,3 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
 </html>
-<!-- ===================== ENGLISH TIME 2 ===================== -->
-<div style="margin-top: 50px;">
-    <h2 style="background: #ff8c42; color: white; padding: 15px; border-radius: 60px; text-align: center;">📘 English Time 2</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
-        <!-- وحدة 1 -->
-        <div class="unit-card">
-            <h3>Unit 1: At Home with Annie 🏠</h3>
-            <div class="button-group">
-                <a href="books/english-time/english-time-2/interactive/unit1-final.html" target="_blank" class="btn">🎙️ Dictation</a>
-                <a href="books/english-time/english-time-2/interactive/unit1-writing-escalating.html" target="_blank" class="btn">✍️ Writing</a>
-                <a href="books/english-time/english-time-2/interactive/unit1-presentation.html" target="_blank" class="btn">🎤 Presentation</a>
-                <a href="books/english-time/english-time-2/interactive/unit1-rubric.html" target="_blank" class="btn">📊 Rubric</a>
-                <a href="books/english-time/english-time-2/interactive/unit1-quiz.html" target="_blank" class="btn">📝 Quiz</a>
-                <a href="books/english-time/english-time-2/interactive/unit1-activities.html" target="_blank" class="btn" style="background: #6c757d;">🎮 أنشطة إضافية</a>
-            </div>
-            <details><summary>📄 عرض النصوص</summary><a href="books/english-time/english-time-2/unit-1/dictation.md" target="_blank">Dictation</a> | <a href="books/english-time/english-time-2/unit-1/writing.md" target="_blank">Writing</a> | <a href="books/english-time/english-time-2/unit-1/presentation.md" target="_blank">Presentation</a> | <a href="books/english-time/english-time-2/unit-1/rubric.md" target="_blank">Rubric</a> | <a href="books/english-time/english-time-2/unit-1/quiz.md" target="_blank">Quiz</a></details>
-        </div>
-        <!-- كرر للوحدات 2 إلى 10 بنفس الشكل، مع تغيير الأرقام والعناوين -->
-    </div>
-</div>
