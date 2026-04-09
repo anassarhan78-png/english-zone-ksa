@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 8 Writing - Let's Clean Up</title>
+    <style>
+        body { background: linear-gradient(135deg, #1e5f8e, #0d3b55); margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; }
+        .container { max-width: 900px; margin: auto; background: white; border-radius: 40px; padding: 30px; }
+        h1 { color: #ff8c42; text-align: center; }
+        .task { background: #fef7e0; padding: 20px; border-radius: 30px; margin: 20px 0; }
+        textarea { width: 100%; padding: 15px; border-radius: 20px; border: 1px solid #ccc; }
+        .checklist { background: #e9f0f5; padding: 15px; border-radius: 20px; margin: 20px 0; }
+        .stars { font-size: 2rem; cursor: pointer; color: #ddd; }
+        .star-active { color: #ff8c42; }
+        button { background: #ff8c42; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
+        .feedback { margin-top: 20px; padding: 15px; border-radius: 20px; background: #c8e6d9; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>✍️ Unit 8: Let's Clean Up - Writing</h1>
+    <div class="task">
+        <h2>📝 Describe where things are using prepositions</h2>
+        <p><strong>Instructions:</strong> Write 4-6 sentences using: in, on, under, next to. Talk about objects and furniture (computer, shelf, cupboard, table, desk, chair).</p>
+        <p><strong>Example:</strong> "The guitar is on the table. The bananas are under the chair. The books are under the shelf. The basketball is next to the desk."</p>
+        <textarea id="writingArea" rows="8" placeholder="Write your sentences here..."></textarea>
+        <button id="speakWriting">🔊 Read my text</button>
+    </div>
+    <div class="checklist">
+        <h3>✅ Self-Checklist</h3>
+        <label><input type="checkbox" id="check1"> I used at least 3 different prepositions (in, on, under, next to).</label><br>
+        <label><input type="checkbox" id="check2"> I used furniture words (computer, shelf, cupboard, table, desk, chair).</label><br>
+        <label><input type="checkbox" id="check3"> I wrote 4 or more sentences.</label><br>
+        <label><input type="checkbox" id="check4"> I used correct singular/plural (Where's/Where are).</label><br>
+    </div>
+    <div>
+        <h3>⭐ Rate your writing</h3>
+        <div class="stars" id="starRating">
+            <span data-value="1">★</span><span data-value="2">★</span><span data-value="3">★</span><span data-value="4">★</span><span data-value="5">★</span>
+        </div>
+        <p id="ratingText"></p>
+    </div>
+    <button id="submitWriting">📬 Submit & Get Feedback</button>
+    <div id="writingFeedback"></div>
+</div>
+<script>
+    let rating = 0;
+    document.querySelectorAll('#starRating span').forEach(star => {
+        star.addEventListener('click', function() {
+            rating = parseInt(this.getAttribute('data-value'));
+            document.querySelectorAll('#starRating span').forEach((s, i) => {
+                if (i < rating) s.classList.add('star-active');
+                else s.classList.remove('star-active');
+            });
+            document.getElementById('ratingText').innerText = `You gave ${rating} stars.`;
+        });
+    });
+    document.getElementById('speakWriting').onclick = () => {
+        let text = document.getElementById('writingArea').value;
+        if (text) speak(text);
+        else alert("Write something first!");
+    };
+    document.getElementById('submitWriting').onclick = () => {
+        let c1 = document.getElementById('check1').checked;
+        let c2 = document.getElementById('check2').checked;
+        let c3 = document.getElementById('check3').checked;
+        let c4 = document.getElementById('check4').checked;
+        let score = (c1+c2+c3+c4) + (rating>0?1:0);
+        let feedback = `<div class="feedback">📊 Your score: ${score}/9. `;
+        if (score >= 7) feedback += "Excellent writing! Keep it up!";
+        else if (score >= 4) feedback += "Good start! Review the checklist and try again.";
+        else feedback += "Try to complete the checklist and write more sentences.";
+        feedback += "</div>";
+        document.getElementById('writingFeedback').innerHTML = feedback;
+    };
+    function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang = "en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+</script>
+</body>
+</html>
