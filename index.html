@@ -178,7 +178,7 @@
         },
         et2: {
             name: "📙 English Time 2",
-            units: 8,   // حتى اكتمال الوحدات 9-10 لاحقاً
+            units: 10,   // تم تحديثها إلى 10 وحدات
             getActivityPath: (unitNum, activityKey) => {
                 const base = "books/english-time/english-time-2/unit-" + unitNum;
                 const files = {
@@ -228,6 +228,20 @@
             comingSoon: true,
             getActivityPath: () => "#"
         }
+    };
+
+    // أسماء الوحدات لـ English Time 2 (حسب المحتوى النهائي)
+    const unitNamesET2 = {
+        1: "Unit 1: At Home with Annie",
+        2: "Unit 2: In the Classroom",
+        3: "Unit 3: At a Birthday Party",
+        4: "Unit 4: At a Store Window",
+        5: "Unit 5: At the Airport",
+        6: "Unit 6: At the Flower Shop",
+        7: "Unit 7: At the Department Store",
+        8: "Unit 8: Let's Clean Up",
+        9: "Unit 9: In a Store",
+        10: "Unit 10: At the Clinic"
     };
 
     const activitiesList = [
@@ -330,9 +344,7 @@
             let unitTitle = `Unit ${i}`;
             if (bookId === "et1") unitTitle = `Unit ${i}`;
             if (bookId === "et2") {
-                if (i === 1) unitTitle = `Unit 1: At Home with Annie`;
-                else if (i === 2) unitTitle = `Unit 2: In the Classroom`;
-                else unitTitle = `Unit ${i} (قيد الإعداد)`;
+                unitTitle = unitNamesET2[i] || `Unit ${i}`;
             }
             html += `<div class="neon-btn" data-unit="${i}">📖 ${unitTitle}</div>`;
         }
