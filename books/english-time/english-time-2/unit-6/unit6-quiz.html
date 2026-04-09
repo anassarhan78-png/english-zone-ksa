@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 6 Quiz</title>
+    <style>
+        body { background: linear-gradient(135deg, #1e5f8e, #0d3b55); margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; }
+        .container { max-width: 800px; margin: auto; background: white; border-radius: 40px; padding: 30px; }
+        h1 { color: #ff8c42; text-align: center; }
+        .question { background: #fef7e0; padding: 15px; border-radius: 25px; margin: 15px 0; }
+        button { background: #ff8c42; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
+        .result { background: #e9f0f5; padding: 15px; border-radius: 20px; margin-top: 20px; }
+        .color-sample { width: 50px; height: 50px; display: inline-block; margin-left: 10px; border-radius: 10px; vertical-align: middle; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📝 Unit 6 Quiz - At the Flower Shop</h1>
+    <div>
+        <div class="question">1. Complete the dialogue: "Where do you live?" → "I live in _______."<br>
+            <input type="text" id="q1" placeholder="City name">
+        </div>
+        <div class="question">2. What color is this? <div class="color-sample" style="background:blue;"></div><br>
+            <input type="text" id="q2" placeholder="Color">
+        </div>
+        <div class="question">3. Choose the correct word: "_______ are yellow flowers." (referring to flowers near you)<br>
+            <select id="q3"><option value="">Select</option><option value="This">This</option><option value="That">That</option><option value="These">These</option><option value="Those">Those</option></select>
+        </div>
+        <div class="question">4. Which word has the long 'i' sound like in 'bike'?<br>
+            <select id="q4"><option value="">Select</option><option value="cat">cat</option><option value="kite">kite</option><option value="cup">cup</option></select>
+        </div>
+        <div class="question">5. True or False: "Black" is a color.<br>
+            <select id="q5"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
+        </div>
+        <div class="question">6. What is the opposite of "white"?<br>
+            <input type="text" id="q6" placeholder="Color">
+        </div>
+    </div>
+    <button id="submitQuiz">Submit Quiz</button>
+    <div id="quizResult" class="result"></div>
+</div>
+<script>
+    document.getElementById('submitQuiz').onclick = () => {
+        let score = 0;
+        if (document.getElementById('q1').value.trim().toLowerCase() === 'oakville') score++;
+        if (document.getElementById('q2').value.trim().toLowerCase() === 'blue') score++;
+        if (document.getElementById('q3').value === 'These') score++;
+        if (document.getElementById('q4').value === 'kite') score++;
+        if (document.getElementById('q5').value === 'true') score++;
+        if (document.getElementById('q6').value.trim().toLowerCase() === 'black') score++;
+        let percent = (score/6)*100;
+        let message = `You got ${score}/6 (${percent}%). `;
+        if (percent >= 80) message += "Excellent!";
+        else if (percent >= 60) message += "Good! Review your mistakes.";
+        else message += "Try again after studying the unit.";
+        document.getElementById('quizResult').innerHTML = message;
+    };
+</script>
+</body>
+</html>
