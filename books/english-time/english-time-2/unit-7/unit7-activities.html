@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 7 Extra Activities - At the Department Store</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: linear-gradient(135deg, #1e5f8e, #0d3b55); margin: 0; padding: 20px; }
+        .container { max-width: 1300px; margin: auto; background: white; border-radius: 45px; padding: 20px 30px; }
+        h1 { color: #ff8c42; text-align: center; }
+        .activity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; }
+        .card { background: #fef7e0; border-radius: 35px; padding: 20px; border: 1px solid #ffcf9a; }
+        .card h2 { background: #ff8c42; display: inline-block; padding: 5px 20px; border-radius: 40px; color: white; font-size: 1.3rem; }
+        button { background: #ff8c42; border: none; color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; margin: 5px; }
+        input { padding: 8px; border-radius: 30px; border: 1px solid #ccc; margin: 5px; }
+        .correct-feedback { background: #c8e6d9; border-left: 6px solid #2e7d64; padding: 8px; border-radius: 20px; margin-top: 10px; }
+        .wrong-feedback { background: #ffe0e0; border-left: 6px solid #d9534f; padding: 8px; border-radius: 20px; margin-top: 10px; }
+        .drag-word { background: #2c7da0; color: white; padding: 10px 20px; border-radius: 40px; cursor: grab; display: inline-block; margin: 5px; }
+        .drop-zone { border: 2px dashed #ff8c42; border-radius: 20px; padding: 12px; min-width: 100px; text-align: center; background: #fff5e6; display: inline-block; margin: 6px; }
+        .crossword-grid { display: grid; grid-template-columns: repeat(6, 45px); gap: 4px; justify-content: center; background: #f0f0f0; padding: 15px; border-radius: 20px; }
+        .crossword-grid input { width: 45px; height: 45px; text-align: center; font-size: 1.2rem; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📘 English Time 2 - Unit 7 🎲 Extra Activities</h1>
+    <div class="activity-grid">
+        <!-- 1. Drag & Drop: Match clothing word to icon -->
+        <div class="card">
+            <h2>👕 Drag & Drop Clothing</h2>
+            <div id="dragDropClothesArea"></div>
+            <button id="checkClothesDrag">Check All</button>
+            <div id="clothesDragResult"></div>
+        </div>
+
+        <!-- 2. Crossword Puzzle (clothing words) -->
+        <div class="card">
+            <h2>🔠 Crossword Puzzle</h2>
+            <div id="crosswordClothes"></div>
+            <div id="crosswordCluesClothes" style="margin-top:10px; font-size:0.8rem;"></div>
+            <button id="checkCrosswordClothes">Check Crossword</button>
+            <div id="crosswordClothesResult"></div>
+        </div>
+
+        <!-- 3. Unscramble clothing words -->
+        <div class="card">
+            <h2>🔀 Unscramble</h2>
+            <div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div>
+            <input type="text" id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button>
+            <div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button>
+        </div>
+
+        <!-- 4. Match price to item (How much is/are?) -->
+        <div class="card">
+            <h2>💵 Match Price to Item</h2>
+            <div id="priceMatchQuestion"></div>
+            <select id="priceMatchSelect"></select>
+            <button id="checkPriceMatch">Check</button>
+            <div id="priceMatchResult"></div>
+            <button id="newPriceMatch">New</button>
+        </div>
+
+        <!-- 5. Write the price from dollar amount -->
+        <div class="card">
+            <h2>✍️ Write the Price</h2>
+            <div id="priceDisplay" style="font-size:2rem;">$25</div>
+            <input type="text" id="priceInput" placeholder="e.g., twenty-five dollars">
+            <button id="checkPriceWrite">Check</button>
+            <button id="newPriceWrite">Next</button>
+            <div id="priceWriteResult"></div>
+        </div>
+
+        <!-- 6. Label the clothing items -->
+        <div class="card">
+            <h2>🏷️ Label the Clothes</h2>
+            <div id="labelClothesContainer"></div>
+            <div id="clothesWordsBank"></div>
+            <button id="checkClothesLabels">Check</button>
+            <div id="clothesLabelResult"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const clothes = ["shirt","dress","skirt","pants","pajamas","shoes","socks","cap"];
+    const icons = { shirt:"👕", dress:"👗", skirt:"👘", pants:"👖", pajamas:"🩳", shoes:"👟", socks:"🧦", cap:"🧢" };
+    const prices = [25,40,30,15,50,2,13,10];
+    function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+
+    // 1. DRAG & DROP CLOTHING
+    function initDragDropClothes() {
+        let container = document.getElementById('dragDropClothesArea');
+        container.innerHTML = '<div><strong>Drag word to matching icon</strong></div><div style="display:flex; flex-wrap:wrap; gap:15px; margin:10px 0;">';
+        let shuffled = [...clothes].sort(() => Math.random() - 0.5);
+        shuffled.forEach(c => {
+            let span = document.createElement('span');
+            span.innerText = c;
+            span.setAttribute('draggable', 'true');
+            span.classList.add('drag-word');
+            span.ondragstart = (e) => { e.dataTransfer.setData('text/plain', c); };
+            container.appendChild(span);
+        });
+        container.innerHTML += '</div><div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">';
+        clothes.forEach(c => {
+            let zone = document.createElement('div');
+            zone.classList.add('drop-zone');
+            zone.setAttribute('data-expected', c);
+            zone.innerHTML = `<div style="font-size:2rem;">${icons[c]}</div><span class="drop-label">???</span>`;
+            zone.ondragover = (e) => e.preventDefault();
+            zone.ondrop = (e) => {
+                e.preventDefault();
+                let dragged = e.dataTransfer.getData('text/plain');
+                let expected = zone.getAttribute('data-expected');
+                if (dragged === expected) {
+                    zone.querySelector('.drop-label').innerText = dragged;
+                    zone.style.background = '#c8e6d9';
+                } else {
+                    alert(`Wrong match! ${dragged} is not ${expected}`);
+                }
+            };
+            container.appendChild(zone);
+        });
+        container.innerHTML += '</div>';
+    }
+    document.getElementById('checkClothesDrag').onclick = () => {
+        let allOk = true;
+        document.querySelectorAll('#dragDropClothesArea .drop-zone').forEach(zone => {
+            let label = zone.querySelector('.drop-label').innerText;
+            let expected = zone.getAttribute('data-expected');
+            if (label !== expected) allOk = false;
+        });
+        document.getElementById('clothesDragResult').innerHTML = allOk ? "<div class='correct-feedback'>🎉 Perfect matching!</div>" : "<div class='wrong-feedback'>⚠️ Some matches are missing or wrong.</div>";
+    };
+    initDragDropClothes();
+
+    // 2. CROSSWORD (simple 6x6 with clothing words)
+    function buildClothesCrossword() {
+        let gridHtml = '<div class="crossword-grid">';
+        let size = 6;
+        let predefined = [
+            ['S','H','I','R','T',''],
+            ['','','','','D','R'],
+            ['P','A','N','T','S',''],
+            ['','','S','K','I','R'],
+            ['C','A','P','','',''],
+            ['','','','','','']
+        ];
+        for(let i=0;i<size;i++){
+            for(let j=0;j<size;j++){
+                let val = predefined[i][j] ? predefined[i][j] : '';
+                let readonly = val ? 'readonly' : '';
+                gridHtml += `<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" style="text-transform:uppercase" ${readonly}>`;
+            }
+            gridHtml += `<div style="width:100%"></div>`;
+        }
+        gridHtml += '</div>';
+        document.getElementById('crosswordClothes').innerHTML = gridHtml;
+        let clues = `<strong>Clues:</strong> Across: Row0: a top (SHIRT), Row2: trousers (PANTS), Row4: headwear (CAP). Down: Col4: a skirt (SKIRT), Col5: a dress (DRESS).`;
+        document.getElementById('crosswordCluesClothes').innerHTML = clues;
+    }
+    document.getElementById('checkCrosswordClothes').onclick = () => {
+        document.getElementById('crosswordClothesResult').innerHTML = "<div class='correct-feedback'>✅ Check your answers with the clues. Great puzzle solving!</div>";
+    };
+    buildClothesCrossword();
+
+    // 3. UNSCRAMBLE
+    let currentScramble = "";
+    function getScrambled(w) { let arr = w.split(''); for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr.join(''); }
+    function updateScramble() { currentScramble = clothes[Math.floor(Math.random()*clothes.length)]; document.getElementById("scrambleWord").innerText = getScrambled(currentScramble); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
+    document.getElementById("checkScramble").onclick = () => { let ans = document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans === currentScramble) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${currentScramble}</div>`; };
+    document.getElementById("newScramble").onclick = updateScramble;
+    document.getElementById("speakScramble").onclick = () => speak(currentScramble);
+    updateScramble();
+
+    // 4. MATCH PRICE TO ITEM (How much is/are...?)
+    let currentPriceItem = null;
+    const priceItems = clothes.map((c, idx) => ({ item: c, price: prices[idx], phrase: `How much is the ${c}?` }));
+    function updatePriceMatch() {
+        currentPriceItem = priceItems[Math.floor(Math.random() * priceItems.length)];
+        document.getElementById("priceMatchQuestion").innerHTML = `<div style="font-size:1.3rem;">${currentPriceItem.phrase}</div>`;
+        let select = document.getElementById("priceMatchSelect");
+        select.innerHTML = "";
+        let opts = prices.map(p => `$${p}`).sort(() => Math.random() - 0.5);
+        opts.forEach(p => {
+            let opt = document.createElement("option");
+            opt.value = p;
+            opt.innerText = p;
+            select.appendChild(opt);
+        });
+        document.getElementById("priceMatchResult").innerHTML = "";
+    }
+    document.getElementById("checkPriceMatch").onclick = () => {
+        let selected = document.getElementById("priceMatchSelect").value;
+        let correct = `$${currentPriceItem.price}`;
+        if (selected === correct) {
+            document.getElementById("priceMatchResult").innerHTML = "<div class='correct-feedback'>✅ Correct price!</div>";
+        } else {
+            document.getElementById("priceMatchResult").innerHTML = `<div class='wrong-feedback'>❌ Wrong. Correct: ${correct}</div>`;
+        }
+    };
+    document.getElementById("newPriceMatch").onclick = updatePriceMatch;
+    updatePriceMatch();
+
+    // 5. WRITE THE PRICE IN WORDS
+    let currentPriceNumber = 25;
+    function updatePriceWrite() {
+        currentPriceNumber = prices[Math.floor(Math.random() * prices.length)];
+        document.getElementById("priceDisplay").innerHTML = `$${currentPriceNumber}`;
+        document.getElementById("priceInput").value = "";
+        document.getElementById("priceWriteResult").innerHTML = "";
+    }
+    function numberToWords(n) {
+        const ones = ["","one","two","three","four","five","six","seven","eight","nine"];
+        const teens = ["","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
+        const tens = ["","ten","twenty","thirty","forty","fifty"];
+        if (n === 0) return "zero";
+        if (n < 10) return ones[n];
+        if (n < 20) return teens[n-10];
+        let t = Math.floor(n/10);
+        let o = n%10;
+        return tens[t] + (o ? "-" + ones[o] : "");
+    }
+    document.getElementById("checkPriceWrite").onclick = () => {
+        let ans = document.getElementById("priceInput").value.trim().toLowerCase();
+        let correct = numberToWords(currentPriceNumber) + " dollars";
+        if (ans === correct || ans === correct.replace("-"," ")) {
+            document.getElementById("priceWriteResult").innerHTML = "<div class='correct-feedback'>✅ Correct!</div>";
+        } else {
+            document.getElementById("priceWriteResult").innerHTML = `<div class='wrong-feedback'>❌ Wrong. Correct: ${correct}</div>`;
+        }
+    };
+    document.getElementById("newPriceWrite").onclick = updatePriceWrite;
+    updatePriceWrite();
+
+    // 6. LABEL CLOTHING ITEMS (with icons)
+    function buildLabelClothes() {
+        let container = document.getElementById('labelClothesContainer');
+        container.innerHTML = "";
+        let shuffled = [...clothes].sort(() => Math.random() - 0.5);
+        shuffled.forEach((c, idx) => {
+            let div = document.createElement('div');
+            div.style.textAlign = "center";
+            div.style.display = "inline-block";
+            div.style.margin = "10px";
+            div.innerHTML = `<div style="font-size:2rem;">${icons[c]}</div><input type="text" id="clothesLabel_${idx}" placeholder="Word">`;
+            container.appendChild(div);
+        });
+        let bank = document.getElementById('clothesWordsBank');
+        bank.innerHTML = "";
+        let shuffledWords = [...clothes].sort(() => Math.random() - 0.5);
+        shuffledWords.forEach(w => {
+            let btn = document.createElement('button');
+            btn.innerText = w;
+            btn.onclick = () => {
+                let firstEmpty = document.querySelector('#labelClothesContainer input[value=""]');
+                if (firstEmpty) firstEmpty.value = w;
+                else alert("All fields filled? Use clear or edit.");
+            };
+            bank.appendChild(btn);
+        });
+    }
+    document.getElementById('checkClothesLabels').onclick = () => {
+        let allGood = true;
+        let inputs = document.querySelectorAll('#labelClothesContainer input');
+        let expected = [...clothes];
+        inputs.forEach((inp, idx) => {
+            if (inp.value.toLowerCase().trim() !== expected[idx]) allGood = false;
+        });
+        document.getElementById('clothesLabelResult').innerHTML = allGood ? "<div class='correct-feedback'>👚 All clothes labeled correctly!</div>" : "<div class='wrong-feedback'>Some labels are wrong. Use the word bank.</div>";
+    };
+    buildLabelClothes();
+</script>
+</body>
+</html>
