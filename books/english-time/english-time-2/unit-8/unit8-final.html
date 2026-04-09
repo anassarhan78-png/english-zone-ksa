@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Time 2 - Unit 8 Dictation | Let's Clean Up</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: linear-gradient(135deg, #1e5f8e, #0d3b55); margin: 0; padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .container { max-width: 1300px; width: 100%; background: white; border-radius: 40px; padding: 20px 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        h1 { color: #ff8c42; text-align: center; margin-top: 0; display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        h1 small { font-size: 0.7rem; background: #eee; padding: 5px 10px; border-radius: 30px; color: #333; }
+        .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 25px; margin-top: 20px; }
+        .game-card { background: #fef9e8; border-radius: 35px; padding: 20px; box-shadow: 0 8px 18px rgba(0,0,0,0.1); border: 1px solid #ffd89a; }
+        .game-card h2 { background: #ff8c42; display: inline-block; padding: 5px 18px; border-radius: 40px; color: white; font-size: 1.4rem; margin-top: 0; margin-bottom: 15px; }
+        .word-list { background: #e9f0f5; padding: 12px; border-radius: 28px; margin-bottom: 20px; font-size: 0.9rem; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        .word-list span { background: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; color: #1e5f8e; }
+        button { background: #ff8c42; border: none; color: white; padding: 8px 16px; border-radius: 50px; cursor: pointer; font-weight: bold; margin: 5px; transition: 0.2s; }
+        button:hover { background: #e06e1a; transform: scale(1.02); }
+        .speak-btn { background: #2c7da0; }
+        input, select { padding: 8px 12px; border-radius: 30px; border: 1px solid #ccc; margin: 5px; width: calc(100% - 20px); max-width: 250px; }
+        .correct { background: #c8e6d9 !important; border-left-color: #2e7d64; }
+        .wrong { background: #ffe0e0 !important; border-left-color: #d9534f; }
+        canvas { background: #f0f0f0; border-radius: 20px; margin: 10px auto; display: block; }
+        @media (max-width: 1100px) { .games-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📘 English Time 2 - Unit 8 <small>Let's Clean Up</small> 🎮 Dictation Games</h1>
+    <div class="word-list">📖 كلمات الوحدة: <span>computer</span> <span>shelf</span> <span>cupboard</span> <span>table</span> <span>desk</span> <span>chair</span></div>
+
+    <div class="games-grid">
+        <!-- HANGMAN -->
+        <div class="game-card">
+            <h2>🪢 Hangman</h2>
+            <canvas id="hangmanCanvas" width="250" height="180" style="width:100%; max-width:250px;"></canvas>
+            <div id="hangmanWord" style="font-size:28px; letter-spacing:8px; text-align:center; margin:10px 0; font-weight:bold;"></div>
+            <div id="hangmanMessage"></div>
+            <div id="hangmanLetters" style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center;"></div>
+            <button id="newHangmanGame">🔄 كلمة جديدة</button>
+        </div>
+
+        <!-- MISSING LETTER -->
+        <div class="game-card">
+            <h2>🔤 Missing Letter</h2>
+            <div id="missingQuestion"></div>
+            <input type="text" id="missingInput" placeholder="اكتب الحرف الناقص" maxlength="1" style="width:80px; text-align:center;">
+            <button id="checkMissing">تحقق</button>
+            <div id="missingResult"></div>
+            <button id="newMissing">كلمة جديدة</button>
+        </div>
+
+        <!-- MATCH (word to picture/icon) -->
+        <div class="game-card">
+            <h2>🃏 Match</h2>
+            <div id="matchQuestion"></div>
+            <select id="matchSelect"></select>
+            <button id="checkMatch">تحقق</button>
+            <div id="matchResult"></div>
+            <button id="newMatch">بطاقة جديدة</button>
+        </div>
+
+        <!-- FILL GAP (prepositions sentences) -->
+        <div class="game-card">
+            <h2>📝 Fill Gap</h2>
+            <div id="fillSentence"></div>
+            <input type="text" id="fillInput" placeholder="أكمل الكلمة">
+            <button id="checkFill">تحقق</button>
+            <div id="fillResult"></div>
+            <button id="newFill">جملة جديدة</button>
+        </div>
+
+        <!-- CLASSIC DICTATION -->
+        <div class="game-card">
+            <h2>🎧 Classic Dictation</h2>
+            <div id="dictImage"><div id="dictIcon" style="font-size:3rem; text-align:center;">🖥️</div></div>
+            <button id="speakDict" class="speak-btn">🔊 Speak</button>
+            <input type="text" id="dictInput" placeholder="اكتب الكلمة">
+            <button id="checkDict">تحقق</button>
+            <div id="dictResult"></div>
+            <button id="newDict">كلمة جديدة</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const words = ["computer", "shelf", "cupboard", "table", "desk", "chair"];
+    const icons = { computer:"🖥️", shelf:"📚", cupboard:"🚪", table:"🪑", desk:"📖", chair:"🪑" };
+    const sentences = {
+        computer: "The birds are on the computer.",
+        shelf: "The books are under the shelf.",
+        cupboard: "The kite is in the cupboard.",
+        table: "The guitar is on the table.",
+        desk: "The basketball is next to the desk.",
+        chair: "The bananas are under the chair."
+    };
+    function speak(text) {
+        let utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "en-US";
+        speechSynthesis.cancel();
+        speechSynthesis.speak(utterance);
+    }
+
+    // HANGMAN (standard)
+    let hangmanWord = "", guessedLetters = [], wrongGuesses = 0;
+    const canvas = document.getElementById("hangmanCanvas");
+    const ctx = canvas.getContext("2d");
+    function drawHangman() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "#333";
+        ctx.beginPath();
+        ctx.moveTo(30, 160); ctx.lineTo(220, 160); ctx.stroke();
+        ctx.moveTo(60, 160); ctx.lineTo(60, 20); ctx.stroke();
+        ctx.moveTo(60, 20); ctx.lineTo(150, 20); ctx.stroke();
+        ctx.moveTo(150, 20); ctx.lineTo(150, 40); ctx.stroke();
+        if (wrongGuesses > 0) { ctx.beginPath(); ctx.arc(150, 55, 15, 0, Math.PI*2); ctx.stroke(); }
+        if (wrongGuesses > 1) { ctx.beginPath(); ctx.moveTo(150, 70); ctx.lineTo(150, 110); ctx.stroke(); }
+        if (wrongGuesses > 2) { ctx.beginPath(); ctx.moveTo(150, 80); ctx.lineTo(130, 100); ctx.stroke(); }
+        if (wrongGuesses > 3) { ctx.beginPath(); ctx.moveTo(150, 80); ctx.lineTo(170, 100); ctx.stroke(); }
+        if (wrongGuesses > 4) { ctx.beginPath(); ctx.moveTo(150, 110); ctx.lineTo(130, 140); ctx.stroke(); }
+        if (wrongGuesses > 5) { ctx.beginPath(); ctx.moveTo(150, 110); ctx.lineTo(170, 140); ctx.stroke(); }
+    }
+    function updateHangmanDisplay() {
+        let display = hangmanWord.split('').map(l => guessedLetters.includes(l) ? l : '_').join(' ');
+        document.getElementById("hangmanWord").innerText = display;
+        drawHangman();
+        let msg = document.getElementById("hangmanMessage");
+        if (display.replace(/ /g, '') === hangmanWord) {
+            msg.innerHTML = "<span style='color:green'>🎉 You won!</span>";
+            disableHangmanLetters(true);
+        } else if (wrongGuesses >= 6) {
+            msg.innerHTML = `<span style='color:red'>💀 Game over! The word was ${hangmanWord}</span>`;
+            disableHangmanLetters(true);
+        } else {
+            msg.innerHTML = "";
+            disableHangmanLetters(false);
+        }
+    }
+    function disableHangmanLetters(disabled) {
+        document.querySelectorAll("#hangmanLetters button").forEach(btn => btn.disabled = disabled);
+    }
+    function newHangmanGame() {
+        hangmanWord = words[Math.floor(Math.random() * words.length)];
+        guessedLetters = [];
+        wrongGuesses = 0;
+        updateHangmanDisplay();
+        generateHangmanLetters();
+    }
+    function generateHangmanLetters() {
+        const lettersDiv = document.getElementById("hangmanLetters");
+        lettersDiv.innerHTML = "";
+        "abcdefghijklmnopqrstuvwxyz".split('').forEach(l => {
+            let btn = document.createElement("button");
+            btn.innerText = l;
+            btn.onclick = () => {
+                if (guessedLetters.includes(l)) return;
+                guessedLetters.push(l);
+                if (hangmanWord.includes(l)) {
+                    updateHangmanDisplay();
+                } else {
+                    wrongGuesses++;
+                    updateHangmanDisplay();
+                }
+                btn.disabled = true;
+            };
+            lettersDiv.appendChild(btn);
+        });
+    }
+    document.getElementById("newHangmanGame").onclick = () => newHangmanGame();
+    newHangmanGame();
+
+    // MISSING LETTER
+    let missingWord = "", missingIndex = 0;
+    function updateMissing() {
+        missingWord = words[Math.floor(Math.random() * words.length)];
+        missingIndex = Math.floor(Math.random() * missingWord.length);
+        let display = missingWord.split('').map((c, i) => i === missingIndex ? '___' : c).join('');
+        document.getElementById("missingQuestion").innerHTML = `<div style="font-size:1.8rem; background:#f0f0f0; padding:10px; border-radius:20px;">${display}</div>`;
+        document.getElementById("missingInput").value = "";
+        document.getElementById("missingResult").innerHTML = "";
+    }
+    document.getElementById("checkMissing").onclick = () => {
+        let ans = document.getElementById("missingInput").value.trim().toLowerCase();
+        if (ans === missingWord[missingIndex]) {
+            document.getElementById("missingResult").innerHTML = "<div class='correct'>✅ Correct!</div>";
+        } else {
+            document.getElementById("missingResult").innerHTML = `<div class='wrong'>❌ Wrong! The letter is '${missingWord[missingIndex]}'</div>`;
+        }
+    };
+    document.getElementById("newMissing").onclick = updateMissing;
+    updateMissing();
+
+    // MATCH (word to icon)
+    let matchWord = "";
+    function updateMatch() {
+        matchWord = words[Math.floor(Math.random() * words.length)];
+        document.getElementById("matchQuestion").innerHTML = `<div style="font-size:3rem;">${icons[matchWord]}</div><br>Choose the matching word:`;
+        let select = document.getElementById("matchSelect");
+        select.innerHTML = "";
+        let opts = [...words].sort(() => Math.random() - 0.5);
+        opts.forEach(w => {
+            let opt = document.createElement("option");
+            opt.value = w;
+            opt.innerText = w;
+            select.appendChild(opt);
+        });
+        document.getElementById("matchResult").innerHTML = "";
+    }
+    document.getElementById("checkMatch").onclick = () => {
+        let selected = document.getElementById("matchSelect").value;
+        if (selected === matchWord) {
+            document.getElementById("matchResult").innerHTML = "<div class='correct'>✅ Correct match!</div>";
+        } else {
+            document.getElementById("matchResult").innerHTML = `<div class='wrong'>❌ Wrong! The correct word is ${matchWord}</div>`;
+        }
+    };
+    document.getElementById("newMatch").onclick = updateMatch;
+    updateMatch();
+
+    // FILL GAP (preposition sentences)
+    let fillWord = "";
+    function updateFill() {
+        fillWord = words[Math.floor(Math.random() * words.length)];
+        let sentence = sentences[fillWord];
+        let blankSentence = sentence.replace(fillWord, '______');
+        document.getElementById("fillSentence").innerHTML = `<div style="font-size:1.2rem;">${blankSentence}</div>`;
+        document.getElementById("fillInput").value = "";
+        document.getElementById("fillResult").innerHTML = "";
+    }
+    document.getElementById("checkFill").onclick = () => {
+        let ans = document.getElementById("fillInput").value.trim().toLowerCase();
+        if (ans === fillWord) {
+            document.getElementById("fillResult").innerHTML = "<div class='correct'>✅ Correct!</div>";
+        } else {
+            document.getElementById("fillResult").innerHTML = `<div class='wrong'>❌ Wrong! The correct word is ${fillWord}</div>`;
+        }
+    };
+    document.getElementById("newFill").onclick = updateFill;
+    updateFill();
+
+    // CLASSIC DICTATION
+    let dictWord = "";
+    function updateDict() {
+        dictWord = words[Math.floor(Math.random() * words.length)];
+        document.getElementById("dictIcon").innerHTML = icons[dictWord] || "🖥️";
+        document.getElementById("dictInput").value = "";
+        document.getElementById("dictResult").innerHTML = "";
+    }
+    document.getElementById("speakDict").onclick = () => speak(dictWord);
+    document.getElementById("checkDict").onclick = () => {
+        let ans = document.getElementById("dictInput").value.trim().toLowerCase();
+        if (ans === dictWord) {
+            document.getElementById("dictResult").innerHTML = "<div class='correct'>✅ Correct!</div>";
+        } else {
+            document.getElementById("dictResult").innerHTML = `<div class='wrong'>❌ Wrong! Correct: ${dictWord}</div>`;
+        }
+    };
+    document.getElementById("newDict").onclick = updateDict;
+    updateDict();
+</script>
+</body>
+</html>
