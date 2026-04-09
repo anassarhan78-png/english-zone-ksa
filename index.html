@@ -171,14 +171,14 @@
                     presentation: `unit${unitNum}-presentation.html`,
                     rubric: `unit${unitNum}-rubric.html`,
                     quiz: `unit${unitNum}-quiz.html`,
-                    extra: `unit${unitNum}-activities.html`
+                    extra: `unit${unitNum}-activities.html`   // تصحيح: أنشطة إضافية
                 };
                 return `${base}/${files[activityKey]}`;
             }
         },
         et2: {
             name: "📙 English Time 2",
-            units: 10,   // تم تحديثها إلى 10 وحدات
+            units: 10,
             getActivityPath: (unitNum, activityKey) => {
                 const base = "books/english-time/english-time-2/unit-" + unitNum;
                 const files = {
@@ -230,7 +230,7 @@
         }
     };
 
-    // أسماء الوحدات لـ English Time 2 (حسب المحتوى النهائي)
+    // أسماء الوحدات لـ English Time 2
     const unitNamesET2 = {
         1: "Unit 1: At Home with Annie",
         2: "Unit 2: In the Classroom",
@@ -342,9 +342,10 @@
         html += `<div class="grid-units">`;
         for (let i = 1; i <= totalUnits; i++) {
             let unitTitle = `Unit ${i}`;
-            if (bookId === "et1") unitTitle = `Unit ${i}`;
             if (bookId === "et2") {
                 unitTitle = unitNamesET2[i] || `Unit ${i}`;
+            } else if (bookId === "et1") {
+                unitTitle = `Unit ${i}`;
             }
             html += `<div class="neon-btn" data-unit="${i}">📖 ${unitTitle}</div>`;
         }
