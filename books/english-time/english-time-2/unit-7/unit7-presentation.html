@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 7 Presentation - At the Department Store</title>
+    <style>
+        body { background: linear-gradient(135deg, #1e5f8e, #0d3b55); margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; }
+        .container { max-width: 900px; margin: auto; background: white; border-radius: 40px; padding: 30px; }
+        h1 { color: #ff8c42; text-align: center; }
+        .timer { font-size: 3rem; text-align: center; font-family: monospace; background: #333; color: #fff; padding: 10px; border-radius: 60px; width: 200px; margin: 20px auto; }
+        button { background: #ff8c42; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; margin: 5px; }
+        .speech-text { background: #fef7e0; padding: 20px; border-radius: 30px; margin: 20px 0; }
+        textarea { width: 100%; padding: 10px; border-radius: 20px; }
+        .feedback { margin-top: 20px; padding: 15px; border-radius: 20px; background: #e9f0f5; }
+        .price-list { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin: 15px 0; }
+        .item { text-align: center; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎤 Unit 7: At the Department Store - Speaking</h1>
+    <div class="timer" id="timerDisplay">00:00</div>
+    <div>
+        <button id="startTimer">▶ Start (30 sec)</button>
+        <button id="resetTimer">🔄 Reset</button>
+    </div>
+    <div class="price-list">
+        <div class="item">👕 $25</div><div class="item">👗 $40</div><div class="item">👖 $30</div><div class="item">🧦 $2</div>
+    </div>
+    <div class="speech-text">
+        <h3>Suggested speech (you can edit):</h3>
+        <textarea id="speechScript" rows="5">Hello. How much is this shirt? It's twenty-five dollars. That's expensive. How much are these pants? They're thirty dollars. I'll take the shirt. Thank you!</textarea>
+        <button id="speakScript">🔊 Read aloud</button>
+    </div>
+    <div>
+        <h3>Self evaluation:</h3>
+        <label><input type="checkbox" id="evalTime"> I spoke for about 30 seconds.</label><br>
+        <label><input type="checkbox" id="evalClear"> I spoke clearly.</label><br>
+        <label><input type="checkbox" id="evalConfident"> I was confident.</label><br>
+        <button id="submitEval">Submit Self Evaluation</button>
+    </div>
+    <div id="presentationFeedback" class="feedback"></div>
+</div>
+<script>
+    let timerInterval = null;
+    let seconds = 0;
+    const timerDisplay = document.getElementById('timerDisplay');
+    function updateTimerDisplay() {
+        let mins = Math.floor(seconds / 60);
+        let secs = seconds % 60;
+        timerDisplay.innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+    }
+    document.getElementById('startTimer').onclick = () => {
+        if (timerInterval) clearInterval(timerInterval);
+        seconds = 0;
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            seconds++;
+            updateTimerDisplay();
+            if (seconds >= 30) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                alert("Time's up! 30 seconds finished.");
+            }
+        }, 1000);
+    };
+    document.getElementById('resetTimer').onclick = () => {
+        if (timerInterval) clearInterval(timerInterval);
+        seconds = 0;
+        updateTimerDisplay();
+        timerInterval = null;
+    };
+    document.getElementById('speakScript').onclick = () => {
+        let text = document.getElementById('speechScript').value;
+        let utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "en-US";
+        speechSynthesis.cancel();
+        speechSynthesis.speak(utterance);
+    };
+    document.getElementById('submitEval').onclick = () => {
+        let t = document.getElementById('evalTime').checked;
+        let c = document.getElementById('evalClear').checked;
+        let cf = document.getElementById('evalConfident').checked;
+        let score = (t?1:0)+(c?1:0)+(cf?1:0);
+        let feedback = `You scored ${score}/3. `;
+        if (score === 3) feedback += "Excellent presentation! You're a great speaker.";
+        else if (score >= 2) feedback += "Good job! Practice a bit more for confidence.";
+        else feedback += "Try to prepare better next time. You can do it!";
+        document.getElementById('presentationFeedback').innerHTML = feedback;
+    };
+</script>
+</body>
+</html>
