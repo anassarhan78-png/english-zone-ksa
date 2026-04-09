@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 4 Quiz</title>
+    <style>
+        body { background: linear-gradient(135deg, #1e5f8e, #0d3b55); margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; }
+        .container { max-width: 800px; margin: auto; background: white; border-radius: 40px; padding: 30px; }
+        h1 { color: #ff8c42; text-align: center; }
+        .question { background: #fef7e0; padding: 15px; border-radius: 25px; margin: 15px 0; }
+        button { background: #ff8c42; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
+        .result { background: #e9f0f5; padding: 15px; border-radius: 20px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📝 Unit 4 Quiz - At a Store Window</h1>
+    <div>
+        <div class="question">1. What do you say on the phone to ask for someone?<br>
+            <input type="radio" name="q1" value="may"> May I speak to Sam?<br>
+            <input type="radio" name="q1" value="hello"> Hello?<br>
+            <input type="radio" name="q1" value="thanks"> Thanks
+        </div>
+        <div class="question">2. Complete the sentence: "He is ________." (picture of getting dressed)<br>
+            <input type="text" id="q2" placeholder="Enter phrase">
+        </div>
+        <div class="question">3. What are they doing? (They're eating breakfast) - choose correct form<br>
+            <select id="q3"><option value="">Select</option><option value="eat">eat</option><option value="eating">eating</option><option value="eats">eats</option></select>
+        </div>
+        <div class="question">4. Which word has the long 'a' sound like in 'cake'?<br>
+            <select id="q4"><option value="">Select</option><option value="rain">rain</option><option value="cat">cat</option><option value="bed">bed</option></select>
+        </div>
+        <div class="question">5. True or False: "Watch TV" is a daily routine.<br>
+            <select id="q5"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
+        </div>
+        <div class="question">6. What is the action? (type the phrase for "take a shower")<br>
+            <img src="https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/english-time/english-time-2/images/take-a-shower.jpg" style="max-width:100px"><br>
+            <input type="text" id="q6" placeholder="Write the phrase">
+        </div>
+    </div>
+    <button id="submitQuiz">Submit Quiz</button>
+    <div id="quizResult" class="result"></div>
+</div>
+<script>
+    document.getElementById('submitQuiz').onclick = () => {
+        let score = 0;
+        if (document.querySelector('input[name="q1"]:checked')?.value === 'may') score++;
+        if (document.getElementById('q2').value.trim().toLowerCase() === 'getting dressed') score++;
+        if (document.getElementById('q3').value === 'eating') score++;
+        if (document.getElementById('q4').value === 'rain') score++;
+        if (document.getElementById('q5').value === 'true') score++;
+        if (document.getElementById('q6').value.trim().toLowerCase() === 'take a shower') score++;
+        let percent = (score/6)*100;
+        let message = `You got ${score}/6 (${percent}%). `;
+        if (percent >= 80) message += "Excellent!";
+        else if (percent >= 60) message += "Good! Review your mistakes.";
+        else message += "Try again after studying the unit.";
+        document.getElementById('quizResult').innerHTML = message;
+    };
+</script>
+</body>
+</html>
