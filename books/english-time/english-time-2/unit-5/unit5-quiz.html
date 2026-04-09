@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 5 Quiz</title>
+    <style>
+        body { background: linear-gradient(135deg, #1e5f8e, #0d3b55); margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; }
+        .container { max-width: 800px; margin: auto; background: white; border-radius: 40px; padding: 30px; }
+        h1 { color: #ff8c42; text-align: center; }
+        .question { background: #fef7e0; padding: 15px; border-radius: 25px; margin: 15px 0; }
+        button { background: #ff8c42; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
+        .result { background: #e9f0f5; padding: 15px; border-radius: 20px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📝 Unit 5 Quiz - At the Airport</h1>
+    <div>
+        <div class="question">1. Complete the dialogue: "Where are you from?" → "I'm from _______."<br>
+            <input type="text" id="q1" placeholder="Country name">
+        </div>
+        <div class="question">2. Write the number: 17 → _______<br>
+            <input type="text" id="q2" placeholder="Word">
+        </div>
+        <div class="question">3. What time is it? (2:15) → It's _______<br>
+            <input type="text" id="q3" placeholder="Time phrase">
+        </div>
+        <div class="question">4. Which word has the long 'e' sound like in 'bee'?<br>
+            <select id="q4"><option value="">Select</option><option value="cat">cat</option><option value="meat">meat</option><option value="hat">hat</option></select>
+        </div>
+        <div class="question">5. True or False: "Fifty" is 15.<br>
+            <select id="q5"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
+        </div>
+        <div class="question">6. Look at the digital clock: [10:30]. What time is it?<br>
+            <input type="text" id="q6" placeholder="e.g., ten thirty">
+        </div>
+    </div>
+    <button id="submitQuiz">Submit Quiz</button>
+    <div id="quizResult" class="result"></div>
+</div>
+<script>
+    document.getElementById('submitQuiz').onclick = () => {
+        let score = 0;
+        if (document.getElementById('q1').value.trim().toLowerCase() === 'france') score++;
+        if (document.getElementById('q2').value.trim().toLowerCase() === 'seventeen') score++;
+        if (document.getElementById('q3').value.trim().toLowerCase() === 'two fifteen' || document.getElementById('q3').value.trim().toLowerCase() === '2:15') score++;
+        if (document.getElementById('q4').value === 'meat') score++;
+        if (document.getElementById('q5').value === 'false') score++;
+        if (document.getElementById('q6').value.trim().toLowerCase() === 'ten thirty' || document.getElementById('q6').value.trim().toLowerCase() === '10:30') score++;
+        let percent = (score/6)*100;
+        let message = `You got ${score}/6 (${percent}%). `;
+        if (percent >= 80) message += "Excellent!";
+        else if (percent >= 60) message += "Good! Review your mistakes.";
+        else message += "Try again after studying the unit.";
+        document.getElementById('quizResult').innerHTML = message;
+    };
+</script>
+</body>
+</html>
