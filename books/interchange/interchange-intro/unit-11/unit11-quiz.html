@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interchange Intro - Unit 11 Quiz (50 Questions)</title>
+    <style>
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        .container { max-width: 1000px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .question { background: #fff5e6; padding: 15px; border-radius: 25px; margin: 15px 0; }
+        button { background: #d35400; border: none; color: white; padding: 12px 24px; border-radius: 40px; cursor: pointer; font-size: 1rem; margin-top: 20px; }
+        .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; font-size: 1.2rem; }
+        input, select { margin: 5px; padding: 8px; border-radius: 20px; border: 1px solid #ccc; }
+        .img-quiz { max-width: 80px; vertical-align: middle; margin-left: 10px; border-radius: 10px; display: block; margin-bottom: 10px; }
+        hr { margin: 20px 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📝 Unit 11 Quiz - What are you going to do? (50 questions)</h1>
+    <div id="quizContainer"></div>
+    <button id="submitQuiz">Submit Quiz</button>
+    <div id="quizResult" class="result"></div>
+</div>
+<script>
+    const imageBase = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/interchange/interchange-intro/images/";
+    const questions = [];
+
+    // Part 1: Months (12 questions - match month to order)
+    const monthsList = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    for (let i = 0; i < 12; i++) {
+        questions.push({
+            type: "mc",
+            text: `Which month comes after ${monthsList[i]}?`,
+            options: [monthsList[(i+1)%12], monthsList[(i+2)%12], monthsList[i]],
+            answer: monthsList[(i+1)%12]
+        });
+    }
+
+    // Part 2: Dates (5 questions)
+    const dateQuestions = [
+        { text: "What is the 1st of January?", options: ["January one", "January first", "January 1st"], answer: "January first" },
+        { text: "What is 4th of July?", options: ["July fourth", "July four", "July 4rd"], answer: "July fourth" },
+        { text: "What is 22nd of December?", options: ["December twenty-two", "December twenty-second", "December 22th"], answer: "December twenty-second" },
+        { text: "What is 31st of October?", options: ["October thirty-one", "October thirty-first", "October 31th"], answer: "October thirty-first" },
+        { text: "What is 15th of March?", options: ["March fifteen", "March fifteenth", "March 15st"], answer: "March fifteenth" }
+    ];
+    for (let i = 0; i < 5; i++) {
+        questions.push({
+            type: "mc",
+            text: dateQuestions[i].text,
+            options: dateQuestions[i].options,
+            answer: dateQuestions[i].answer
+        });
+    }
+
+    // Part 3: Be going to (10 questions)
+    const goingToQuestions = [
+        { text: "I ______ going to watch a movie tonight.", options: ["am", "is", "are"], answer: "am" },
+        { text: "She ______ going to bake a cake.", options: ["am", "is", "are"], answer: "is" },
+        { text: "They ______ going to travel next week.", options: ["am", "is", "are"], answer: "are" },
+        { text: "What ______ you going to do tomorrow?", options: ["am", "is", "are"], answer: "are" },
+        { text: "We ______ going to stay home.", options: ["am", "is", "are"], answer: "are" },
+        { text: "He ______ not going to come to the party.", options: ["am", "is", "are"], answer: "is" },
+        { text: "Where ______ they going to meet?", options: ["am", "is", "are"], answer: "are" },
+        { text: "I ______ going to relax this weekend.", options: ["am", "is", "are"], answer: "am" },
+        { text: "The children ______ going to play outside.", options: ["am", "is", "are"], answer: "are" },
+        { text: "______ you going to invite her?", options: ["Am", "Is", "Are"], answer: "Are" }
+    ];
+    for (let i = 0; i < 10; i++) {
+        questions.push({
+            type: "mc",
+            text: goingToQuestions[i].text,
+            options: goingToQuestions[i].options,
+            answer: goingToQuestions[i].answer
+        });
+    }
+
+    // Part 4: Holidays (5 questions)
+    const holidayQuestions = [
+        { text: "When is Valentine's Day?", options: ["January 1", "February 14", "December 25"], answer: "February 14" },
+        { text: "When is Independence Day in the US?", options: ["July 4", "June 4", "August 4"], answer: "July 4" },
+        { text: "What do people often eat on Thanksgiving?", options: ["Turkey", "Pizza", "Cake"], answer: "Turkey" },
+        { text: "Which holiday has a parade with costumes?", options: ["Christmas", "Halloween", "New Year"], answer: "Halloween" },
+        { text: "What is a traditional gift for graduation?", options: ["Money", "Flowers", "A cake"], answer: "Money" }
+    ];
+    for (let i = 0; i < 5; i++) {
+        questions.push({
+            type: "mc",
+            text: holidayQuestions[i].text,
+            options: holidayQuestions[i].options,
+            answer: holidayQuestions[i].answer
+        });
+    }
+
+    // Part 5: Reading comprehension (5 questions based on birthday traditions)
+    for (let i = 0; i < 5; i++) {
+        questions.push({
+            type: "mc",
+            text: `(Reading) ${i===0?"What do friends do to Elena on her birthday?":i===1?"What does Ka‑mei receive from relatives?":i===2?"What color represents new life in Japan?":i===3?"What do French friends give on a birthday?":i===4?"What is 'kanreki'?"}`,
+            options: i===0?["Pull her ear","Give her cake","Sing a song"]:i===1?["Money in lucky envelopes","A red hat","Noodles"]:i===2?["Red","White","Blue"]:i===3?["A cake, a drink, or something small","A big gift","A party"]:i===4?["60th birthday","16th birthday","Wedding anniversary"],
+            answer: i===0?"Pull her ear":i===1?"Money in lucky envelopes":i===2?"Red":i===3?"A cake, a drink, or something small":i===4?"60th birthday"
+        });
+    }
+
+    // Part 6: True/False (5 questions)
+    const tfQuestions = [
+        { text: "December is the first month of the year.", answer: "false" },
+        { text: "'Be going to' is used for future plans.", answer: "true" },
+        { text: "Halloween is on October 31st.", answer: "true" },
+        { text: "You eat turkey on Valentine's Day.", answer: "false" },
+        { text: "The contraction 'gonna' means 'going to'.", answer: "true" }
+    ];
+    for (let i = 0; i < 5; i++) {
+        questions.push({
+            type: "tf",
+            text: tfQuestions[i].text,
+            answer: tfQuestions[i].answer
+        });
+    }
+
+    // Part 7: Short answer (8 questions)
+    const shortAnswers = [
+        { text: "Name the month of Thanksgiving in the US.", answer: "November" },
+        { text: "What is the 25th of December?", answer: "Christmas" },
+        { text: "What is the 14th of February?", answer: "Valentine's Day" },
+        { text: "Write the contraction of 'going to'.", answer: "gonna" },
+        { text: "What are you going to do for a birthday? (write one activity)", answer: "eat cake" },
+        { text: "What do you call a celebration after finishing school?", answer: "graduation" },
+        { text: "What month is the first month of the year?", answer: "January" },
+        { text: "Name a parade on Thanksgiving in the US.", answer: "Macy's" }
+    ];
+    for (let i = 0; i < 8; i++) {
+        questions.push({
+            type: "short",
+            text: shortAnswers[i].text,
+            answer: shortAnswers[i].answer
+        });
+    }
+
+    // Build HTML
+    function buildQuiz() {
+        const container = document.getElementById('quizContainer');
+        let html = '';
+        questions.forEach((q, idx) => {
+            html += `<div class="question"><strong>${idx+1}. `;
+            if (q.type === 'img') {
+                html += `<img src="${imageBase + q.img}" class="img-quiz" onerror="this.src='https://placehold.co/100x100?text=No+Image'"><br>${q.text}`;
+            } else {
+                html += q.text;
+            }
+            html += `</strong><br>`;
+            if (q.type === 'mc') {
+                q.options.forEach(opt => {
+                    html += `<label><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label> `;
+                });
+            } else if (q.type === 'tf') {
+                html += `<label><input type="radio" name="q${idx}" value="true"> True</label> `;
+                html += `<label><input type="radio" name="q${idx}" value="false"> False</label>`;
+            } else if (q.type === 'short') {
+                html += `<input type="text" name="q${idx}" placeholder="Type your answer">`;
+            }
+            html += `</div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        for (let i = 0; i < questions.length; i++) {
+            const q = questions[i];
+            let userAnswer = null;
+            if (q.type === 'mc' || q.type === 'tf') {
+                const radios = document.querySelectorAll(`input[name="q${i}"]`);
+                for (let r of radios) {
+                    if (r.checked) { userAnswer = r.value; break; }
+                }
+            } else {
+                const input = document.querySelector(`input[name="q${i}"]`);
+                if (input) userAnswer = input.value.trim().toLowerCase();
+            }
+            if (userAnswer === q.answer.toLowerCase()) score++;
+        }
+        const percent = (score / questions.length) * 100;
+        let message = `You got ${score} out of ${questions.length} (${percent}%). `;
+        if (percent >= 90) message += "Excellent! You are a master of months, dates, and future plans.";
+        else if (percent >= 75) message += "Very good! Review a few points and you'll be perfect.";
+        else if (percent >= 60) message += "Good. Study the unit again, especially 'be going to' and holidays.";
+        else message += "You need more practice. Go through the activities and try again.";
+        document.getElementById('quizResult').innerHTML = message;
+    }
+
+    buildQuiz();
+    document.getElementById('submitQuiz').onclick = submitQuiz;
+</script>
+</body>
+</html>
