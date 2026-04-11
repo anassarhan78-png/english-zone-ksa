@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interchange Intro - Unit 1 Quiz</title>
+    <style>
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        .container { max-width: 800px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .question { background: #fff5e6; padding: 15px; border-radius: 25px; margin: 15px 0; }
+        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
+        .result { background: #e9ecef; padding: 15px; border-radius: 20px; margin-top: 20px; }
+        input, select { margin: 5px; padding: 8px; border-radius: 20px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📝 Unit 1 Quiz - It's nice to meet you</h1>
+    <div>
+        <div class="question">1. What is the missing word? "Nice to ______ you."<br>
+            <input type="text" id="q1" placeholder="Enter word">
+        </div>
+        <div class="question">2. Choose the correct title for a married woman.<br>
+            <select id="q2"><option value="">Select</option><option value="Miss">Miss</option><option value="Mrs.">Mrs.</option><option value="Mr.">Mr.</option></select>
+        </div>
+        <div class="question">3. Complete: "What's ______ name?" (asking a male) → "His name is Michael."<br>
+            <select id="q3"><option value="">Select</option><option value="his">his</option><option value="her">her</option><option value="your">your</option></select>
+        </div>
+        <div class="question">4. Which word is a number?<br>
+            <select id="q4"><option value="">Select</option><option value="book">book</option><option value="three">three</option><option value="teacher">teacher</option></select>
+        </div>
+        <div class="question">5. True or False: "Ms." is used for both single and married women.<br>
+            <select id="q5"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
+        </div>
+        <div class="question">6. Write the correct form: "She ______ a student." (use am/is/are)<br>
+            <input type="text" id="q6" placeholder="is / am / are">
+        </div>
+    </div>
+    <button id="submitQuiz">Submit Quiz</button>
+    <div id="quizResult" class="result"></div>
+</div>
+<script>
+    document.getElementById('submitQuiz').onclick = () => {
+        let score = 0;
+        if (document.getElementById('q1').value.trim().toLowerCase() === 'meet') score++;
+        if (document.getElementById('q2').value === 'Mrs.') score++;
+        if (document.getElementById('q3').value === 'his') score++;
+        if (document.getElementById('q4').value === 'three') score++;
+        if (document.getElementById('q5').value === 'true') score++;
+        if (document.getElementById('q6').value.trim().toLowerCase() === 'is') score++;
+        let percent = (score/6)*100;
+        let message = `You got ${score}/6 (${percent}%). `;
+        if (percent >= 80) message += "Excellent!";
+        else if (percent >= 60) message += "Good! Review your mistakes.";
+        else message += "Try again after studying the unit.";
+        document.getElementById('quizResult').innerHTML = message;
+    };
+</script>
+</body>
+</html>
