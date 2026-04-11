@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interchange Intro - Unit 10 Writing Task</title>
+    <style>
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        .container { max-width: 1000px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .task { background: #fff5e6; padding: 20px; border-radius: 30px; margin: 20px 0; }
+        textarea { width: 100%; padding: 15px; border-radius: 20px; border: 1px solid #ccc; font-size: 1rem; font-family: inherit; }
+        .checklist { background: #e9ecef; padding: 15px; border-radius: 20px; margin: 20px 0; }
+        .stars { font-size: 2rem; cursor: pointer; color: #ddd; }
+        .star-active { color: #d35400; }
+        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; font-weight: bold; margin: 5px; }
+        .feedback { margin-top: 20px; padding: 15px; border-radius: 20px; background: #c8e6d9; white-space: pre-line; }
+        .word-count { font-size: 0.9rem; color: #666; margin-top: 5px; }
+        .example { background: #f0f0f0; padding: 15px; border-radius: 20px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>✍️ Unit 10: What sports do you play? - Writing Task</h1>
+    <div class="task">
+        <h2>📝 Describe your favorite sports or free-time activities</h2>
+        <p><strong>Instructions:</strong> Write a paragraph of 100-150 words. Include:</p>
+        <ul>
+            <li>What sports or activities you like (play or watch)</li>
+            <li>How often you do them (adverbs of frequency: always, usually, often, sometimes, hardly ever, never)</li>
+            <li>Who you do them with</li>
+            <li>Where you do them</li>
+            <li>Use "can" to talk about abilities (e.g., I can swim, but I can't play hockey)</li>
+        </ul>
+        <div class="example">
+            <strong>📌 Example:</strong><br>
+            "I love sports, but I don't play many. I usually play soccer with my friends on Saturdays. We play at the park near my house. I can play soccer well, but I can't play basketball. I also like watching baseball on TV. Sometimes I go swimming in the summer. I hardly ever play golf because it's expensive. My brother can play the piano, but he doesn't like sports. What about you?"
+        </div>
+        <textarea id="writingArea" rows="8" placeholder="Write your paragraph here (100-150 words)..."></textarea>
+        <div class="word-count" id="wordCount">عدد الكلمات: 0</div>
+        <button id="speakWriting">🔊 Read my text</button>
+    </div>
+    <div class="checklist">
+        <h3>✅ Advanced Self-Checklist</h3>
+        <label><input type="checkbox" id="check1"> I wrote 100-150 words.</label><br>
+        <label><input type="checkbox" id="check2"> I used at least 3 adverbs of frequency.</label><br>
+        <label><input type="checkbox" id="check3"> I mentioned sports or activities.</label><br>
+        <label><input type="checkbox" id="check4"> I used "can" to talk about ability.</label><br>
+        <label><input type="checkbox" id="check5"> I included where and when I do them.</label><br>
+        <label><input type="checkbox" id="check6"> I used correct punctuation and capitalization.</label><br>
+        <label><input type="checkbox" id="check7"> My paragraph is well-organized.</label><br>
+        <label><input type="checkbox" id="check8"> I avoided repetition and used varied vocabulary.</label><br>
+    </div>
+    <div>
+        <h3>⭐ Rate your writing (1-5 stars)</h3>
+        <div class="stars" id="starRating">
+            <span data-value="1">★</span><span data-value="2">★</span><span data-value="3">★</span><span data-value="4">★</span><span data-value="5">★</span>
+        </div>
+        <p id="ratingText"></p>
+    </div>
+    <button id="submitWriting">📬 Submit & Get Feedback</button>
+    <div id="writingFeedback" class="feedback"></div>
+</div>
+<script>
+    let rating = 0;
+    document.querySelectorAll('#starRating span').forEach(star => {
+        star.addEventListener('click', function() {
+            rating = parseInt(this.getAttribute('data-value'));
+            document.querySelectorAll('#starRating span').forEach((s, i) => {
+                if (i < rating) s.classList.add('star-active');
+                else s.classList.remove('star-active');
+            });
+            document.getElementById('ratingText').innerText = `You gave ${rating} stars.`;
+        });
+    });
+    const textarea = document.getElementById('writingArea');
+    const wordCountSpan = document.getElementById('wordCount');
+    textarea.addEventListener('input', function() {
+        const words = this.value.trim().split(/\s+/).filter(w => w.length > 0);
+        wordCountSpan.innerText = `عدد الكلمات: ${words.length}`;
+    });
+    document.getElementById('speakWriting').onclick = () => {
+        let text = textarea.value;
+        if (text) speak(text);
+        else alert("Please write something first.");
+    };
+    document.getElementById('submitWriting').onclick = () => {
+        let c1 = document.getElementById('check1').checked;
+        let c2 = document.getElementById('check2').checked;
+        let c3 = document.getElementById('check3').checked;
+        let c4 = document.getElementById('check4').checked;
+        let c5 = document.getElementById('check5').checked;
+        let c6 = document.getElementById('check6').checked;
+        let c7 = document.getElementById('check7').checked;
+        let c8 = document.getElementById('check8').checked;
+        let score = (c1+c2+c3+c4+c5+c6+c7+c8) + (rating>0?1:0);
+        let maxScore = 9;
+        let percentage = (score / maxScore) * 100;
+        let feedback = `📊 Your score: ${score}/${maxScore} (${percentage}%). `;
+        if (percentage >= 85) feedback += "Excellent writing! You have mastered the unit's grammar and vocabulary. Keep it up!";
+        else if (percentage >= 70) feedback += "Very good! You understand most concepts. Review the checklist to polish your writing.";
+        else if (percentage >= 50) feedback += "Good effort! Focus on using adverbs of frequency and 'can' correctly. Try again after studying the unit.";
+        else feedback += "You need more practice. Please review the unit and try again. Pay attention to the example and checklist.";
+        document.getElementById('writingFeedback').innerHTML = feedback;
+    };
+    function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang = "en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+</script>
+</body>
+</html>

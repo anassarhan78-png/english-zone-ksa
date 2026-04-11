@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interchange Intro - Unit 10 Presentation</title>
+    <style>
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        .container { max-width: 900px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .timer { font-size: 4rem; text-align: center; font-family: monospace; background: #333; color: #0f0; padding: 10px; border-radius: 60px; width: 250px; margin: 20px auto; }
+        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; margin: 5px; }
+        .speech-text { background: #fff5e6; padding: 20px; border-radius: 30px; margin: 20px 0; }
+        textarea { width: 100%; padding: 10px; border-radius: 20px; font-size: 1rem; font-family: inherit; }
+        .feedback { margin-top: 20px; padding: 15px; border-radius: 20px; background: #e9ecef; }
+        .criteria { display: flex; gap: 20px; flex-wrap: wrap; margin: 15px 0; }
+        .criteria label { margin-right: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎤 Unit 10: What sports do you play? - Speaking Presentation</h1>
+    <div class="timer" id="timerDisplay">00:00</div>
+    <div>
+        <button id="startTimer">▶ Start (60 sec)</button>
+        <button id="resetTimer">🔄 Reset</button>
+    </div>
+    <div class="speech-text">
+        <h3>Suggested speech (60 seconds - you can edit):</h3>
+        <textarea id="speechScript" rows="6">Hello everyone. Today I want to talk about sports and free-time activities. I love soccer. I usually play soccer with my friends on Saturdays. We play at the park near my house. I can play soccer well, but I can't play basketball. I also like watching baseball on TV. Sometimes I go swimming in the summer. I hardly ever play golf because it's expensive. In winter, I go skiing with my family. What about you? What sports do you like? Thank you for listening.</textarea>
+        <button id="speakScript">🔊 Read aloud</button>
+    </div>
+    <div>
+        <h3>Self evaluation (1-5 for each)</h3>
+        <div class="criteria">
+            <label><input type="checkbox" id="evalTime"> I spoke for about 60 seconds (no long pauses).</label><br>
+            <label><input type="checkbox" id="evalClear"> I spoke clearly and at a good pace.</label><br>
+            <label><input type="checkbox" id="evalGrammar"> I used correct grammar (adverbs of frequency, can).</label><br>
+            <label><input type="checkbox" id="evalContent"> I mentioned sports and activities.</label><br>
+            <label><input type="checkbox" id="evalConfident"> I was confident and made eye contact (or recorded).</label>
+        </div>
+        <button id="submitEval">Submit Self Evaluation</button>
+    </div>
+    <div id="presentationFeedback" class="feedback"></div>
+</div>
+<script>
+    let timerInterval = null;
+    let seconds = 0;
+    const timerDisplay = document.getElementById('timerDisplay');
+    function updateTimerDisplay() {
+        let mins = Math.floor(seconds / 60);
+        let secs = seconds % 60;
+        timerDisplay.innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+    }
+    document.getElementById('startTimer').onclick = () => {
+        if (timerInterval) clearInterval(timerInterval);
+        seconds = 0;
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            seconds++;
+            updateTimerDisplay();
+            if (seconds >= 60) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                alert("Time's up! 60 seconds finished.");
+            }
+        }, 1000);
+    };
+    document.getElementById('resetTimer').onclick = () => {
+        if (timerInterval) clearInterval(timerInterval);
+        seconds = 0;
+        updateTimerDisplay();
+        timerInterval = null;
+    };
+    document.getElementById('speakScript').onclick = () => {
+        let text = document.getElementById('speechScript').value;
+        let utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "en-US";
+        speechSynthesis.cancel();
+        speechSynthesis.speak(utterance);
+    };
+    document.getElementById('submitEval').onclick = () => {
+        let t = document.getElementById('evalTime').checked ? 1 : 0;
+        let c = document.getElementById('evalClear').checked ? 1 : 0;
+        let g = document.getElementById('evalGrammar').checked ? 1 : 0;
+        let cnt = document.getElementById('evalContent').checked ? 1 : 0;
+        let cf = document.getElementById('evalConfident').checked ? 1 : 0;
+        let score = t + c + g + cnt + cf;
+        let feedback = `You scored ${score}/5. `;
+        if (score === 5) feedback += "Excellent presentation! You're a confident and clear speaker.";
+        else if (score >= 4) feedback += "Very good! Keep practicing to reach full fluency.";
+        else if (score >= 3) feedback += "Good effort. Focus on timing and clarity next time.";
+        else feedback += "Try to prepare more. Practice speaking aloud and record yourself.";
+        document.getElementById('presentationFeedback').innerHTML = feedback;
+    };
+</script>
+</body>
+</html>
