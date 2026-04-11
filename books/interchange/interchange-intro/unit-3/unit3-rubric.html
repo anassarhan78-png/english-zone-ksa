@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interchange Intro - Unit 3 Rubric</title>
+    <style>
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        .container { max-width: 800px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .criteria { margin: 20px 0; padding: 15px; background: #fff5e6; border-radius: 25px; }
+        .slider { width: 100%; }
+        .score { font-weight: bold; color: #d35400; margin-left: 10px; }
+        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
+        .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📊 Self Assessment Rubric - Unit 3</h1>
+    <div>
+        <div class="criteria"><strong>🗣️ Speaking:</strong> I can ask and answer "Where are you from?" and describe people.<br>
+            <input type="range" min="1" max="5" value="3" class="slider" id="speakingSlider"><span class="score" id="speakingScore">3</span>
+        </div>
+        <div class="criteria"><strong>✍️ Writing:</strong> I can write sentences about origin and appearance.<br>
+            <input type="range" min="1" max="5" value="3" class="slider" id="writingSlider"><span class="score" id="writingScore">3</span>
+        </div>
+        <div class="criteria"><strong>📖 Vocabulary:</strong> I know countries, family members, and adjectives.<br>
+            <input type="range" min="1" max="5" value="3" class="slider" id="vocabSlider"><span class="score" id="vocabScore">3</span>
+        </div>
+        <div class="criteria"><strong>👂 Listening:</strong> I understand when people talk about nationality and description.<br>
+            <input type="range" min="1" max="5" value="3" class="slider" id="listenSlider"><span class="score" id="listenScore">3</span>
+        </div>
+        <div class="criteria"><strong>💪 Effort:</strong> I tried my best in this unit.<br>
+            <input type="range" min="1" max="5" value="3" class="slider" id="effortSlider"><span class="score" id="effortScore">3</span>
+        </div>
+    </div>
+    <button id="calculateRubric">Calculate My Score</button>
+    <div id="rubricResult" class="result"></div>
+</div>
+<script>
+    const sliders = ['speaking','writing','vocab','listen','effort'];
+    sliders.forEach(s => {
+        let slider = document.getElementById(`${s}Slider`);
+        let span = document.getElementById(`${s}Score`);
+        slider.oninput = () => { span.innerText = slider.value; };
+    });
+    document.getElementById('calculateRubric').onclick = () => {
+        let total = 0;
+        sliders.forEach(s => {
+            total += parseInt(document.getElementById(`${s}Slider`).value);
+        });
+        let percent = (total / 25) * 100;
+        let level = "";
+        if (percent >= 90) level = "Advanced";
+        else if (percent >= 75) level = "Intermediate High";
+        else if (percent >= 60) level = "Intermediate";
+        else if (percent >= 40) level = "Beginner";
+        else level = "Needs Improvement";
+        document.getElementById('rubricResult').innerHTML = `<strong>Your total: ${total}/25 (${percent}%)</strong><br>ESL Level: ${level}<br>Keep up the good work!`;
+    };
+</script>
+</body>
+</html>

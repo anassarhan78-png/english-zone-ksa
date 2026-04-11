@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interchange Intro - Unit 6 Writing</title>
+    <style>
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        .container { max-width: 900px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .task { background: #fff5e6; padding: 20px; border-radius: 30px; margin: 20px 0; }
+        textarea { width: 100%; padding: 15px; border-radius: 20px; border: 1px solid #ccc; font-size: 1rem; }
+        .checklist { background: #e9ecef; padding: 15px; border-radius: 20px; margin: 20px 0; }
+        .stars { font-size: 2rem; cursor: pointer; color: #ddd; }
+        .star-active { color: #d35400; }
+        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; font-weight: bold; }
+        .feedback { margin-top: 20px; padding: 15px; border-radius: 20px; background: #c8e6d9; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>✍️ Unit 6: Transportation & Family - Writing Task</h1>
+    <div class="task">
+        <h2>📝 Describe your daily routine using transportation and family</h2>
+        <p><strong>Instructions:</strong> Write 4-6 sentences. Talk about how you get to work/school, what your family members do, and what days of the week you do activities.</p>
+        <p><strong>Example:</strong> "I take the bus to work every Monday to Friday. My father drives a car. My sister takes the subway to school. On weekends, we visit my grandmother."</p>
+        <textarea id="writingArea" rows="6" placeholder="Write your sentences here..."></textarea>
+        <button id="speakWriting">🔊 Read my text</button>
+    </div>
+    <div class="checklist">
+        <h3>✅ Self-Checklist</h3>
+        <label><input type="checkbox" id="check1"> I used a transportation word (bus, car, subway, etc.).</label><br>
+        <label><input type="checkbox" id="check2"> I mentioned a family member (father, mother, etc.).</label><br>
+        <label><input type="checkbox" id="check3"> I used a day of the week or time expression.</label><br>
+        <label><input type="checkbox" id="check4"> I wrote 4 or more sentences.</label><br>
+    </div>
+    <div>
+        <h3>⭐ Rate your writing</h3>
+        <div class="stars" id="starRating">
+            <span data-value="1">★</span><span data-value="2">★</span><span data-value="3">★</span><span data-value="4">★</span><span data-value="5">★</span>
+        </div>
+        <p id="ratingText"></p>
+    </div>
+    <button id="submitWriting">📬 Submit & Get Feedback</button>
+    <div id="writingFeedback"></div>
+</div>
+<script>
+    let rating = 0;
+    document.querySelectorAll('#starRating span').forEach(star => {
+        star.addEventListener('click', function() {
+            rating = parseInt(this.getAttribute('data-value'));
+            document.querySelectorAll('#starRating span').forEach((s, i) => {
+                if (i < rating) s.classList.add('star-active');
+                else s.classList.remove('star-active');
+            });
+            document.getElementById('ratingText').innerText = `You gave ${rating} stars.`;
+        });
+    });
+    document.getElementById('speakWriting').onclick = () => {
+        let text = document.getElementById('writingArea').value;
+        if (text) speak(text);
+        else alert("Please write something first.");
+    };
+    document.getElementById('submitWriting').onclick = () => {
+        let c1 = document.getElementById('check1').checked;
+        let c2 = document.getElementById('check2').checked;
+        let c3 = document.getElementById('check3').checked;
+        let c4 = document.getElementById('check4').checked;
+        let score = (c1+c2+c3+c4) + (rating>0?1:0);
+        let feedback = `<div class="feedback">📊 Your score: ${score}/9. `;
+        if (score >= 7) feedback += "Excellent writing! Keep it up!";
+        else if (score >= 4) feedback += "Good start! Review the checklist and try again.";
+        else feedback += "Try to complete the checklist and write more sentences.";
+        feedback += "</div>";
+        document.getElementById('writingFeedback').innerHTML = feedback;
+    };
+    function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang = "en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+</script>
+</body>
+</html>

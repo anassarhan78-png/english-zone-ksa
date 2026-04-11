@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interchange Intro - Unit 4 Extra Activities</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; }
+        .container { max-width: 1300px; margin: auto; background: #fef9e8; border-radius: 45px; padding: 20px 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .activity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; }
+        .card { background: #fff5e6; border-radius: 35px; padding: 20px; border: 1px solid #f0c0a0; }
+        .card h2 { background: #d35400; display: inline-block; padding: 5px 20px; border-radius: 40px; color: white; font-size: 1.3rem; }
+        button { background: #d35400; border: none; color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; margin: 5px; }
+        input, select { padding: 8px; border-radius: 30px; border: 1px solid #ccc; margin: 5px; }
+        .correct-feedback { background: #c8e6d9; border-left: 6px solid #2e7d64; padding: 8px; border-radius: 20px; margin-top: 10px; }
+        .wrong-feedback { background: #ffe0e0; border-left: 6px solid #d9534f; padding: 8px; border-radius: 20px; margin-top: 10px; }
+        .drag-word { background: #2c7da0; color: white; padding: 10px 20px; border-radius: 40px; cursor: grab; display: inline-block; margin: 5px; }
+        .drop-zone { border: 2px dashed #d35400; border-radius: 20px; padding: 12px; min-width: 120px; text-align: center; background: #fff0e0; display: inline-block; margin: 6px; }
+        .crossword-grid { display: grid; grid-template-columns: repeat(6, 45px); gap: 4px; justify-content: center; background: #f0f0f0; padding: 15px; border-radius: 20px; }
+        .crossword-grid input { width: 45px; height: 45px; text-align: center; font-size: 1.2rem; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📖 Interchange Intro - Unit 4 🎲 Extra Activities</h1>
+    <div class="activity-grid">
+        <!-- Drag & Drop: Possessives (mine/yours/his/hers) -->
+        <div class="card">
+            <h2>🖱️ Possessives (mine/yours/his/hers)</h2>
+            <div id="dragDropArea"></div>
+            <button id="checkDragDrop">Check All</button>
+            <div id="dragDropResult"></div>
+        </div>
+
+        <!-- Crossword Puzzle (clothes and weather) -->
+        <div class="card">
+            <h2>🔠 Crossword</h2>
+            <div id="crosswordGrid"></div>
+            <div id="crosswordClues" style="margin-top:10px; font-size:0.8rem;"></div>
+            <button id="checkCrossword">Check Crossword</button>
+            <div id="crosswordResult"></div>
+        </div>
+
+        <!-- Unscramble (clothes) -->
+        <div class="card">
+            <h2>🔀 Unscramble</h2>
+            <div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div>
+            <input type="text" id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button>
+            <div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button>
+        </div>
+
+        <!-- Present Continuous Practice -->
+        <div class="card">
+            <h2>🏃 Present Continuous</h2>
+            <div id="pcQuestion">She ______ (wear) a scarf.</div>
+            <input type="text" id="pcInput" placeholder="is wearing / wears">
+            <button id="checkPc">Check</button>
+            <button id="newPc">Next</button>
+            <div id="pcResult"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const possessiveItems = [
+        { item: "This is my book. It's ______.", answer: "mine" },
+        { item: "This is your pen. It's ______.", answer: "yours" },
+        { item: "This is his jacket. It's ______.", answer: "his" },
+        { item: "This is her scarf. It's ______.", answer: "hers" }
+    ];
+    
+    function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+
+    // Drag & Drop
+    let selectedItem = null;
+    function initDragDrop() {
+        let container = document.getElementById('dragDropArea');
+        container.innerHTML = '<div><strong>Click a sentence, then click the correct possessive pronoun</strong></div><div style="display:flex; flex-wrap:wrap; gap:15px; margin:10px 0;">';
+        possessiveItems.forEach((item, idx) => {
+            let btn = document.createElement('button');
+            btn.innerText = item.item;
+            btn.classList.add('drag-word');
+            btn.onclick = () => { selectedItem = idx; };
+            container.appendChild(btn);
+        });
+        container.innerHTML += '</div><div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">';
+        const answers = ["mine", "yours", "his", "hers"];
+        answers.forEach(ans => {
+            let zone = document.createElement('div');
+            zone.classList.add('drop-zone');
+            zone.setAttribute('data-answer', ans);
+            zone.innerHTML = `${ans}<br><span class="drop-label">???</span>`;
+            zone.onclick = () => {
+                if (selectedItem !== null) {
+                    let expected = possessiveItems[selectedItem].answer;
+                    if (expected === ans) {
+                        zone.querySelector('.drop-label').innerText = possessiveItems[selectedItem].item;
+                        zone.style.background = "#c8e6d9";
+                        selectedItem = null;
+                    } else {
+                        alert(`Wrong! The correct possessive for that sentence is "${expected}".`);
+                    }
+                } else {
+                    alert("Click a sentence first.");
+                }
+            };
+            container.appendChild(zone);
+        });
+        container.innerHTML += '</div>';
+    }
+    document.getElementById('checkDragDrop').onclick = () => {
+        let allOk = true;
+        document.querySelectorAll('#dragDropArea .drop-zone').forEach(zone => {
+            let label = zone.querySelector('.drop-label').innerText;
+            let expectedSentence = possessiveItems.find(i => i.item === label)?.item;
+            if (label !== expectedSentence && label !== "???") allOk = false;
+        });
+        document.getElementById('dragDropResult').innerHTML = allOk ? "<div class='correct-feedback'>🎉 Perfect! All matched.</div>" : "<div class='wrong-feedback'>⚠️ Some matches are missing or wrong.</div>";
+    };
+    initDragDrop();
+
+    // Crossword (clothes and weather)
+    function buildCrossword() {
+        let gridHtml = '<div class="crossword-grid">';
+        let predefined = [
+            ['J','A','C','K','E','T'],
+            ['','','','','S','H'],
+            ['S','U','M','M','E','R'],
+            ['','','','','A','I'],
+            ['C','O','L','D','','R'],
+            ['','','','','','T']
+        ];
+        for(let i=0;i<6;i++){
+            for(let j=0;j<6;j++){
+                let val = predefined[i][j] ? predefined[i][j] : '';
+                let readonly = val ? 'readonly' : '';
+                gridHtml += `<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" style="text-transform:uppercase" ${readonly}>`;
+            }
+            gridHtml += `<div style="width:100%"></div>`;
+        }
+        gridHtml += '</div>';
+        document.getElementById('crosswordGrid').innerHTML = gridHtml;
+        let clues = `<strong>Clues:</strong> Across: Row0: outerwear (JACKET), Row2: hot season (SUMMER), Row4: opposite of hot (COLD). Down: Col5: winter headwear (HAT).`;
+        document.getElementById('crosswordClues').innerHTML = clues;
+    }
+    document.getElementById('checkCrossword').onclick = () => {
+        document.getElementById('crosswordResult').innerHTML = "<div class='correct-feedback'>✅ Check your answers with the clues.</div>";
+    };
+    buildCrossword();
+
+    // Unscramble (clothes)
+    const clothes = ["shirt", "pants", "jacket", "dress", "skirt", "shoes", "hat", "scarf"];
+    let currentScramble = "";
+    function getScrambled(w) { let arr = w.split(''); for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr.join(''); }
+    function updateScramble() { currentScramble = clothes[Math.floor(Math.random()*clothes.length)]; document.getElementById("scrambleWord").innerText = getScrambled(currentScramble); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
+    document.getElementById("checkScramble").onclick = () => { let ans = document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans === currentScramble) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${currentScramble}</div>`; };
+    document.getElementById("newScramble").onclick = updateScramble;
+    document.getElementById("speakScramble").onclick = () => speak(currentScramble);
+    updateScramble();
+
+    // Present Continuous practice
+    const pcQuestions = [
+        { sentence: "She ______ (wear) a red dress.", answer: "is wearing" },
+        { sentence: "They ______ (wear) jeans.", answer: "are wearing" },
+        { sentence: "He ______ (not wear) a hat.", answer: "is not wearing" },
+        { sentence: "I ______ (wear) gloves.", answer: "am wearing" }
+    ];
+    let currentPc = 0;
+    function updatePc() {
+        currentPc = Math.floor(Math.random() * pcQuestions.length);
+        document.getElementById("pcQuestion").innerHTML = pcQuestions[currentPc].sentence;
+        document.getElementById("pcInput").value = "";
+        document.getElementById("pcResult").innerHTML = "";
+    }
+    document.getElementById("checkPc").onclick = () => {
+        let ans = document.getElementById("pcInput").value.trim().toLowerCase();
+        if (ans === pcQuestions[currentPc].answer.toLowerCase()) {
+            document.getElementById("pcResult").innerHTML = "<div class='correct-feedback'>✅ Correct!</div>";
+        } else {
+            document.getElementById("pcResult").innerHTML = `<div class='wrong-feedback'>❌ Wrong. Correct: ${pcQuestions[currentPc].answer}</div>`;
+        }
+    };
+    document.getElementById("newPc").onclick = updatePc;
+    updatePc();
+</script>
+</body>
+</html>
