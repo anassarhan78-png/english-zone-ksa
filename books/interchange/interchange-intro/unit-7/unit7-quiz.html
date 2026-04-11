@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interchange Intro - Unit 7 Quiz</title>
+    <style>
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        .container { max-width: 800px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .question { background: #fff5e6; padding: 15px; border-radius: 25px; margin: 15px 0; }
+        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
+        .result { background: #e9ecef; padding: 15px; border-radius: 20px; margin-top: 20px; }
+        input, select { margin: 5px; padding: 8px; border-radius: 20px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📝 Unit 7 Quiz - Does it have a view?</h1>
+    <div>
+        <div class="question">1. What room do you sleep in?<br>
+            <input type="text" id="q1" placeholder="Room name">
+        </div>
+        <div class="question">2. Which appliance keeps food cold?<br>
+            <select id="q2"><option value="">Select</option><option value="stove">stove</option><option value="refrigerator">refrigerator</option><option value="microwave">microwave</option></select>
+        </div>
+        <div class="question">3. Complete: "There ______ a sofa in the living room." (is / are)<br>
+            <input type="text" id="q3" placeholder="is / are">
+        </div>
+        <div class="question">4. What is the opposite of "small"?<br>
+            <select id="q4"><option value="">Select</option><option value="tiny">tiny</option><option value="big">big</option><option value="expensive">expensive</option></select>
+        </div>
+        <div class="question">5. True or False: "A rug is a type of furniture."<br>
+            <select id="q5"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
+        </div>
+        <div class="question">6. Complete the question: "______ your apartment have a view?" (Do / Does)<br>
+            <input type="text" id="q6" placeholder="Do / Does">
+        </div>
+        <div class="question">7. Which room has a stove and a refrigerator?<br>
+            <select id="q7"><option value="">Select</option><option value="bathroom">bathroom</option><option value="kitchen">kitchen</option><option value="bedroom">bedroom</option></select>
+        </div>
+        <div class="question">8. Write the missing word: "There aren't ______ chairs in the room." (any / some)<br>
+            <input type="text" id="q8" placeholder="any / some">
+        </div>
+        <div class="question">9. What is a "view"?<br>
+            <select id="q9"><option value="">Select</option><option value="a door">a door</option><option value="a window with scenery">a window with scenery</option><option value="a type of furniture">a type of furniture</option></select>
+        </div>
+        <div class="question">10. Complete the sentence: "My dream home has a great view ______ the ocean." (of / from)<br>
+            <input type="text" id="q10" placeholder="of / from">
+        </div>
+    </div>
+    <button id="submitQuiz">Submit Quiz</button>
+    <div id="quizResult" class="result"></div>
+</div>
+<script>
+    document.getElementById('submitQuiz').onclick = () => {
+        let score = 0;
+        if (document.getElementById('q1').value.trim().toLowerCase() === 'bedroom') score++;
+        if (document.getElementById('q2').value === 'refrigerator') score++;
+        if (document.getElementById('q3').value.trim().toLowerCase() === 'is') score++;
+        if (document.getElementById('q4').value === 'big') score++;
+        if (document.getElementById('q5').value === 'false') score++;
+        if (document.getElementById('q6').value.trim().toLowerCase() === 'does') score++;
+        if (document.getElementById('q7').value === 'kitchen') score++;
+        if (document.getElementById('q8').value.trim().toLowerCase() === 'any') score++;
+        if (document.getElementById('q9').value === 'a window with scenery') score++;
+        if (document.getElementById('q10').value.trim().toLowerCase() === 'of') score++;
+        let percent = (score/10)*100;
+        let message = `You got ${score}/10 (${percent}%). `;
+        if (percent >= 80) message += "Excellent!";
+        else if (percent >= 60) message += "Good! Review your mistakes.";
+        else message += "Try again after studying the unit.";
+        document.getElementById('quizResult').innerHTML = message;
+    };
+</script>
+</body>
+</html>

@@ -22,31 +22,31 @@
             <input type="text" id="q1" placeholder="subway / train">
         </div>
         <div class="question">2. Choose the correct word: "My ______ is a doctor." (father / brother)<br>
-            <select id="q2"><option value="">Select</option><option value="father">father</option><option value="brother">brother</option><option value="sister">sister</option></select>
+            <select id="q2"><option value="">Select</option><option value="father">father</option><option value="brother">brother</option></select>
         </div>
-        <div class="question">3. Which day comes after Tuesday?<br>
-            <select id="q3"><option value="">Select</option><option value="Monday">Monday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option></select>
+        <div class="question">3. Complete: "I ______ the bus to work every day."<br>
+            <input type="text" id="q3" placeholder="take / ride">
         </div>
-        <div class="question">4. Complete: "I ______ the bus to work every day."<br>
-            <input type="text" id="q4" placeholder="take / ride">
+        <div class="question">4. True or False: "A motorcycle has four wheels."<br>
+            <select id="q4"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
         </div>
-        <div class="question">5. True or False: "A motorcycle has four wheels."<br>
-            <select id="q5"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
+        <div class="question">5. Complete the question: "______ you live in a house?" (Do / Does)<br>
+            <input type="text" id="q5" placeholder="Do / Does">
         </div>
-        <div class="question">6. Complete the question: "______ you live in a house?" (Do / Does)<br>
-            <input type="text" id="q6" placeholder="Do / Does">
+        <div class="question">6. Which word means "father" in informal English?<br>
+            <select id="q6"><option value="">Select</option><option value="dad">dad</option><option value="father">father</option><option value="parent">parent</option></select>
         </div>
-        <div class="question">7. Which word means "father" in formal English?<br>
-            <select id="q7"><option value="">Select</option><option value="dad">dad</option><option value="father">father</option><option value="daddy">daddy</option></select>
+        <div class="question">7. What is the plural of "bus"?<br>
+            <input type="text" id="q7" placeholder="buses / busses">
         </div>
-        <div class="question">8. What is the plural of "bus"?<br>
-            <input type="text" id="q8" placeholder="buses / busses">
+        <div class="question">8. "On weekends" means...<br>
+            <select id="q8"><option value="">Select</option><option value="Saturday and Sunday">Saturday and Sunday</option><option value="Monday to Friday">Monday to Friday</option></select>
         </div>
-        <div class="question">9. "On weekends" means...<br>
-            <select id="q9"><option value="">Select</option><option value="Saturday and Sunday">Saturday and Sunday</option><option value="Monday to Friday">Monday to Friday</option><option value="only Sunday">only Sunday</option></select>
+        <div class="question">9. Complete the sentence: "My sister and I ______ together." (live / lives)<br>
+            <input type="text" id="q9" placeholder="live / lives">
         </div>
-        <div class="question">10. Complete the sentence: "My sister and I ______ together." (live / lives)<br>
-            <input type="text" id="q10" placeholder="live / lives">
+        <div class="question">10. What time do you get up? (Write a complete sentence)<br>
+            <input type="text" id="q10" placeholder="e.g., I get up at 7 AM">
         </div>
     </div>
     <button id="submitQuiz">Submit Quiz</button>
@@ -57,14 +57,14 @@
         let score = 0;
         if (document.getElementById('q1').value.trim().toLowerCase() === 'subway') score++;
         if (document.getElementById('q2').value === 'father') score++;
-        if (document.getElementById('q3').value === 'Wednesday') score++;
-        if (document.getElementById('q4').value.trim().toLowerCase() === 'take') score++;
-        if (document.getElementById('q5').value === 'false') score++;
-        if (document.getElementById('q6').value.trim().toLowerCase() === 'do') score++;
-        if (document.getElementById('q7').value === 'father') score++;
-        if (document.getElementById('q8').value.trim().toLowerCase() === 'buses') score++;
-        if (document.getElementById('q9').value === 'Saturday and Sunday') score++;
-        if (document.getElementById('q10').value.trim().toLowerCase() === 'live') score++;
+        if (document.getElementById('q3').value.trim().toLowerCase() === 'take') score++;
+        if (document.getElementById('q4').value === 'false') score++;
+        if (document.getElementById('q5').value.trim().toLowerCase() === 'do') score++;
+        if (document.getElementById('q6').value === 'dad') score++;
+        if (document.getElementById('q7').value.trim().toLowerCase() === 'buses') score++;
+        if (document.getElementById('q8').value === 'Saturday and Sunday') score++;
+        if (document.getElementById('q9').value.trim().toLowerCase() === 'live') score++;
+        if (document.getElementById('q10').value.trim().length > 0) score++;
         let percent = (score/10)*100;
         let message = `You got ${score}/10 (${percent}%). `;
         if (percent >= 80) message += "Excellent!";

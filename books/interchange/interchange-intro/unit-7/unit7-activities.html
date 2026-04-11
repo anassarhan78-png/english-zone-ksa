@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Interchange Intro - Unit 6 Extra Activities</title>
+    <title>Interchange Intro - Unit 7 Extra Activities</title>
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
         body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; }
@@ -24,70 +24,86 @@
 </head>
 <body>
 <div class="container">
-    <h1>📖 Interchange Intro - Unit 6 🎲 Extra Activities</h1>
+    <h1>📖 Interchange Intro - Unit 7 🎲 Extra Activities</h1>
     <div class="activity-grid">
-        <div class="card"><h2>🚗 Drag & Drop: Transportation</h2>
+        <!-- Drag & Drop: Room to furniture -->
+        <div class="card">
+            <h2>🏠 Drag & Drop: Room → Furniture</h2>
             <div id="dragDropArea"></div>
             <button id="checkDragDrop">Check All</button>
             <div id="dragDropResult"></div>
         </div>
-        <div class="card"><h2>🔠 Crossword</h2>
+
+        <!-- Crossword Puzzle (rooms and furniture) -->
+        <div class="card">
+            <h2>🔠 Crossword</h2>
             <div id="crosswordGrid"></div>
             <div id="crosswordClues" style="margin-top:10px; font-size:0.8rem;"></div>
             <button id="checkCrossword">Check Crossword</button>
             <div id="crosswordResult"></div>
         </div>
-        <div class="card"><h2>🔀 Unscramble (Family)</h2>
+
+        <!-- Unscramble (furniture words) -->
+        <div class="card">
+            <h2>🔀 Unscramble</h2>
             <div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div>
             <input type="text" id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button>
             <div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button>
         </div>
-        <div class="card"><h2>📅 Weekly Routine Quiz</h2>
-            <div id="routineQuestion">What do you do on Sundays?</div>
-            <input type="text" id="routineInput" placeholder="e.g., I relax at home">
-            <button id="checkRoutine">Submit</button>
-            <div id="routineResult"></div>
+
+        <!-- There is / There are practice -->
+        <div class="card">
+            <h2>📦 There is / There are</h2>
+            <div id="thereQuestion">______ a lamp in the bedroom? (Is there / Are there)</div>
+            <input type="text" id="thereInput" placeholder="Is there / Are there">
+            <button id="checkThere">Check</button>
+            <button id="newThere">Next</button>
+            <div id="thereResult"></div>
         </div>
     </div>
 </div>
+
 <script>
-    const transports = [
-        { name: "drive", emoji: "🚗" },
-        { name: "walk", emoji: "🚶" },
-        { name: "bus", emoji: "🚌" },
-        { name: "subway", emoji: "🚇" },
-        { name: "train", emoji: "🚆" },
-        { name: "bike", emoji: "🚲" },
-        { name: "taxi", emoji: "🚕" }
+    const roomFurniture = [
+        { room: "living room", furniture: "sofa" },
+        { room: "bedroom", furniture: "bed" },
+        { room: "kitchen", furniture: "stove" },
+        { room: "bathroom", furniture: "mirror" },
+        { room: "dining room", furniture: "table" }
     ];
+    
     function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
-    // Drag & Drop
-    let selectedTransport = null;
+
+    // Drag & Drop: room name to furniture
+    let selectedRoom = null;
     function initDragDrop() {
         let container = document.getElementById('dragDropArea');
-        container.innerHTML = '<div><strong>Click a transport word, then click its emoji</strong></div><div style="display:flex; flex-wrap:wrap; gap:15px; margin:10px 0;">';
-        transports.forEach(t => {
+        container.innerHTML = '<div><strong>Click a room, then click the furniture you find there</strong></div><div style="display:flex; flex-wrap:wrap; gap:15px; margin:10px 0;">';
+        roomFurniture.forEach(rf => {
             let btn = document.createElement('button');
-            btn.innerText = t.name;
+            btn.innerText = rf.room;
             btn.classList.add('drag-word');
-            btn.onclick = () => { selectedTransport = t.name; };
+            btn.onclick = () => { selectedRoom = rf.room; };
             container.appendChild(btn);
         });
         container.innerHTML += '</div><div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">';
-        transports.forEach(t => {
+        roomFurniture.forEach(rf => {
             let zone = document.createElement('div');
             zone.classList.add('drop-zone');
-            zone.setAttribute('data-name', t.name);
-            zone.innerHTML = `${t.emoji}<br><span class="drop-label">???</span>`;
+            zone.setAttribute('data-furniture', rf.furniture);
+            zone.innerHTML = `${rf.furniture}<br><span class="drop-label">???</span>`;
             zone.onclick = () => {
-                if (selectedTransport && selectedTransport === zone.getAttribute('data-name')) {
-                    zone.querySelector('.drop-label').innerText = selectedTransport;
-                    zone.style.background = "#c8e6d9";
-                    selectedTransport = null;
-                } else if (selectedTransport) {
-                    alert(`Wrong! "${selectedTransport}" does not match this emoji.`);
+                if (selectedRoom) {
+                    let match = roomFurniture.find(rf => rf.room === selectedRoom && rf.furniture === zone.getAttribute('data-furniture'));
+                    if (match) {
+                        zone.querySelector('.drop-label').innerText = selectedRoom;
+                        zone.style.background = "#c8e6d9";
+                        selectedRoom = null;
+                    } else {
+                        alert(`Wrong! "${selectedRoom}" does not usually have "${zone.getAttribute('data-furniture')}".`);
+                    }
                 } else {
-                    alert("Click a transport word first.");
+                    alert("Click a room first.");
                 }
             };
             container.appendChild(zone);
@@ -98,26 +114,27 @@
         let allOk = true;
         document.querySelectorAll('#dragDropArea .drop-zone').forEach(zone => {
             let label = zone.querySelector('.drop-label').innerText;
-            let expected = zone.getAttribute('data-name');
-            if (label !== expected) allOk = false;
+            let expectedRoom = roomFurniture.find(rf => rf.furniture === zone.getAttribute('data-furniture'))?.room;
+            if (label !== expectedRoom) allOk = false;
         });
-        document.getElementById('dragDropResult').innerHTML = allOk ? "<div class='correct-feedback'>🎉 Perfect! All matched.</div>" : "<div class='wrong-feedback'>⚠️ Some matches missing or wrong.</div>";
+        document.getElementById('dragDropResult').innerHTML = allOk ? "<div class='correct-feedback'>🎉 Perfect! All matched.</div>" : "<div class='wrong-feedback'>⚠️ Some matches are missing or wrong.</div>";
     };
     initDragDrop();
-    // Crossword (family)
+
+    // Crossword (rooms)
     function buildCrossword() {
         let gridHtml = '<div class="crossword-grid">';
         let predefined = [
-            ['F','A','T','H','E','R'],
+            ['K','I','T','C','H','E'],
+            ['','','','','','N'],
+            ['B','E','D','R','O','O'],
             ['','','','','','M'],
-            ['M','O','T','H','E','R'],
-            ['','','','','','S'],
-            ['B','R','O','T','H','E'],
-            ['','','','','','R']
+            ['L','I','V','I','N','G'],
+            ['','','','','','']
         ];
         for(let i=0;i<6;i++){
             for(let j=0;j<6;j++){
-                let val = predefined[i][j] || '';
+                let val = predefined[i][j] ? predefined[i][j] : '';
                 let readonly = val ? 'readonly' : '';
                 gridHtml += `<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" style="text-transform:uppercase" ${readonly}>`;
             }
@@ -125,30 +142,48 @@
         }
         gridHtml += '</div>';
         document.getElementById('crosswordGrid').innerHTML = gridHtml;
-        document.getElementById('crosswordClues').innerHTML = `<strong>Clues:</strong> Across: Row0: male parent (FATHER), Row2: female parent (MOTHER), Row4: male sibling (BROTHER). Down: Col5: female sibling (SISTER).`;
+        let clues = `<strong>Clues:</strong> Across: Row0: cooking room (KITCHEN), Row2: sleeping room (BEDROOM), Row4: relaxing room (LIVING).`;
+        document.getElementById('crosswordClues').innerHTML = clues;
     }
     document.getElementById('checkCrossword').onclick = () => {
         document.getElementById('crosswordResult').innerHTML = "<div class='correct-feedback'>✅ Check your answers with the clues.</div>";
     };
     buildCrossword();
-    // Unscramble
-    const familyWords = ["father", "mother", "brother", "sister", "parents", "daughter"];
+
+    // Unscramble (furniture)
+    const furnitureWords = ["sofa", "table", "chair", "bed", "lamp", "rug"];
     let currentScramble = "";
     function getScrambled(w) { let arr = w.split(''); for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr.join(''); }
-    function updateScramble() { currentScramble = familyWords[Math.floor(Math.random()*familyWords.length)]; document.getElementById("scrambleWord").innerText = getScrambled(currentScramble); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
+    function updateScramble() { currentScramble = furnitureWords[Math.floor(Math.random()*furnitureWords.length)]; document.getElementById("scrambleWord").innerText = getScrambled(currentScramble); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
     document.getElementById("checkScramble").onclick = () => { let ans = document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans === currentScramble) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${currentScramble}</div>`; };
     document.getElementById("newScramble").onclick = updateScramble;
     document.getElementById("speakScramble").onclick = () => speak(currentScramble);
     updateScramble();
-    // Routine question (free answer)
-    document.getElementById('checkRoutine').onclick = () => {
-        let answer = document.getElementById('routineInput').value.trim();
-        if (answer.length > 0) {
-            document.getElementById('routineResult').innerHTML = "<div class='correct-feedback'>✅ Great! Your routine is recorded.</div>";
+
+    // There is / There are practice
+    const thereQuestions = [
+        { sentence: "______ a sofa in the living room? (Is there / Are there)", answer: "Is there" },
+        { sentence: "______ any chairs in the kitchen? (Is there / Are there)", answer: "Are there" },
+        { sentence: "______ a mirror in the bathroom? (Is there / Are there)", answer: "Is there" },
+        { sentence: "______ two bedrooms in your house? (Is there / Are there)", answer: "Are there" }
+    ];
+    let currentThere = 0;
+    function updateThere() {
+        currentThere = Math.floor(Math.random() * thereQuestions.length);
+        document.getElementById("thereQuestion").innerHTML = thereQuestions[currentThere].sentence;
+        document.getElementById("thereInput").value = "";
+        document.getElementById("thereResult").innerHTML = "";
+    }
+    document.getElementById("checkThere").onclick = () => {
+        let ans = document.getElementById("thereInput").value.trim().toLowerCase();
+        if (ans === thereQuestions[currentThere].answer.toLowerCase()) {
+            document.getElementById("thereResult").innerHTML = "<div class='correct-feedback'>✅ Correct!</div>";
         } else {
-            document.getElementById('routineResult').innerHTML = "<div class='wrong-feedback'>⚠️ Please write something about your weekly routine.</div>";
+            document.getElementById("thereResult").innerHTML = `<div class='wrong-feedback'>❌ Wrong. Correct: ${thereQuestions[currentThere].answer}</div>`;
         }
     };
+    document.getElementById("newThere").onclick = updateThere;
+    updateThere();
 </script>
 </body>
 </html>
