@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>معهد الريادة للتدريب - English Zone | النظام التفاعلي</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Tahoma', 'Cairo', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at 20% 30%, #0a0f2a, #030617);
+            min-height: 100vh;
+            padding: 25px 20px;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(15, 25, 45, 0.55);
+            backdrop-filter: blur(8px);
+            border-radius: 48px;
+            padding: 25px 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        .hero h1 {
+            font-size: 2.4rem;
+            background: linear-gradient(135deg, #aaffff, #4c9aff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 8px rgba(0,255,255,0.3);
+        }
+        .hero p {
+            color: #bbd9ff;
+            margin-top: 8px;
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .back-btn {
+            background: rgba(0, 30, 50, 0.7);
+            border: 1px solid #0ff;
+            color: #0ff;
+            padding: 8px 20px;
+            border-radius: 60px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        .back-btn:hover {
+            background: #0ff;
+            color: #010514;
+            box-shadow: 0 0 12px #0ff;
+        }
+        .location-badge {
+            background: #0a142e;
+            padding: 6px 18px;
+            border-radius: 40px;
+            color: #7df9ff;
+            font-size: 0.85rem;
+            border-right: 3px solid #0ff;
+        }
+
+        .grid-books, .grid-units, .grid-activities {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 25px;
+            margin: 20px 0 30px;
+        }
+        .neon-btn {
+            background: rgba(10, 20, 40, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 18px 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #c0ffff;
+            cursor: pointer;
+            transition: 0.25s ease;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.3);
+        }
+        .neon-btn:hover {
+            background: rgba(0, 255, 255, 0.15);
+            border-color: #0ff;
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 0 18px rgba(0, 255, 255, 0.4);
+        }
+        .grid-activities .neon-btn {
+            padding: 14px 5px;
+            font-size: 1rem;
+        }
+        .content-frame {
+            margin-top: 30px;
+            background: #0a0f1c;
+            border-radius: 32px;
+            border: 1px solid #2c3e66;
+            overflow: hidden;
+        }
+        .content-frame iframe {
+            width: 100%;
+            min-height: 65vh;
+            border: none;
+            background: white;
+            border-radius: 28px;
+        }
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            color: #6a7c9f;
+            font-size: 0.75rem;
+        }
+        @media (max-width: 700px) {
+            .main-container { padding: 15px; }
+            .neon-btn { padding: 14px 5px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="main-container">
+    <div class="hero">
+        <h1>🏫 معهد الريادة للتدريب</h1>
+        <p>English Zone | نظام تعليمي تفاعلي متكامل</p>
+    </div>
+
+    <div class="nav-bar">
+        <button class="back-btn" id="backButton">↩️ رجوع</button>
+        <div class="location-badge" id="locationPath">الرئيسية / الكتب</div>
+    </div>
+
+    <div id="dynamicArea"></div>
+    <div id="iframeContainer" class="content-frame" style="display: none;">
+        <iframe id="activityFrame" title="النشاط التفاعلي"></iframe>
+    </div>
+    <div class="footer-note">
+        ✨ اختر الكتاب ← الوحدة ← النشاط | جميع الأنشطة تعمل داخل هذه الصفحة
+    </div>
+</div>
+
+<script>
+    // ---------- تعريف الكتب والوحدات والمسارات ----------
+    const books = {
+        et1: {
+            name: "📘 English Time 1",
+            units: 10,
+            getActivityPath: (unitNum, activityKey) => {
+                const base = "books/english-time/english-time-1/interactive";
+                const files = {
+                    dictation: `unit${unitNum}-final.html`,
+                    writing: `unit${unitNum}-writing-escalating.html`,
+                    presentation: `unit${unitNum}-presentation.html`,
+                    rubric: `unit${unitNum}-rubric.html`,
+                    quiz: `unit${unitNum}-quiz.html`,
+                    extra: `unit${unitNum}-activities.html`   // تصحيح: أنشطة إضافية
+                };
+                return `${base}/${files[activityKey]}`;
+            }
+        },
+        et2: {
+            name: "📙 English Time 2",
+            units: 10,
+            getActivityPath: (unitNum, activityKey) => {
+                const base = "books/english-time/english-time-2/unit-" + unitNum;
+                const files = {
+                    dictation: `unit${unitNum}-final.html`,
+                    writing: `unit${unitNum}-writing-escalating.html`,
+                    presentation: `unit${unitNum}-presentation.html`,
+                    rubric: `unit${unitNum}-rubric.html`,
+                    quiz: `unit${unitNum}-quiz.html`,
+                    extra: `unit${unitNum}-activities.html`
+                };
+                return `${base}/${files[activityKey]}`;
+            }
+        },
+        et3: {
+            name: "📕 English Time 3",
+            units: 0,
+            comingSoon: true,
+            getActivityPath: () => "#"
+        },
+        et4: {
+            name: "📗 English Time 4",
+            units: 0,
+            comingSoon: true,
+            getActivityPath: () => "#"
+        },
+        interchangeIntro: {
+            name: "🌟 Interchange Intro",
+            units: 16,
+            comingSoon: true,
+            getActivityPath: () => "#"
+        },
+        interchange1: {
+            name: "🔥 Interchange 1",
+            units: 16,
+            comingSoon: true,
+            getActivityPath: () => "#"
+        },
+        interchange2: {
+            name: "⚡ Interchange 2",
+            units: 16,
+            comingSoon: true,
+            getActivityPath: () => "#"
+        },
+        interchange3: {
+            name: "💎 Interchange 3",
+            units: 16,
+            comingSoon: true,
+            getActivityPath: () => "#"
+        }
+    };
+
+    // أسماء الوحدات لـ English Time 2
+    const unitNamesET2 = {
+        1: "Unit 1: At Home with Annie",
+        2: "Unit 2: In the Classroom",
+        3: "Unit 3: At a Birthday Party",
+        4: "Unit 4: At a Store Window",
+        5: "Unit 5: At the Airport",
+        6: "Unit 6: At the Flower Shop",
+        7: "Unit 7: At the Department Store",
+        8: "Unit 8: Let's Clean Up",
+        9: "Unit 9: In a Store",
+        10: "Unit 10: At the Clinic"
+    };
+
+    const activitiesList = [
+        { key: "dictation", label: "🎙️ Dictation (إملاء)" },
+        { key: "writing", label: "✍️ Writing (كتابة)" },
+        { key: "presentation", label: "🎤 Presentation (عرض)" },
+        { key: "rubric", label: "📊 Rubric (تقييم)" },
+        { key: "quiz", label: "📝 Quiz (اختبار)" },
+        { key: "extra", label: "🎮 أنشطة إضافية" }
+    ];
+
+    let currentView = "books";
+    let selectedBookId = null;
+    let selectedUnit = null;
+
+    const dynamicArea = document.getElementById("dynamicArea");
+    const iframeContainer = document.getElementById("iframeContainer");
+    const activityFrame = document.getElementById("activityFrame");
+    const backBtn = document.getElementById("backButton");
+    const locationSpan = document.getElementById("locationPath");
+
+    function updateLocation() {
+        if (currentView === "books") {
+            locationSpan.innerText = "🏠 الرئيسية / الكتب";
+        } else if (currentView === "units") {
+            const book = books[selectedBookId];
+            locationSpan.innerText = `📚 ${book.name} / الوحدات`;
+        } else if (currentView === "activities") {
+            const book = books[selectedBookId];
+            locationSpan.innerText = `📖 ${book.name} / الوحدة ${selectedUnit} / الأنشطة`;
+        } else if (currentView === "content") {
+            const book = books[selectedBookId];
+            locationSpan.innerText = `▶️ تشغيل: ${book.name} - الوحدة ${selectedUnit}`;
+        }
+    }
+
+    function hideIframe() {
+        iframeContainer.style.display = "none";
+        activityFrame.src = "about:blank";
+        dynamicArea.style.display = "block";
+    }
+
+    function loadActivity(bookId, unitNum, activityKey) {
+        const book = books[bookId];
+        if (!book || book.comingSoon) {
+            alert("⚠️ هذا الكتاب لم يكتمل بعد (سيتم إضافته قريباً).");
+            return;
+        }
+        if (unitNum > book.units && book.units !== 0) {
+            alert(`⚠️ الوحدة ${unitNum} غير متوفرة حالياً. الوحدات المتاحة: 1-${book.units}`);
+            return;
+        }
+        let path = book.getActivityPath(unitNum, activityKey);
+        if (!path || path === "#") {
+            alert("⚠️ هذا النشاط لم يتم تجهيزه بعد.");
+            return;
+        }
+        dynamicArea.style.display = "none";
+        iframeContainer.style.display = "block";
+        activityFrame.src = path;
+        currentView = "content";
+        updateLocation();
+    }
+
+    function showActivities(bookId, unitNum) {
+        selectedBookId = bookId;
+        selectedUnit = unitNum;
+        currentView = "activities";
+        updateLocation();
+        let html = `<div style="margin-bottom: 15px;"><h3 style="color:#aaf0ff;">🎯 أنشطة الوحدة ${unitNum} - ${books[bookId].name}</h3></div>`;
+        html += `<div class="grid-activities">`;
+        activitiesList.forEach(act => {
+            html += `<div class="neon-btn" data-activity="${act.key}">${act.label}</div>`;
+        });
+        html += `</div>`;
+        dynamicArea.innerHTML = html;
+        hideIframe();
+        document.querySelectorAll("[data-activity]").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const actKey = btn.getAttribute("data-activity");
+                loadActivity(selectedBookId, selectedUnit, actKey);
+            });
+        });
+    }
+
+    function showUnits(bookId) {
+        const book = books[bookId];
+        if (!book) return;
+        if (book.comingSoon) {
+            alert(`📢 ${book.name} سيتم إضافته قريباً إن شاء الله.`);
+            return;
+        }
+        selectedBookId = bookId;
+        currentView = "units";
+        updateLocation();
+        let totalUnits = book.units;
+        let html = `<div style="margin-bottom: 15px;"><h3 style="color:#aaf0ff;">📚 وحدات ${book.name}</h3></div>`;
+        html += `<div class="grid-units">`;
+        for (let i = 1; i <= totalUnits; i++) {
+            let unitTitle = `Unit ${i}`;
+            if (bookId === "et2") {
+                unitTitle = unitNamesET2[i] || `Unit ${i}`;
+            } else if (bookId === "et1") {
+                unitTitle = `Unit ${i}`;
+            }
+            html += `<div class="neon-btn" data-unit="${i}">📖 ${unitTitle}</div>`;
+        }
+        html += `</div>`;
+        dynamicArea.innerHTML = html;
+        hideIframe();
+        document.querySelectorAll("[data-unit]").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const unitNum = parseInt(btn.getAttribute("data-unit"));
+                showActivities(selectedBookId, unitNum);
+            });
+        });
+    }
+
+    function showBooks() {
+        currentView = "books";
+        updateLocation();
+        let html = `<div class="grid-books">`;
+        for (let [id, book] of Object.entries(books)) {
+            let extraStyle = book.comingSoon ? "style='opacity:0.7'" : "";
+            html += `<div class="neon-btn" data-book="${id}" ${extraStyle}>${book.name} ${book.comingSoon ? "⏳" : ""}</div>`;
+        }
+        html += `</div>`;
+        dynamicArea.innerHTML = html;
+        hideIframe();
+        document.querySelectorAll("[data-book]").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const bookId = btn.getAttribute("data-book");
+                showUnits(bookId);
+            });
+        });
+    }
+
+    function goBack() {
+        if (currentView === "content") {
+            if (selectedBookId && selectedUnit) showActivities(selectedBookId, selectedUnit);
+            else showBooks();
+        } else if (currentView === "activities") {
+            if (selectedBookId) showUnits(selectedBookId);
+            else showBooks();
+        } else if (currentView === "units") {
+            showBooks();
+        } else {
+            showBooks();
+        }
+    }
+
+    function init() {
+        showBooks();
+        backBtn.addEventListener("click", goBack);
+        activityFrame.onerror = () => {
+            alert("⚠️ تعذر تحميل النشاط. تأكد من وجود الملف في المسار الصحيح.");
+        };
+    }
+
+    init();
+</script>
+
+<!-- ========== Interchange Intro ========== -->
+<div class="et2-section" style="margin-top: 50px;">
+    <h2 class="et2-title">🌟 Interchange Intro</h2>
+    <div class="et2-grid">
+        <!-- Level 1A (Units 1-4) -->
+        <div class="unit-card">
+            <h3>📘 Level 1A (Units 1-4)</h3>
+            <div class="button-group">
+                <a href="books/interchange/interchange-intro/unit-1/unit1-final.html" target="_blank" class="btn">🎙️ Unit 1</a>
+                <a href="books/interchange/interchange-intro/unit-2/unit2-final.html" target="_blank" class="btn">🎙️ Unit 2</a>
+                <a href="books/interchange/interchange-intro/unit-3/unit3-final.html" target="_blank" class="btn">🎙️ Unit 3</a>
+                <a href="books/interchange/interchange-intro/unit-4/unit4-final.html" target="_blank" class="btn">🎙️ Unit 4</a>
+            </div>
+            <div class="note">✅ الوحدات 1-4 (Dictation, Writing, Presentation, Rubric, Quiz, Activities)</div>
+        </div>
+        <!-- Level 1B (Units 5-8) -->
+        <div class="unit-card">
+            <h3>📙 Level 1B (Units 5-8)</h3>
+            <div class="button-group">
+                <a href="books/interchange/interchange-intro/unit-5/unit5-final.html" target="_blank" class="btn">🎙️ Unit 5</a>
+                <a href="books/interchange/interchange-intro/unit-6/unit6-final.html" target="_blank" class="btn">🎙️ Unit 6</a>
+                <a href="books/interchange/interchange-intro/unit-7/unit7-final.html" target="_blank" class="btn">🎙️ Unit 7</a>
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 8 (قريباً)</a>
+            </div>
+            <div class="note note-success">✅ الوحدات 5-7 جاهزة (Dictation, Writing, Presentation, Rubric, Quiz, Activities)</div>
+        </div>
+            <div class="note">⚠️ سيتم إضافة الوحدات 5-8 عند تجهيز المحتوى</div>
+        </div>
+        <!-- Level 2A (Units 9-12) -->
+        <div class="unit-card">
+            <h3>📕 Level 2A (Units 9-12)</h3>
+            <div class="button-group">
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 9 (قريباً)</a>
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 10 (قريباً)</a>
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 11 (قريباً)</a>
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 12 (قريباً)</a>
+            </div>
+            <div class="note">⚠️ سيتم إضافة الوحدات 9-12 عند تجهيز المحتوى</div>
+        </div>
+        <!-- Level 2B (Units 13-16) -->
+        <div class="unit-card">
+            <h3>📗 Level 2B (Units 13-16)</h3>
+            <div class="button-group">
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 13 (قريباً)</a>
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 14 (قريباً)</a>
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 15 (قريباً)</a>
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 16 (قريباً)</a>
+            </div>
+            <div class="note">⚠️ سيتم إضافة الوحدات 13-16 عند تجهيز المحتوى</div>
+        </div>
+    </div>
+</div>
+
+</body>
+<!-- ========== Interchange Intro ========== -->
+<div class="et2-section" style="margin-top: 50px;">
+    <h2 class="et2-title">🌟 Interchange Intro</h2>
+    <div class="et2-grid">
+        <!-- Level 1A (Units 1-4) -->
+        <div class="unit-card">
+            <h3>📘 Level 1A (Units 1-4)</h3>
+            <div class="button-group">
+                <a href="books/interchange/interchange-intro/unit-1/unit1-final.html" target="_blank" class="btn">🎙️ Unit 1</a>
+                <a href="books/interchange/interchange-intro/unit-2/unit2-final.html" target="_blank" class="btn">🎙️ Unit 2</a>
+                <a href="books/interchange/interchange-intro/unit-3/unit3-final.html" target="_blank" class="btn">🎙️ Unit 3</a>
+                <a href="books/interchange/interchange-intro/unit-4/unit4-final.html" target="_blank" class="btn">🎙️ Unit 4</a>
+            </div>
+            <div class="note">✅ الوحدات 1-4 (Dictation, Writing, Presentation, Rubric, Quiz, Activities)</div>
+        </div>
+        <!-- Level 1B (Units 5-8) -->
+        <div class="unit-card">
+            <h3>📙 Level 1B (Units 5-8)</h3>
+            <div class="button-group">
+                <a href="books/interchange/interchange-intro/unit-5/unit5-final.html" target="_blank" class="btn">🎙️ Unit 5</a>
+                <a href="books/interchange/interchange-intro/unit-6/unit6-final.html" target="_blank" class="btn">🎙️ Unit 6</a>
+                <a href="books/interchange/interchange-intro/unit-7/unit7-final.html" target="_blank" class="btn">🎙️ Unit 7</a>
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 8 (قريباً)</a>
+            </div>
+            <div class="note note-success">✅ الوحدات 5-7 جاهزة (Dictation, Writing, Presentation, Rubric, Quiz, Activities)</div>
+        </div>
+            <div class="note">⚠️ سيتم إضافة الوحدات 5-8 عند تجهيز المحتوى</div>
+        </div>
+        <!-- Level 2A (Units 9-12) -->
+        <div class="unit-card">
+            <h3>📕 Level 2A (Units 9-12)</h3>
+            <div class="button-group">
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 9 (قريباً)</a>
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 10 (قريباً)</a>
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 11 (قريباً)</a>
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 12 (قريباً)</a>
+            </div>
+            <div class="note">⚠️ سيتم إضافة الوحدات 9-12 عند تجهيز المحتوى</div>
+        </div>
+        <!-- Level 2B (Units 13-16) -->
+        <div class="unit-card">
+            <h3>📗 Level 2B (Units 13-16)</h3>
+            <div class="button-group">
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 13 (قريباً)</a>
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 14 (قريباً)</a>
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 15 (قريباً)</a>
+                <a href="#" class="btn" style="opacity:0.7;">🎙️ Unit 16 (قريباً)</a>
+            </div>
+            <div class="note">⚠️ سيتم إضافة الوحدات 13-16 عند تجهيز المحتوى</div>
+        </div>
+    </div>
+</div>
+</html>
