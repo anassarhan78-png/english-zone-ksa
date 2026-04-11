@@ -91,7 +91,6 @@
 </div>
 
 <script>
-    // قائمة الكلمات الأساسية (لجميع الأيام)
     const words = [
         "name", "first", "last", "I", "am", "nice", "meet", "you",
         "Miss", "Mr.", "Mrs.", "Ms.", "teacher", "student", "he", "she",
@@ -150,7 +149,7 @@
         speechSynthesis.speak(utterance);
     }
 
-    // ---------- HANGMAN ----------
+    // HANGMAN
     let hangmanWord = "", guessedLetters = [], wrongGuesses = 0;
     const canvas = document.getElementById("hangmanCanvas");
     const ctx = canvas.getContext("2d");
@@ -219,7 +218,7 @@
     document.getElementById("newHangmanGame").onclick = () => newHangmanGame();
     newHangmanGame();
 
-    // ---------- MISSING LETTER ----------
+    // MISSING LETTER
     let missingWord = "", missingIndex = 0;
     function updateMissing() {
         missingWord = words[Math.floor(Math.random() * words.length)];
@@ -240,7 +239,7 @@
     document.getElementById("newMissing").onclick = updateMissing;
     updateMissing();
 
-    // ---------- MATCH ----------
+    // MATCH
     let matchWord = "";
     function updateMatch() {
         matchWord = words[Math.floor(Math.random() * words.length)];
@@ -267,7 +266,7 @@
     document.getElementById("newMatch").onclick = updateMatch;
     updateMatch();
 
-    // ---------- FILL GAP ----------
+    // FILL GAP
     let fillWord = "";
     function updateFill() {
         fillWord = words[Math.floor(Math.random() * words.length)];
@@ -288,7 +287,7 @@
     document.getElementById("newFill").onclick = updateFill;
     updateFill();
 
-    // ---------- CLASSIC DICTATION ----------
+    // CLASSIC DICTATION
     let dictWord = "";
     function updateDict() {
         dictWord = words[Math.floor(Math.random() * words.length)];
