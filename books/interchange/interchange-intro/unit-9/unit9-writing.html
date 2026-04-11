@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 9 Writing - My Eating Habits</title>
+    <style>
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; }
+        .container { max-width: 900px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; }
+        textarea { width: 100%; padding: 15px; border-radius: 20px; border: 1px solid #ccc; font-size: 1rem; }
+        .checklist { background: #e9ecef; padding: 15px; border-radius: 20px; margin: 20px 0; }
+        .stars { font-size: 2rem; cursor: pointer; color: #ddd; }
+        .star-active { color: #d35400; }
+        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
+        .feedback { margin-top: 20px; padding: 15px; border-radius: 20px; background: #c8e6d9; }
+        .word-count { font-size: 0.9rem; color: #666; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Unit 9: Do we need any eggs? - Writing Task</h1>
+    <p>Write a paragraph of 100-150 words about your eating habits. Use adverbs of frequency (always, usually, often, sometimes, hardly ever, never) and some/any. Include at least 3 food groups.</p>
+    <textarea id="writingArea" rows="8" placeholder="Write your paragraph here..."></textarea>
+    <div class="word-count" id="wordCount">Words: 0</div>
+    <button id="speakWriting">🔊 Read my text</button>
+    <div class="checklist">
+        <h3>Self-Checklist</h3>
+        <label><input type="checkbox" id="c1"> 100-150 words</label><br>
+        <label><input type="checkbox" id="c2"> Used adverbs of frequency</label><br>
+        <label><input type="checkbox" id="c3"> Used some/any correctly</label><br>
+        <label><input type="checkbox" id="c4"> Mentioned 3 food groups</label><br>
+    </div>
+    <div><h3>Rate your writing</h3><div class="stars" id="starRating"><span data-value="1">★</span><span data-value="2">★</span><span data-value="3">★</span><span data-value="4">★</span><span data-value="5">★</span></div><p id="ratingText"></p></div>
+    <button id="submitWriting">Submit</button>
+    <div id="writingFeedback" class="feedback"></div>
+</div>
+<script>
+let rating=0;document.querySelectorAll('#starRating span').forEach(star=>{star.addEventListener('click',function(){rating=parseInt(this.dataset.value);document.querySelectorAll('#starRating span').forEach((s,i)=>{if(i<rating)s.classList.add('star-active');else s.classList.remove('star-active');});document.getElementById('ratingText').innerText=`You gave ${rating} stars.`;});});
+const textarea=document.getElementById('writingArea');const wordCountSpan=document.getElementById('wordCount');textarea.addEventListener('input',function(){const words=this.value.trim().split(/\s+/).filter(w=>w.length>0);wordCountSpan.innerText=`Words: ${words.length}`;});
+document.getElementById('speakWriting').onclick=()=>{let text=textarea.value;if(text)speak(text);else alert("Write something first.");};
+document.getElementById('submitWriting').onclick=()=>{let c1=document.getElementById('c1').checked,c2=document.getElementById('c2').checked,c3=document.getElementById('c3').checked,c4=document.getElementById('c4').checked;let score=(c1+c2+c3+c4)+(rating>0?1:0);let feedback=`Score: ${score}/9. `;if(score>=7)feedback+="Excellent!";else if(score>=4)feedback+="Good start. Review checklist.";else feedback+="Try again after studying.";document.getElementById('writingFeedback').innerHTML=feedback;};
+function speak(t){let u=new SpeechSynthesisUtterance(t);u.lang="en-US";speechSynthesis.cancel();speechSynthesis.speak(u);}
+</script>
+</body>
+</html>

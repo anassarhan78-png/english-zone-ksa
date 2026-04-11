@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 9 Quiz</title>
+    <style>
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; }
+        .container { max-width: 1000px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .question { background: #fff5e6; padding: 15px; border-radius: 25px; margin: 15px 0; }
+        button { background: #d35400; border: none; color: white; padding: 12px 24px; border-radius: 40px; cursor: pointer; }
+        .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="container"><h1>Unit 9 Quiz (50 questions)</h1><div id="quiz"></div><button id="submit">Submit</button><div id="result" class="result"></div></div>
+<script>
+const questions=[];
+for(let i=0;i<50;i++){questions.push({text:"Sample question "+i,options:["A","B","C"],answer:"A"});}
+function buildQuiz(){let html="";for(let i=0;i<questions.length;i++){html+=`<div class="question"><strong>${i+1}. ${questions[i].text}</strong><br>`;questions[i].options.forEach(opt=>{html+=`<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label> `;});html+=`</div>`;}document.getElementById('quiz').innerHTML=html;}
+function submitQuiz(){let score=0;for(let i=0;i<questions.length;i++){let radios=document.querySelectorAll(`input[name="q${i}"]`);for(let r of radios)if(r.checked&&r.value===questions[i].answer)score++;}document.getElementById('result').innerHTML=`You got ${score}/${questions.length}.`;}
+buildQuiz();document.getElementById('submit').onclick=submitQuiz;
+</script>
+</body>
+</html>

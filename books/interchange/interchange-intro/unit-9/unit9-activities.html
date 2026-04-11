@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 9 Extra Activities</title>
+    <style>
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; }
+        .container { max-width: 1200px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .card { background: #fff5e6; border-radius: 35px; padding: 20px; margin-bottom: 20px; }
+        button { background: #d35400; border: none; color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="container"><h1>Unit 9 Extra Activities</h1>
+<div class="card"><h2>Food Group Drag & Drop</h2><p>Place each food in the correct group: fruit, vegetable, grain, dairy, protein.</p><div id="dragArea"></div><button id="checkDrag">Check</button><div id="dragResult"></div></div>
+<div class="card"><h2>Crossword Puzzle</h2><p>Solve the crossword with food words.</p><div id="crossword"></div><button id="checkCross">Check</button><div id="crossResult"></div></div>
+<div class="card"><h2>Unscramble Food Words</h2><div id="scrambleWord"></div><input id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button><div id="scrambleResult"></div></div>
+</div>
+<script>
+document.getElementById('checkDrag').onclick=()=>document.getElementById('dragResult').innerHTML="<div class='correct'>Good try!</div>";
+document.getElementById('checkCross').onclick=()=>document.getElementById('crossResult').innerHTML="<div class='correct'>Check your answers.</div>";
+let scrambleWords=["apple","banana","bread"];let current="apple";
+function updateScramble(){current=scrambleWords[Math.floor(Math.random()*scrambleWords.length)];document.getElementById('scrambleWord').innerText=current.split('').sort(()=>Math.random()-0.5).join('');}
+document.getElementById('checkScramble').onclick=()=>{let ans=document.getElementById('scrambleInput').value.trim().toLowerCase();if(ans===current)document.getElementById('scrambleResult').innerHTML="<div class='correct'>Correct!</div>";else document.getElementById('scrambleResult').innerHTML=`<div class='wrong'>Wrong. It was ${current}.</div>`;};
+document.getElementById('newScramble').onclick=updateScramble;updateScramble();
+</script>
+</body>
+</html>

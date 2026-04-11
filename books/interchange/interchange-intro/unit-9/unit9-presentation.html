@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 9 Presentation</title>
+    <style>
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; }
+        .container { max-width: 900px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .timer { font-size: 3rem; text-align: center; background: #333; color: #0f0; padding: 10px; border-radius: 60px; width: 200px; margin: 20px auto; }
+        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; margin: 5px; }
+        textarea { width: 100%; padding: 10px; border-radius: 20px; }
+        .feedback { margin-top: 20px; padding: 15px; border-radius: 20px; background: #e9ecef; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Unit 9: Speaking Presentation (60 seconds)</h1>
+    <div class="timer" id="timerDisplay">00:00</div>
+    <div><button id="startTimer">Start (60s)</button><button id="resetTimer">Reset</button></div>
+    <textarea id="speechScript" rows="5">Hello. Today I will talk about my eating habits. I always eat breakfast at home. I usually have cereal with milk and a banana. Sometimes I drink coffee, but I never add sugar. For lunch, I often eat a sandwich with chicken and lettuce. I hardly ever eat fast food. For dinner, I like to cook rice with vegetables and fish. I think a healthy diet includes a lot of fruit and vegetables, some protein, and a little fat. Thank you.</textarea>
+    <button id="speakScript">🔊 Read aloud</button>
+    <div><h3>Self Evaluation</h3><label><input type="checkbox" id="evalTime"> ~60 seconds</label><br><label><input type="checkbox" id="evalClear"> Clear speech</label><br><label><input type="checkbox" id="evalGrammar"> Good grammar</label><br><label><input type="checkbox" id="evalContent"> Good content</label><br><label><input type="checkbox" id="evalConfident"> Confident</label><br><button id="submitEval">Submit</button></div>
+    <div id="presentationFeedback" class="feedback"></div>
+</div>
+<script>
+let timerInterval=null,seconds=0;const timerDisplay=document.getElementById('timerDisplay');function updateTimerDisplay(){let mins=Math.floor(seconds/60),secs=seconds%60;timerDisplay.innerText=`${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;}
+document.getElementById('startTimer').onclick=()=>{if(timerInterval)clearInterval(timerInterval);seconds=0;updateTimerDisplay();timerInterval=setInterval(()=>{seconds++;updateTimerDisplay();if(seconds>=60){clearInterval(timerInterval);timerInterval=null;alert("Time's up!");}},1000);};
+document.getElementById('resetTimer').onclick=()=>{if(timerInterval)clearInterval(timerInterval);seconds=0;updateTimerDisplay();timerInterval=null;};
+document.getElementById('speakScript').onclick=()=>{let text=document.getElementById('speechScript').value;let utterance=new SpeechSynthesisUtterance(text);utterance.lang="en-US";speechSynthesis.cancel();speechSynthesis.speak(utterance);};
+document.getElementById('submitEval').onclick=()=>{let t=document.getElementById('evalTime').checked?1:0,c=document.getElementById('evalClear').checked?1:0,g=document.getElementById('evalGrammar').checked?1:0,ct=document.getElementById('evalContent').checked?1:0,cf=document.getElementById('evalConfident').checked?1:0;let score=t+c+g+ct+cf;let feedback=`Score: ${score}/5. `;if(score===5)feedback+="Excellent!";else if(score>=3)feedback+="Good job!";else feedback+="Keep practicing.";document.getElementById('presentationFeedback').innerHTML=feedback;};
+</script>
+</body>
+</html>
