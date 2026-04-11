@@ -171,7 +171,7 @@
                     presentation: `unit${unitNum}-presentation.html`,
                     rubric: `unit${unitNum}-rubric.html`,
                     quiz: `unit${unitNum}-quiz.html`,
-                    extra: `unit${unitNum}-activities.html`   // تصحيح: أنشطة إضافية
+                    extra: `unit${unitNum}-activities.html`
                 };
                 return `${base}/${files[activityKey]}`;
             }
@@ -207,8 +207,19 @@
         interchangeIntro: {
             name: "🌟 Interchange Intro",
             units: 16,
-            comingSoon: true,
-            getActivityPath: () => "#"
+            comingSoon: false,
+            getActivityPath: (unitNum, activityKey) => {
+                const base = "books/interchange/interchange-intro/unit-" + unitNum;
+                const files = {
+                    dictation: `unit${unitNum}-final.html`,
+                    writing: `unit${unitNum}-writing.html`,
+                    presentation: `unit${unitNum}-presentation.html`,
+                    rubric: `unit${unitNum}-rubric.html`,
+                    quiz: `unit${unitNum}-quiz.html`,
+                    extra: `unit${unitNum}-activities.html`
+                };
+                return `${base}/${files[activityKey]}`;
+            }
         },
         interchange1: {
             name: "🔥 Interchange 1",
@@ -242,6 +253,26 @@
         8: "Unit 8: Let's Clean Up",
         9: "Unit 9: In a Store",
         10: "Unit 10: At the Clinic"
+    };
+
+    // أسماء الوحدات لـ Interchange Intro (اختياري للعرض)
+    const unitNamesInterchange = {
+        1: "Unit 1: It's nice to meet you",
+        2: "Unit 2: What's this?",
+        3: "Unit 3: Where are you from?",
+        4: "Unit 4: What's it like?",
+        5: "Unit 5: What time is it?",
+        6: "Unit 6: Transportation & Family",
+        7: "Unit 7: Does it have a view?",
+        8: "Unit 8: (قيد الإعداد)",
+        9: "Unit 9: (قيد الإعداد)",
+        10: "Unit 10: (قيد الإعداد)",
+        11: "Unit 11: (قيد الإعداد)",
+        12: "Unit 12: (قيد الإعداد)",
+        13: "Unit 13: (قيد الإعداد)",
+        14: "Unit 14: (قيد الإعداد)",
+        15: "Unit 15: (قيد الإعداد)",
+        16: "Unit 16: (قيد الإعداد)"
     };
 
     const activitiesList = [
@@ -346,6 +377,8 @@
                 unitTitle = unitNamesET2[i] || `Unit ${i}`;
             } else if (bookId === "et1") {
                 unitTitle = `Unit ${i}`;
+            } else if (bookId === "interchangeIntro") {
+                unitTitle = unitNamesInterchange[i] || `Unit ${i}`;
             }
             html += `<div class="neon-btn" data-unit="${i}">📖 ${unitTitle}</div>`;
         }
