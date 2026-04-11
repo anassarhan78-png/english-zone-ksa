@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interchange Intro - Unit 8 Quiz</title>
+    <style>
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        .container { max-width: 800px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .question { background: #fff5e6; padding: 15px; border-radius: 25px; margin: 15px 0; }
+        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
+        .result { background: #e9ecef; padding: 15px; border-radius: 20px; margin-top: 20px; }
+        input, select { margin: 5px; padding: 8px; border-radius: 20px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📝 Unit 8 Quiz - What do you do?</h1>
+    <div>
+        <div class="question">1. What is the job of a person who flies airplanes?<br>
+            <input type="text" id="q1" placeholder="pilot / flight attendant">
+        </div>
+        <div class="question">2. Where does a doctor work?<br>
+            <select id="q2"><option value="">Select</option><option value="hospital">hospital</option><option value="school">school</option><option value="restaurant">restaurant</option></select>
+        </div>
+        <div class="question">3. Complete the question: "What ______ you do?" (do / does)<br>
+            <input type="text" id="q3" placeholder="do / does">
+        </div>
+        <div class="question">4. Which adjective describes a job that makes you feel tired?<br>
+            <select id="q4"><option value="">Select</option><option value="exciting">exciting</option><option value="stressful">stressful</option><option value="boring">boring</option></select>
+        </div>
+        <div class="question">5. True or False: "A cashier handles money."<br>
+            <select id="q5"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
+        </div>
+        <div class="question">6. Complete the sentence: "A police officer has a ______ job." (dangerous / relaxing)<br>
+            <input type="text" id="q6" placeholder="dangerous / relaxing">
+        </div>
+        <div class="question">7. Which job works in a hotel?<br>
+            <select id="q7"><option value="">Select</option><option value="teacher">teacher</option><option value="receptionist">receptionist</option><option value="chef">chef</option></select>
+        </div>
+        <div class="question">8. Write the correct form: "He ______ (work) in an office."<br>
+            <input type="text" id="q8" placeholder="works / work">
+        </div>
+        <div class="question">9. How do you ask about someone's job?<br>
+            <select id="q9"><option value="">Select</option><option value="Where do you work?">Where do you work?</option><option value="What do you do?">What do you do?</option><option value="How do you work?">How do you work?</option></select>
+        </div>
+        <div class="question">10. "My job is ______. I like it because it's never the same." (boring / interesting)<br>
+            <input type="text" id="q10" placeholder="boring / interesting">
+        </div>
+    </div>
+    <button id="submitQuiz">Submit Quiz</button>
+    <div id="quizResult" class="result"></div>
+</div>
+<script>
+    document.getElementById('submitQuiz').onclick = () => {
+        let score = 0;
+        if (document.getElementById('q1').value.trim().toLowerCase() === 'pilot') score++;
+        if (document.getElementById('q2').value === 'hospital') score++;
+        if (document.getElementById('q3').value.trim().toLowerCase() === 'do') score++;
+        if (document.getElementById('q4').value === 'stressful') score++;
+        if (document.getElementById('q5').value === 'true') score++;
+        if (document.getElementById('q6').value.trim().toLowerCase() === 'dangerous') score++;
+        if (document.getElementById('q7').value === 'receptionist') score++;
+        if (document.getElementById('q8').value.trim().toLowerCase() === 'works') score++;
+        if (document.getElementById('q9').value === 'What do you do?') score++;
+        if (document.getElementById('q10').value.trim().toLowerCase() === 'interesting') score++;
+        let percent = (score/10)*100;
+        let message = `You got ${score}/10 (${percent}%). `;
+        if (percent >= 80) message += "Excellent!";
+        else if (percent >= 60) message += "Good! Review your mistakes.";
+        else message += "Try again after studying the unit.";
+        document.getElementById('quizResult').innerHTML = message;
+    };
+</script>
+</body>
+</html>

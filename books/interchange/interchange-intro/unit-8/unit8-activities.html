@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interchange Intro - Unit 8 Extra Activities</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; }
+        .container { max-width: 1300px; margin: auto; background: #fef9e8; border-radius: 45px; padding: 20px 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .activity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; }
+        .card { background: #fff5e6; border-radius: 35px; padding: 20px; border: 1px solid #f0c0a0; }
+        .card h2 { background: #d35400; display: inline-block; padding: 5px 20px; border-radius: 40px; color: white; font-size: 1.3rem; }
+        button { background: #d35400; border: none; color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; margin: 5px; }
+        input, select { padding: 8px; border-radius: 30px; border: 1px solid #ccc; margin: 5px; }
+        .correct-feedback { background: #c8e6d9; border-left: 6px solid #2e7d64; padding: 8px; border-radius: 20px; margin-top: 10px; }
+        .wrong-feedback { background: #ffe0e0; border-left: 6px solid #d9534f; padding: 8px; border-radius: 20px; margin-top: 10px; }
+        .drag-word { background: #2c7da0; color: white; padding: 10px 20px; border-radius: 40px; cursor: grab; display: inline-block; margin: 5px; }
+        .drop-zone { border: 2px dashed #d35400; border-radius: 20px; padding: 12px; min-width: 120px; text-align: center; background: #fff0e0; display: inline-block; margin: 6px; }
+        .crossword-grid { display: grid; grid-template-columns: repeat(6, 45px); gap: 4px; justify-content: center; background: #f0f0f0; padding: 15px; border-radius: 20px; }
+        .crossword-grid input { width: 45px; height: 45px; text-align: center; font-size: 1.2rem; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📖 Interchange Intro - Unit 8 🎲 Extra Activities</h1>
+    <div class="activity-grid">
+        <!-- Drag & Drop: Job to workplace -->
+        <div class="card">
+            <h2>🏢 Drag & Drop: Job → Workplace</h2>
+            <div id="dragDropArea"></div>
+            <button id="checkDragDrop">Check All</button>
+            <div id="dragDropResult"></div>
+        </div>
+
+        <!-- Crossword Puzzle (jobs) -->
+        <div class="card">
+            <h2>🔠 Crossword</h2>
+            <div id="crosswordGrid"></div>
+            <div id="crosswordClues" style="margin-top:10px; font-size:0.8rem;"></div>
+            <button id="checkCrossword">Check Crossword</button>
+            <div id="crosswordResult"></div>
+        </div>
+
+        <!-- Unscramble (job names) -->
+        <div class="card">
+            <h2>🔀 Unscramble</h2>
+            <div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div>
+            <input type="text" id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button>
+            <div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button>
+        </div>
+
+        <!-- Adjective matching game -->
+        <div class="card">
+            <h2>📝 Adjective + Job</h2>
+            <div id="adjQuestion">A doctor's job is ______. (exciting / stressful / easy)</div>
+            <select id="adjSelect">
+                <option value="">Select</option>
+                <option value="exciting">exciting</option>
+                <option value="stressful">stressful</option>
+                <option value="easy">easy</option>
+            </select>
+            <button id="checkAdj">Check</button>
+            <button id="newAdj">Next</button>
+            <div id="adjResult"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const jobWorkplace = [
+        { job: "doctor", workplace: "hospital" },
+        { job: "teacher", workplace: "school" },
+        { job: "chef", workplace: "restaurant" },
+        { job: "police officer", workplace: "police station" },
+        { job: "receptionist", workplace: "hotel" },
+        { job: "cashier", workplace: "store" }
+    ];
+    
+    function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+
+    // Drag & Drop: job to workplace
+    let selectedJob = null;
+    function initDragDrop() {
+        let container = document.getElementById('dragDropArea');
+        container.innerHTML = '<div><strong>Click a job, then click its workplace</strong></div><div style="display:flex; flex-wrap:wrap; gap:15px; margin:10px 0;">';
+        jobWorkplace.forEach(item => {
+            let btn = document.createElement('button');
+            btn.innerText = item.job;
+            btn.classList.add('drag-word');
+            btn.onclick = () => { selectedJob = item.job; };
+            container.appendChild(btn);
+        });
+        container.innerHTML += '</div><div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">';
+        jobWorkplace.forEach(item => {
+            let zone = document.createElement('div');
+            zone.classList.add('drop-zone');
+            zone.setAttribute('data-workplace', item.workplace);
+            zone.innerHTML = `${item.workplace}<br><span class="drop-label">???</span>`;
+            zone.onclick = () => {
+                if (selectedJob) {
+                    let match = jobWorkplace.find(jw => jw.job === selectedJob && jw.workplace === zone.getAttribute('data-workplace'));
+                    if (match) {
+                        zone.querySelector('.drop-label').innerText = selectedJob;
+                        zone.style.background = "#c8e6d9";
+                        selectedJob = null;
+                    } else {
+                        alert(`Wrong! "${selectedJob}" does not work in "${zone.getAttribute('data-workplace')}".`);
+                    }
+                } else {
+                    alert("Click a job first.");
+                }
+            };
+            container.appendChild(zone);
+        });
+        container.innerHTML += '</div>';
+    }
+    document.getElementById('checkDragDrop').onclick = () => {
+        let allOk = true;
+        document.querySelectorAll('#dragDropArea .drop-zone').forEach(zone => {
+            let label = zone.querySelector('.drop-label').innerText;
+            let expectedJob = jobWorkplace.find(jw => jw.workplace === zone.getAttribute('data-workplace'))?.job;
+            if (label !== expectedJob) allOk = false;
+        });
+        document.getElementById('dragDropResult').innerHTML = allOk ? "<div class='correct-feedback'>🎉 Perfect! All matched.</div>" : "<div class='wrong-feedback'>⚠️ Some matches are missing or wrong.</div>";
+    };
+    initDragDrop();
+
+    // Crossword (jobs)
+    function buildCrossword() {
+        let gridHtml = '<div class="crossword-grid">';
+        let predefined = [
+            ['D','O','C','T','O','R'],
+            ['','','','','','N'],
+            ['N','U','R','S','E',''],
+            ['','','','','','S'],
+            ['C','H','E','F','','E'],
+            ['','','','','','']
+        ];
+        for(let i=0;i<6;i++){
+            for(let j=0;j<6;j++){
+                let val = predefined[i][j] ? predefined[i][j] : '';
+                let readonly = val ? 'readonly' : '';
+                gridHtml += `<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" style="text-transform:uppercase" ${readonly}>`;
+            }
+            gridHtml += `<div style="width:100%"></div>`;
+        }
+        gridHtml += '</div>';
+        document.getElementById('crosswordGrid').innerHTML = gridHtml;
+        let clues = `<strong>Clues:</strong> Across: Row0: treats patients (DOCTOR), Row2: helps doctors (NURSE), Row4: cooks food (CHEF).`;
+        document.getElementById('crosswordClues').innerHTML = clues;
+    }
+    document.getElementById('checkCrossword').onclick = () => {
+        document.getElementById('crosswordResult').innerHTML = "<div class='correct-feedback'>✅ Check your answers with the clues.</div>";
+    };
+    buildCrossword();
+
+    // Unscramble (jobs)
+    const jobWords = ["doctor", "nurse", "teacher", "pilot", "chef", "lawyer"];
+    let currentScramble = "";
+    function getScrambled(w) { let arr = w.split(''); for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr.join(''); }
+    function updateScramble() { currentScramble = jobWords[Math.floor(Math.random()*jobWords.length)]; document.getElementById("scrambleWord").innerText = getScrambled(currentScramble); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
+    document.getElementById("checkScramble").onclick = () => { let ans = document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans === currentScramble) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${currentScramble}</div>`; };
+    document.getElementById("newScramble").onclick = updateScramble;
+    document.getElementById("speakScramble").onclick = () => speak(currentScramble);
+    updateScramble();
+
+    // Adjective matching
+    const adjQuestions = [
+        { text: "A doctor's job is ______.", options: ["exciting", "stressful", "easy"], answer: "stressful" },
+        { text: "A firefighter's job is ______.", options: ["dangerous", "boring", "relaxing"], answer: "dangerous" },
+        { text: "A teacher's job is ______.", options: ["easy", "interesting", "boring"], answer: "interesting" },
+        { text: "A cashier's job can be ______.", options: ["exciting", "dangerous", "boring"], answer: "boring" }
+    ];
+    let currentAdj = 0;
+    function updateAdj() {
+        currentAdj = Math.floor(Math.random() * adjQuestions.length);
+        document.getElementById("adjQuestion").innerHTML = adjQuestions[currentAdj].text;
+        document.getElementById("adjSelect").value = "";
+        document.getElementById("adjResult").innerHTML = "";
+    }
+    document.getElementById("checkAdj").onclick = () => {
+        let selected = document.getElementById("adjSelect").value;
+        if (selected === adjQuestions[currentAdj].answer) {
+            document.getElementById("adjResult").innerHTML = "<div class='correct-feedback'>✅ Correct!</div>";
+        } else {
+            document.getElementById("adjResult").innerHTML = `<div class='wrong-feedback'>❌ Wrong. Correct: ${adjQuestions[currentAdj].answer}</div>`;
+        }
+    };
+    document.getElementById("newAdj").onclick = updateAdj;
+    updateAdj();
+</script>
+</body>
+</html>
