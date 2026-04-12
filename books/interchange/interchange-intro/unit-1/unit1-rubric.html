@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Interchange Intro - Unit 1 Rubric, Lesson Plan & Syllabus</title>
+    <title>Interchange Intro - Unit 1: Rubric, Lesson Plan & Syllabus</title>
     <style>
-        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; }
         .container { max-width: 1200px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
-        h1 { color: #d35400; text-align: center; }
+        h1 { color: #d35400; text-align: center; margin-top: 0; }
+        .toolbar { display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .toolbar button { background: #d35400; border: none; color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-weight: bold; }
+        .toolbar button:hover { background: #a04000; }
         .section { background: #fff5e6; border-radius: 30px; padding: 20px; margin: 20px 0; }
         .section h2 { background: #d35400; display: inline-block; padding: 5px 20px; border-radius: 40px; color: white; font-size: 1.3rem; margin-top: 0; }
         .criteria { margin: 15px 0; padding: 10px; background: #fef9e8; border-radius: 20px; }
@@ -25,19 +29,24 @@
         .tabcontent { display: none; padding: 20px 0; animation: fadeEffect 0.3s; }
         @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } }
         .dictation-words { background: #fff0d6; padding: 5px 10px; border-radius: 20px; display: inline-block; margin: 2px; }
+        @media (max-width: 700px) { .container { padding: 15px; } th, td { font-size: 0.8rem; } }
     </style>
 </head>
 <body>
 <div class="container">
+    <div class="toolbar">
+        <button id="printBtn">🖨️ Print</button>
+        <button id="shareBtn">🔗 Shareable Link</button>
+    </div>
     <h1>📘 Interchange Intro - Unit 1</h1>
     <div class="tab">
-        <button class="tablinks active" onclick="openTab(event, 'Rubric')">📊 Rubric (تقييم ذاتي)</button>
-        <button class="tablinks" onclick="openTab(event, 'LessonPlan')">📖 Lesson Plan (خطة الدرس)</button>
-        <button class="tablinks" onclick="openTab(event, 'Syllabus')">📚 Syllabus (المنهاج)</button>
+        <button class="tablinks active" onclick="openTab(event, 'Rubric')">📊 Rubric</button>
+        <button class="tablinks" onclick="openTab(event, 'LessonPlan')">📖 Lesson Plan</button>
+        <button class="tablinks" onclick="openTab(event, 'Syllabus')">📚 Syllabus (Level 1A)</button>
     </div>
 
     <!-- Rubric Tab -->
-    <div id="Rubric" class="tabcontent" style="display: block;">
+    <div id="Rubric" class="tabcontent" style="display:block;">
         <div class="section">
             <h2>Self Assessment Rubric - Unit 1</h2>
             <div class="criteria"><strong>🗣️ Speaking</strong><br>I can introduce myself and ask someone's name.<br><input type="range" min="1" max="5" value="3" class="slider" id="speakingSlider"><span class="score" id="speakingScore">3</span></div>
@@ -53,50 +62,63 @@
         </div>
     </div>
 
-    <!-- Lesson Plan Tab with dictation split over 5 days -->
+    <!-- Lesson Plan Tab (with Quizlet, Kahoot, Wordwall) -->
     <div id="LessonPlan" class="tabcontent">
         <div class="section">
             <h2>Lesson Plan - Unit 1 (5 lectures + test)</h2>
-            <p><strong>Before starting:</strong> Introduce teacher, centre, books, WhatsApp group, Class Dojo (15-20 min).</p>
+            <p><strong>Schedule:</strong> Sunday – Thursday (1 hour each). <strong>Test:</strong> Next Sunday (1 hour). <strong>No classes on Friday/Saturday.</strong></p>
+            <p><strong>Digital tools:</strong> Quizlet sets (vocabulary), Kahoot (review games), Wordwall (interactive activities).</p>
             <table>
-                <tr><th>Day</th><th>Dictation Words (5-7 words)</th><th>Other Activities (1 hour)</th><th>Homework</th></tr>
+                <tr><th>Day</th><th>Dictation Words</th><th>Warm-up / Guided Practice</th><th>Independent Practice (Digital & Pair)</th><th>Wrap-up & HW</th></tr>
                 <tr>
                     <td><strong>Sunday</strong></td>
                     <td><span class="dictation-words">name, first, last, I, am, nice, meet, you</span></td>
-                    <td>Vocabulary Quizlet (10 min), Dictation (7 min), Conversation p.2 (10 min), Workbook check (5 min), Listening p.3 (5 min), Titles (10 min), Wrap-up (8 min)</td>
-                    <td>Page 1 ex1 + dictation</td>
+                    <td>Greetings & self-intro (teacher model). Use <strong>Wordwall</strong> matching game (name ↔ person).</td>
+                    <td>Students use <strong>Quizlet</strong> “Learn” mode for vocabulary. In pairs: “What’s your name? My name is...”</td>
+                    <td>Kahoot review (basic questions). HW: Write 3 sentences “My name is... I am a student.”</td>
                 </tr>
                 <tr>
                     <td><strong>Monday</strong></td>
                     <td><span class="dictation-words">Miss, Mr., Mrs., Ms., teacher, student, he, she</span></td>
-                    <td>Vocab review (10 min), Dictation (7 min), Grammar: subject pronouns + verb be (15 min), Pair work (10 min), Listening ex12 (8 min)</td>
-                    <td>Page 2+3 + dictation titles</td>
+                    <td>Introduce titles with pictures. Use <strong>Wordwall</strong> group sort (male/female/married).</td>
+                    <td><strong>Quizlet</strong> flashcards + live game. Pair work: “Who is she? – She is Ms. Chen.”</td>
+                    <td>Kahoot quiz on titles. HW: Write 4 sentences using different titles.</td>
                 </tr>
                 <tr>
                     <td><strong>Tuesday</strong></td>
                     <td><span class="dictation-words">book, class, math, phone, number, one, two, three</span></td>
-                    <td>Vocab (10 min), Dictation (7 min), Pronunciation linked sounds (10 min), Speaking: introduce yourself (10 min), Workbook correction (10 min), Spelling game (8 min)</td>
-                    <td>Page 4-5 + business card</td>
+                    <td>Numbers 0‑10 via <strong>Quizlet</strong> (audio). Teacher says numbers, students repeat.</td>
+                    <td><strong>Wordwall</strong> “number match” activity. Pairs ask “What’s your phone number?”</td>
+                    <td>Kahoot numbers game. HW: Write your phone number and a friend’s.</td>
                 </tr>
                 <tr>
                     <td><strong>Wednesday</strong></td>
                     <td><span class="dictation-words">my, your, his, her, our, this, what, is</span></td>
-                    <td>Vocab (10 min), Dictation (7 min), Conversation "He's over there" (10 min), Grammar focus (10 min), Listening ex14 (10 min), Business card project (8 min)</td>
-                    <td>Study for test</td>
+                    <td>Possessive adjectives using <strong>Wordwall</strong> drag & drop. Teacher models “my book / your pen”.</td>
+                    <td>Students use <strong>Quizlet</strong> “Write” mode. In groups: “What’s this? – It’s his notebook.”</td>
+                    <td>Kahoot possessive adjectives. HW: Describe 3 objects in the classroom using “my/your/his/her”.</td>
                 </tr>
                 <tr>
                     <td><strong>Thursday</strong></td>
                     <td><span class="dictation-words">yes, no, not, in, and, there, too, are</span></td>
-                    <td>Revision game (15 min), Presentations (20 min), Dictation review (10 min), Q&A (10 min), Prepare for test (5 min)</td>
-                    <td>Final revision</td>
+                    <td>Review all vocabulary with <strong>Kahoot</strong> (unit review). Teacher leads conversation “He’s over there”.</td>
+                    <td><strong>Quizlet</strong> “Test” mode. Pairs role‑play dialogue from page 5 (Excuse me, are you Steven?).</td>
+                    <td>Final revision: Wordwall “group sort” (positive/negative). HW: Prepare for Sunday’s test.</td>
                 </tr>
                 <tr>
                     <td><strong>Friday</strong></td>
-                    <td colspan="2"><strong>FIRST TEST</strong> (1 hour): dictation (10 words from week), fill blanks, matching, short writing, oral</td>
-                    <td>-</td>
+                    <td colspan="4"><em>No class (official weekend)</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Saturday</strong></td>
+                    <td colspan="4"><em>No class (official weekend)</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Next Sunday</strong></td>
+                    <td colspan="4"><strong>FINAL TEST – Unit 1</strong> (1 hour)<br>Dictation (10 words), fill in blanks, matching, short writing, oral (optional).</td>
                 </tr>
             </table>
-            <p><strong>Weak performance plan:</strong> Extra dictation practice, peer tutoring, audio recordings, Class Dojo rewards.</p>
+            <p><strong>Weak performance plan:</strong> Extra Quizlet practice, peer tutoring, audio recordings, Class Dojo rewards.</p>
         </div>
     </div>
 
@@ -104,38 +126,34 @@
     <div id="Syllabus" class="tabcontent">
         <div class="section">
             <h2>Syllabus - Level 1A (Units 1-4)</h2>
-            <p><strong>Duration:</strong> 4 weeks (4 units) + final test<br>
-            <strong>Schedule:</strong> Sunday to Thursday (1 hour/day), test on 6th day<br>
-            <strong>Audience:</strong> Adult beginners (Dyslexia-friendly)</p>
+            <p><strong>Duration:</strong> 4 weeks (4 units) + final test<br><strong>Schedule:</strong> Sunday – Thursday (1 hour/day), test on the next Sunday.<br><strong>Audience:</strong> Adult beginners (Dyslexia-friendly)</p>
             <table>
                 <tr><th>Week</th><th>Unit</th><th>Topics</th><th>Test</th></tr>
-                <tr><td>1</td><td>Unit 1</td><td>Names, introductions, titles, verb be, numbers 0-10</td><td>Friday</td></tr>
-                <tr><td>2</td><td>Unit 2</td><td>Classroom objects, plurals, this/that, articles</td><td>Friday</td></tr>
-                <tr><td>3</td><td>Unit 3</td><td>Family members, possessive 's, adjectives</td><td>Friday</td></tr>
-                <tr><td>4</td><td>Unit 4</td><td>Daily routines, time, present simple</td><td>Friday</td></tr>
-                <tr><td>5</td><td>Review</td><td>Level 1A final exam</td><td>-</td></tr>
+                <tr><td>1</td><td>Unit 1</td><td>Names, introductions, titles, verb be, numbers 0‑10</td><td>Next Sunday</td></tr>
+                <tr><td>2</td><td>Unit 2</td><td>Classroom objects, plurals, this/that, articles, prepositions</td><td>Next Sunday</td></tr>
+                <tr><td>3</td><td>Unit 3</td><td>Countries, family, adjectives, negative statements, Wh‑questions, ages</td><td>Next Sunday</td></tr>
+                <tr><td>4</td><td>Unit 4</td><td>Clothes, colors, weather, present continuous, possessives (mine/yours/his/hers)</td><td>Next Sunday</td></tr>
+                <tr><td>5</td><td>Review</td><td>Level 1A final exam</td><td>Next Sunday</td></tr>
             </table>
             <p><strong>Assessment:</strong> Dictation (10%), Quiz (20%), Participation (10%), Homework (10%), Presentations (10%), Unit tests (40%)</p>
-            <p><strong>Dyslexia support:</strong> OpenDyslexic font, audio support, extra time, multi-sensory activities.</p>
+            <p><strong>Dyslexia support:</strong> OpenDyslexic font, audio support, extra time, multi‑sensory activities (Quizlet, Wordwall, Kahoot).</p>
         </div>
     </div>
 </div>
 
 <script>
+    // Tabs
     function openTab(evt, tabName) {
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
+        for (i = 0; i < tabcontent.length; i++) tabcontent[i].style.display = "none";
         tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
+        for (i = 0; i < tablinks.length; i++) tablinks[i].className = tablinks[i].className.replace(" active", "");
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " active";
     }
 
+    // Rubric calculation
     const sliders = ['speaking','writing','vocab','listen','effort','grammar','poss','part'];
     sliders.forEach(s => {
         let slider = document.getElementById(`${s}Slider`);
@@ -144,17 +162,19 @@
     });
     document.getElementById('calculateRubric').onclick = () => {
         let total = 0;
-        sliders.forEach(s => {
-            total += parseInt(document.getElementById(`${s}Slider`).value);
-        });
+        sliders.forEach(s => { total += parseInt(document.getElementById(`${s}Slider`).value); });
         let percent = (total / 40) * 100;
-        let level = "";
-        if (percent >= 90) level = "Advanced";
-        else if (percent >= 75) level = "Intermediate High";
-        else if (percent >= 60) level = "Intermediate";
-        else if (percent >= 40) level = "Beginner";
-        else level = "Needs Improvement";
+        let level = percent >= 90 ? "Advanced" : percent >= 75 ? "Intermediate High" : percent >= 60 ? "Intermediate" : percent >= 40 ? "Beginner" : "Needs Improvement";
         document.getElementById('rubricResult').innerHTML = `<strong>Your total: ${total}/40 (${percent}%)</strong><br>ESL Level: ${level}<br>Keep up the good work!`;
+    };
+
+    // Print button
+    document.getElementById('printBtn').onclick = () => window.print();
+
+    // Shareable link button
+    document.getElementById('shareBtn').onclick = () => {
+        navigator.clipboard.writeText(window.location.href);
+        alert("Link copied to clipboard: " + window.location.href);
     };
 </script>
 </body>
