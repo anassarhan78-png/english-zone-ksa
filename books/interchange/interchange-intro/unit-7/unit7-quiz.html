@@ -6,72 +6,114 @@
     <title>Interchange Intro - Unit 7 Quiz</title>
     <style>
         body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
-        .container { max-width: 800px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        .container { max-width: 1000px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
         h1 { color: #d35400; text-align: center; }
         .question { background: #fff5e6; padding: 15px; border-radius: 25px; margin: 15px 0; }
-        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
-        .result { background: #e9ecef; padding: 15px; border-radius: 20px; margin-top: 20px; }
+        button { background: #d35400; border: none; color: white; padding: 12px 24px; border-radius: 40px; cursor: pointer; font-size: 1rem; margin-top: 20px; }
+        .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; font-size: 1.2rem; }
         input, select { margin: 5px; padding: 8px; border-radius: 20px; border: 1px solid #ccc; }
+        .img-quiz { max-width: 80px; display: block; margin-bottom: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📝 Unit 7 Quiz - Does it have a view?</h1>
-    <div>
-        <div class="question">1. What room do you sleep in?<br>
-            <input type="text" id="q1" placeholder="Room name">
-        </div>
-        <div class="question">2. Which appliance keeps food cold?<br>
-            <select id="q2"><option value="">Select</option><option value="stove">stove</option><option value="refrigerator">refrigerator</option><option value="microwave">microwave</option></select>
-        </div>
-        <div class="question">3. Complete: "There ______ a sofa in the living room." (is / are)<br>
-            <input type="text" id="q3" placeholder="is / are">
-        </div>
-        <div class="question">4. What is the opposite of "small"?<br>
-            <select id="q4"><option value="">Select</option><option value="tiny">tiny</option><option value="big">big</option><option value="expensive">expensive</option></select>
-        </div>
-        <div class="question">5. True or False: "A rug is a type of furniture."<br>
-            <select id="q5"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
-        </div>
-        <div class="question">6. Complete the question: "______ your apartment have a view?" (Do / Does)<br>
-            <input type="text" id="q6" placeholder="Do / Does">
-        </div>
-        <div class="question">7. Which room has a stove and a refrigerator?<br>
-            <select id="q7"><option value="">Select</option><option value="bathroom">bathroom</option><option value="kitchen">kitchen</option><option value="bedroom">bedroom</option></select>
-        </div>
-        <div class="question">8. Write the missing word: "There aren't ______ chairs in the room." (any / some)<br>
-            <input type="text" id="q8" placeholder="any / some">
-        </div>
-        <div class="question">9. What is a "view"?<br>
-            <select id="q9"><option value="">Select</option><option value="a door">a door</option><option value="a window with scenery">a window with scenery</option><option value="a type of furniture">a type of furniture</option></select>
-        </div>
-        <div class="question">10. Complete the sentence: "My dream home has a great view ______ the ocean." (of / from)<br>
-            <input type="text" id="q10" placeholder="of / from">
-        </div>
-    </div>
+    <h1>📝 Unit 7 Quiz - Does it have a view? (50+ questions)</h1>
+    <div id="quizContainer"></div>
     <button id="submitQuiz">Submit Quiz</button>
     <div id="quizResult" class="result"></div>
 </div>
 <script>
-    document.getElementById('submitQuiz').onclick = () => {
-        let score = 0;
-        if (document.getElementById('q1').value.trim().toLowerCase() === 'bedroom') score++;
-        if (document.getElementById('q2').value === 'refrigerator') score++;
-        if (document.getElementById('q3').value.trim().toLowerCase() === 'is') score++;
-        if (document.getElementById('q4').value === 'big') score++;
-        if (document.getElementById('q5').value === 'false') score++;
-        if (document.getElementById('q6').value.trim().toLowerCase() === 'does') score++;
-        if (document.getElementById('q7').value === 'kitchen') score++;
-        if (document.getElementById('q8').value.trim().toLowerCase() === 'any') score++;
-        if (document.getElementById('q9').value === 'a window with scenery') score++;
-        if (document.getElementById('q10').value.trim().toLowerCase() === 'of') score++;
-        let percent = (score/10)*100;
-        let message = `You got ${score}/10 (${percent}%). `;
-        if (percent >= 80) message += "Excellent!";
-        else if (percent >= 60) message += "Good! Review your mistakes.";
-        else message += "Try again after studying the unit.";
-        document.getElementById('quizResult').innerHTML = message;
-    };
+    const imageBase = "../images/";
+    const questions = [];
+    // Part 1: Rooms (10 questions)
+    const rooms = ["living room","dining room","bedroom","bathroom","kitchen","garage","yard","balcony","lobby","basement"];
+    for (let i=0;i<10;i++) questions.push({ type:"short", text:`What room do you ${rooms[i]==="living room"?"relax in":rooms[i]==="dining room"?"eat in":rooms[i]==="bedroom"?"sleep in":rooms[i]==="bathroom"?"take a shower in":rooms[i]==="kitchen"?"cook in":rooms[i]==="garage"?"park your car in":rooms[i]==="yard"?"play in":rooms[i]==="balcony"?"sit outside in":rooms[i]==="lobby"?"wait in":"store things in"}?`, answer:rooms[i] });
+    // Part 2: Furniture (10 questions)
+    const furniture = ["sofa","armchair","table","chair","bed","dresser","mirror","lamp","rug","bookcase"];
+    for (let i=0;i<10;i++) questions.push({ type:"mc", text:`What piece of furniture do you sit on?`, options:[furniture[i],"stove","window"], answer:furniture[i] });
+    // Part 3: Appliances (5 questions)
+    const appliances = ["stove","refrigerator","microwave","coffee maker","washer"];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:`What appliance keeps food cold?`, answer:"refrigerator" });
+    // Part 4: There is/There are (10 questions)
+    const there = [
+        {text:"There ___ a sofa in the living room.",ans:"is"},
+        {text:"There ___ two chairs in the kitchen.",ans:"are"},
+        {text:"___ there a balcony?",ans:"Is"},
+        {text:"There aren't ___ curtains.",ans:"any"},
+        {text:"There is ___ rug on the floor.",ans:"a"},
+        {text:"___ there any windows?",ans:"Are"},
+        {text:"There ___ a mirror in the bathroom.",ans:"is"},
+        {text:"There ___ any closets.",ans:"aren't"},
+        {text:"___ there a yard?",ans:"Is"},
+        {text:"There are ___ chairs.",ans:"some"}
+    ];
+    for (let i=0;i<10;i++) questions.push({ type:"short", text:there[i].text, answer:there[i].ans });
+    // Part 5: Prepositions of place (5 questions)
+    const prep = [
+        {text:"The book is ___ the table.",ans:"on"},
+        {text:"The keys are ___ the drawer.",ans:"in"},
+        {text:"The chair is ___ the desk.",ans:"behind"},
+        {text:"The lamp is ___ the nightstand.",ans:"on"},
+        {text:"The rug is ___ the floor.",ans:"on"}
+    ];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:prep[i].text, answer:prep[i].ans });
+    // Part 6: Conversation comprehension (5 questions based on p.46-49)
+    const conv = [
+        {text:"What does Linda have?",ans:"a new apartment"},
+        {text:"Does Linda's apartment have a view?",ans:"yes"},
+        {text:"What view does it have?",ans:"park"},
+        {text:"Is there any furniture?",ans:"some chairs in the kitchen"},
+        {text:"What does Chris suggest?",ans:"go shopping for furniture"}
+    ];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:conv[i].text, answer:conv[i].ans.toLowerCase() });
+    // Part 7: Image-based (5 images)
+    const imgNames = ["house","living-room","bed","sofa","kitchen"];
+    for (let i=0;i<5;i++) questions.push({ type:"img", img:imgNames[i]+".jpg", text:"What is this?", answer:imgNames[i] });
+    // Part 8: True/False (5 questions)
+    const tf = [["A refrigerator is used for cooking.",false],["There is a stove in the kitchen.",true],["A balcony is inside the house.",false],["You sleep in a bed.",true],["A garage is for parking cars.",true]];
+    for (let i=0;i<5;i++) questions.push({ type:"tf", text:tf[i][0], answer:tf[i][1]?"true":"false" });
+    // Build HTML
+    function buildQuiz() {
+        let html='';
+        questions.forEach((q,idx)=>{
+            html+=`<div class="question"><strong>${idx+1}. `;
+            if(q.type==='img') html+=`<img src="${imageBase+q.img}" class="img-quiz" onerror="this.onerror=null;this.parentElement.innerHTML+='🏠';">${q.text}`;
+            else html+=q.text;
+            html+=`</strong><br>`;
+            if(q.type==='mc'){
+                q.options.forEach(opt=>{ html+=`<label><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label> `; });
+            } else if(q.type==='tf'){
+                html+=`<label><input type="radio" name="q${idx}" value="true"> True</label> <label><input type="radio" name="q${idx}" value="false"> False</label>`;
+            } else {
+                html+=`<input type="text" name="q${idx}" placeholder="Type answer">`;
+            }
+            html+=`</div>`;
+        });
+        document.getElementById('quizContainer').innerHTML=html;
+    }
+    function submitQuiz(){
+        let score=0;
+        for(let i=0;i<questions.length;i++){
+            let q=questions[i], ans=null;
+            if(q.type==='mc'||q.type==='tf'){
+                let radios=document.querySelectorAll(`input[name="q${i}"]`);
+                for(let r of radios) if(r.checked){ ans=r.value; break; }
+            } else {
+                let inp=document.querySelector(`input[name="q${i}"]`);
+                if(inp) ans=inp.value.trim().toLowerCase();
+            }
+            if(ans===q.answer.toLowerCase()) score++;
+        }
+        let percent=(score/questions.length)*100;
+        let msg=`You got ${score}/${questions.length} (${percent}%). `;
+        if(percent>=90) msg+="Excellent!";
+        else if(percent>=75) msg+="Very good!";
+        else if(percent>=60) msg+="Good. Review some points.";
+        else msg+="Need more practice.";
+        document.getElementById('quizResult').innerHTML=msg;
+    }
+    buildQuiz();
+    document.getElementById('submitQuiz').onclick=submitQuiz;
 </script>
 </body>
 </html>

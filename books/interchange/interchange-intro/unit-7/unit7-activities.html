@@ -26,164 +26,51 @@
 <div class="container">
     <h1>📖 Interchange Intro - Unit 7 🎲 Extra Activities</h1>
     <div class="activity-grid">
-        <!-- Drag & Drop: Room to furniture -->
-        <div class="card">
-            <h2>🏠 Drag & Drop: Room → Furniture</h2>
-            <div id="dragDropArea"></div>
-            <button id="checkDragDrop">Check All</button>
-            <div id="dragDropResult"></div>
-        </div>
-
-        <!-- Crossword Puzzle (rooms and furniture) -->
-        <div class="card">
-            <h2>🔠 Crossword</h2>
-            <div id="crosswordGrid"></div>
-            <div id="crosswordClues" style="margin-top:10px; font-size:0.8rem;"></div>
-            <button id="checkCrossword">Check Crossword</button>
-            <div id="crosswordResult"></div>
-        </div>
-
-        <!-- Unscramble (furniture words) -->
-        <div class="card">
-            <h2>🔀 Unscramble</h2>
-            <div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div>
-            <input type="text" id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button>
-            <div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button>
-        </div>
-
-        <!-- There is / There are practice -->
-        <div class="card">
-            <h2>📦 There is / There are</h2>
-            <div id="thereQuestion">______ a lamp in the bedroom? (Is there / Are there)</div>
-            <input type="text" id="thereInput" placeholder="Is there / Are there">
-            <button id="checkThere">Check</button>
-            <button id="newThere">Next</button>
-            <div id="thereResult"></div>
-        </div>
+        <div class="card"><h2>🏠 Drag & Drop: Room → Furniture</h2><div id="dragDropArea"></div><button id="checkDragDrop">Check</button><div id="dragDropResult"></div></div>
+        <div class="card"><h2>🔠 Crossword (Rooms & Furniture)</h2><div id="crosswordGrid"></div><div id="crosswordClues"></div><button id="checkCrossword">Check</button><div id="crosswordResult"></div></div>
+        <div class="card"><h2>🔀 Unscramble (Furniture)</h2><div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div><input id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button><div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button></div>
+        <div class="card"><h2>📍 There is/There are Practice</h2><div id="thereQuestion">___ a sofa in the living room. (Is there / Are there)</div><input id="thereInput"><button id="checkThere">Check</button><button id="newThere">Next</button><div id="thereResult"></div></div>
     </div>
 </div>
-
 <script>
-    const roomFurniture = [
-        { room: "living room", furniture: "sofa" },
-        { room: "bedroom", furniture: "bed" },
-        { room: "kitchen", furniture: "stove" },
-        { room: "bathroom", furniture: "mirror" },
-        { room: "dining room", furniture: "table" }
-    ];
-    
-    function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
-
-    // Drag & Drop: room name to furniture
-    let selectedRoom = null;
-    function initDragDrop() {
-        let container = document.getElementById('dragDropArea');
-        container.innerHTML = '<div><strong>Click a room, then click the furniture you find there</strong></div><div style="display:flex; flex-wrap:wrap; gap:15px; margin:10px 0;">';
-        roomFurniture.forEach(rf => {
-            let btn = document.createElement('button');
-            btn.innerText = rf.room;
-            btn.classList.add('drag-word');
-            btn.onclick = () => { selectedRoom = rf.room; };
-            container.appendChild(btn);
-        });
-        container.innerHTML += '</div><div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">';
-        roomFurniture.forEach(rf => {
-            let zone = document.createElement('div');
-            zone.classList.add('drop-zone');
-            zone.setAttribute('data-furniture', rf.furniture);
-            zone.innerHTML = `${rf.furniture}<br><span class="drop-label">???</span>`;
-            zone.onclick = () => {
-                if (selectedRoom) {
-                    let match = roomFurniture.find(rf => rf.room === selectedRoom && rf.furniture === zone.getAttribute('data-furniture'));
-                    if (match) {
-                        zone.querySelector('.drop-label').innerText = selectedRoom;
-                        zone.style.background = "#c8e6d9";
-                        selectedRoom = null;
-                    } else {
-                        alert(`Wrong! "${selectedRoom}" does not usually have "${zone.getAttribute('data-furniture')}".`);
-                    }
-                } else {
-                    alert("Click a room first.");
-                }
-            };
-            container.appendChild(zone);
-        });
-        container.innerHTML += '</div>';
+    const roomFurniture = [["living room","sofa"],["bedroom","bed"],["kitchen","stove"],["bathroom","mirror"],["dining room","table"]];
+    function imgTag(word) { let name=word.toLowerCase().replace(/ /g,'-'); return `<img src="../images/${name}.jpg" style="width:50px; border-radius:10px;" onerror="this.onerror=null;this.parentElement.innerHTML+='🪑';">`; }
+    function speak(t){ let u=new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+    // Drag & Drop
+    let selected=null;
+    function initDragDrop(){
+        let c=document.getElementById('dragDropArea');
+        c.innerHTML='<div><strong>Click a room, then matching furniture</strong></div><div style="display:flex;flex-wrap:wrap;gap:15px;margin:10px 0;">';
+        roomFurniture.forEach(rf=>{ let btn=document.createElement('button'); btn.innerText=rf[0]; btn.classList.add('drag-word'); btn.onclick=()=>{ selected=rf[0]; }; c.appendChild(btn); });
+        c.innerHTML+='</div><div style="display:flex;flex-wrap:wrap;gap:20px;margin-top:20px;">';
+        roomFurniture.forEach(rf=>{ let zone=document.createElement('div'); zone.classList.add('drop-zone'); zone.setAttribute('data-furniture',rf[1]); zone.innerHTML=`${rf[1]}<br><span class="drop-label">???</span>`; zone.onclick=()=>{ if(selected && selected===rf[0]){ zone.querySelector('.drop-label').innerText=selected; zone.style.background="#c8e6d9"; selected=null; } else if(selected) alert(`Wrong! ${selected} doesn't have ${rf[1]}.`); else alert("Click a room first."); }; c.appendChild(zone); });
+        c.innerHTML+='</div>';
     }
-    document.getElementById('checkDragDrop').onclick = () => {
-        let allOk = true;
-        document.querySelectorAll('#dragDropArea .drop-zone').forEach(zone => {
-            let label = zone.querySelector('.drop-label').innerText;
-            let expectedRoom = roomFurniture.find(rf => rf.furniture === zone.getAttribute('data-furniture'))?.room;
-            if (label !== expectedRoom) allOk = false;
-        });
-        document.getElementById('dragDropResult').innerHTML = allOk ? "<div class='correct-feedback'>🎉 Perfect! All matched.</div>" : "<div class='wrong-feedback'>⚠️ Some matches are missing or wrong.</div>";
-    };
+    document.getElementById('checkDragDrop').onclick=()=>{ let ok=true; document.querySelectorAll('#dragDropArea .drop-zone').forEach(z=>{ let label=z.querySelector('.drop-label').innerText; let expected=roomFurniture.find(rf=>rf[1]===z.getAttribute('data-furniture'))[0]; if(label!==expected) ok=false; }); document.getElementById('dragDropResult').innerHTML=ok?"<div class='correct-feedback'>Perfect!</div>":"<div class='wrong-feedback'>Some wrong.</div>"; };
     initDragDrop();
-
-    // Crossword (rooms)
-    function buildCrossword() {
-        let gridHtml = '<div class="crossword-grid">';
-        let predefined = [
-            ['K','I','T','C','H','E'],
-            ['','','','','','N'],
-            ['B','E','D','R','O','O'],
-            ['','','','','','M'],
-            ['L','I','V','I','N','G'],
-            ['','','','','','']
-        ];
-        for(let i=0;i<6;i++){
-            for(let j=0;j<6;j++){
-                let val = predefined[i][j] ? predefined[i][j] : '';
-                let readonly = val ? 'readonly' : '';
-                gridHtml += `<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" style="text-transform:uppercase" ${readonly}>`;
-            }
-            gridHtml += `<div style="width:100%"></div>`;
-        }
-        gridHtml += '</div>';
-        document.getElementById('crosswordGrid').innerHTML = gridHtml;
-        let clues = `<strong>Clues:</strong> Across: Row0: cooking room (KITCHEN), Row2: sleeping room (BEDROOM), Row4: relaxing room (LIVING).`;
-        document.getElementById('crosswordClues').innerHTML = clues;
+    // Crossword
+    function buildCrossword(){
+        let gridHtml='<div class="crossword-grid">';
+        let pre=[['S','O','F','A','',''],['','','','','B','E'],['T','A','B','L','E','D'],['','','','','',''],['L','A','M','P','',''],['','','','','','']];
+        for(let i=0;i<6;i++){ for(let j=0;j<6;j++){ let val=pre[i][j]||''; gridHtml+=`<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" ${val?'readonly':''}>`; } gridHtml+='<div style="width:100%"></div>'; }
+        gridHtml+='</div>'; document.getElementById('crosswordGrid').innerHTML=gridHtml;
+        document.getElementById('crosswordClues').innerHTML='<strong>Clues:</strong> Row0: comfortable seating (SOFA), Row2: surface for dining (TABLE), Row4: lighting device (LAMP). Down: Col5: sleeping surface (BED).';
     }
-    document.getElementById('checkCrossword').onclick = () => {
-        document.getElementById('crosswordResult').innerHTML = "<div class='correct-feedback'>✅ Check your answers with the clues.</div>";
-    };
+    document.getElementById('checkCrossword').onclick=()=>{ document.getElementById('crosswordResult').innerHTML="<div class='correct-feedback'>✅ Check answers with clues.</div>"; };
     buildCrossword();
-
-    // Unscramble (furniture)
-    const furnitureWords = ["sofa", "table", "chair", "bed", "lamp", "rug"];
-    let currentScramble = "";
-    function getScrambled(w) { let arr = w.split(''); for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr.join(''); }
-    function updateScramble() { currentScramble = furnitureWords[Math.floor(Math.random()*furnitureWords.length)]; document.getElementById("scrambleWord").innerText = getScrambled(currentScramble); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
-    document.getElementById("checkScramble").onclick = () => { let ans = document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans === currentScramble) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${currentScramble}</div>`; };
-    document.getElementById("newScramble").onclick = updateScramble;
-    document.getElementById("speakScramble").onclick = () => speak(currentScramble);
-    updateScramble();
-
-    // There is / There are practice
-    const thereQuestions = [
-        { sentence: "______ a sofa in the living room? (Is there / Are there)", answer: "Is there" },
-        { sentence: "______ any chairs in the kitchen? (Is there / Are there)", answer: "Are there" },
-        { sentence: "______ a mirror in the bathroom? (Is there / Are there)", answer: "Is there" },
-        { sentence: "______ two bedrooms in your house? (Is there / Are there)", answer: "Are there" }
-    ];
-    let currentThere = 0;
-    function updateThere() {
-        currentThere = Math.floor(Math.random() * thereQuestions.length);
-        document.getElementById("thereQuestion").innerHTML = thereQuestions[currentThere].sentence;
-        document.getElementById("thereInput").value = "";
-        document.getElementById("thereResult").innerHTML = "";
-    }
-    document.getElementById("checkThere").onclick = () => {
-        let ans = document.getElementById("thereInput").value.trim().toLowerCase();
-        if (ans === thereQuestions[currentThere].answer.toLowerCase()) {
-            document.getElementById("thereResult").innerHTML = "<div class='correct-feedback'>✅ Correct!</div>";
-        } else {
-            document.getElementById("thereResult").innerHTML = `<div class='wrong-feedback'>❌ Wrong. Correct: ${thereQuestions[currentThere].answer}</div>`;
-        }
-    };
-    document.getElementById("newThere").onclick = updateThere;
-    updateThere();
+    // Unscramble furniture
+    const furnList = ["sofa","table","chair","bed","lamp","rug","mirror"];
+    let cur="";
+    function getScrambled(w){ let a=w.split(''); for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a.join(''); }
+    function updateScramble(){ cur=furnList[Math.floor(Math.random()*furnList.length)]; document.getElementById("scrambleWord").innerText=getScrambled(cur); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
+    document.getElementById("checkScramble").onclick=()=>{ let ans=document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans===cur) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${cur}</div>`; };
+    document.getElementById("newScramble").onclick=updateScramble; document.getElementById("speakScramble").onclick=()=>speak(cur); updateScramble();
+    // There is/There are
+    const thereQ = [{s:"___ a sofa in the living room.",a:"Is there"},{s:"___ two chairs in the kitchen.",a:"Are there"},{s:"___ a mirror in the bathroom.",a:"Is there"},{s:"___ any curtains?",a:"Are there"}];
+    let thereIdx=0;
+    function updateThere(){ thereIdx=Math.floor(Math.random()*thereQ.length); document.getElementById("thereQuestion").innerHTML=thereQ[thereIdx].s; document.getElementById("thereInput").value=""; document.getElementById("thereResult").innerHTML=""; }
+    document.getElementById("checkThere").onclick=()=>{ let ans=document.getElementById("thereInput").value.trim().toLowerCase(); if(ans===thereQ[thereIdx].a.toLowerCase()) document.getElementById("thereResult").innerHTML="<div class='correct-feedback'>✅ Correct!</div>"; else document.getElementById("thereResult").innerHTML=`<div class='wrong-feedback'>❌ Correct: ${thereQ[thereIdx].a}</div>`; };
+    document.getElementById("newThere").onclick=updateThere; updateThere();
 </script>
 </body>
 </html>
