@@ -3,70 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Interchange Intro - Unit 11 Rubric</title>
+    <title>Interchange Intro - Unit 11: Rubric, Lesson Plan & Syllabus</title>
     <style>
-        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
-        .container { max-width: 900px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
-        h1 { color: #d35400; text-align: center; }
-        .criteria { margin: 20px 0; padding: 15px; background: #fff5e6; border-radius: 25px; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; margin-top: 0; }
+        .toolbar { display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .toolbar button { background: #d35400; border: none; color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-weight: bold; }
+        .toolbar button:hover { background: #a04000; }
+        .section { background: #fff5e6; border-radius: 30px; padding: 20px; margin: 20px 0; }
+        .section h2 { background: #d35400; display: inline-block; padding: 5px 20px; border-radius: 40px; color: white; font-size: 1.3rem; margin-top: 0; }
+        .criteria { margin: 15px 0; padding: 10px; background: #fef9e8; border-radius: 20px; }
         .slider { width: 100%; }
         .score { font-weight: bold; color: #d35400; margin-left: 10px; }
-        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; margin-top: 20px; }
-        .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; }
+        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; margin: 10px 0; }
+        .result { background: #e9ecef; padding: 15px; border-radius: 20px; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #f0c0a0; padding: 8px; text-align: left; vertical-align: top; }
+        th { background: #f0c0a0; color: #333; }
+        .tab { overflow: hidden; border-bottom: 1px solid #ccc; margin-bottom: 20px; }
+        .tab button { background-color: inherit; float: left; border: none; outline: none; cursor: pointer; padding: 10px 20px; transition: 0.3s; font-size: 1rem; margin: 0; border-radius: 30px 30px 0 0; }
+        .tab button:hover { background-color: #f0c0a0; }
+        .tab button.active { background-color: #d35400; color: white; }
+        .tabcontent { display: none; padding: 20px 0; animation: fadeEffect 0.3s; }
+        @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } }
+        .dictation-words { background: #fff0d6; padding: 5px 10px; border-radius: 20px; display: inline-block; margin: 2px; }
+        @media (max-width: 700px) { .container { padding: 15px; } th, td { font-size: 0.8rem; } }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📊 Self Assessment Rubric - Unit 11</h1>
-    <div>
-        <div class="criteria"><strong>📅 Months & Dates</strong><br>I can name all 12 months and say dates (1st-31st).<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="monthsSlider"><span class="score" id="monthsScore">3</span>
-        </div>
-        <div class="criteria"><strong>🎉 Holidays & Celebrations</strong><br>I can name at least 5 holidays and describe how people celebrate.<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="holidaysSlider"><span class="score" id="holidaysScore">3</span>
-        </div>
-        <div class="criteria"><strong>🔮 Future with "be going to"</strong><br>I can make plans and ask about others' plans using "be going to".<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="futureSlider"><span class="score" id="futureScore">3</span>
-        </div>
-        <div class="criteria"><strong>❓ Wh-questions with "be going to"</strong><br>I can ask What, Where, When, Who questions about future plans.<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="whSlider"><span class="score" id="whScore">3</span>
-        </div>
-        <div class="criteria"><strong>💬 Speaking & Pronunciation</strong><br>I can talk about my weekend plans fluently (reduction "gonna").<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="speakingSlider"><span class="score" id="speakingScore">3</span>
-        </div>
-        <div class="criteria"><strong>✍️ Writing</strong><br>I can write a paragraph about future plans using "be going to".<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="writingSlider"><span class="score" id="writingScore">3</span>
-        </div>
-        <div class="criteria"><strong>👂 Listening</strong><br>I understand conversations about plans and celebrations.<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="listeningSlider"><span class="score" id="listeningScore">3</span>
-        </div>
-        <div class="criteria"><strong>💪 Effort & Participation</strong><br>I actively participated in all activities and completed homework.<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="effortSlider"><span class="score" id="effortScore">3</span>
+    <div class="toolbar">
+        <button id="printBtn">🖨️ Print</button>
+        <button id="shareBtn">🔗 Shareable Link</button>
+    </div>
+    <h1>📘 Interchange Intro - Unit 11</h1>
+    <div class="tab">
+        <button class="tablinks active" onclick="openTab(event, 'Rubric')">📊 Rubric</button>
+        <button class="tablinks" onclick="openTab(event, 'LessonPlan')">📖 Lesson Plan</button>
+        <button class="tablinks" onclick="openTab(event, 'Syllabus')">📚 Syllabus (Level 2A)</button>
+    </div>
+
+    <!-- Rubric Tab -->
+    <div id="Rubric" class="tabcontent" style="display:block;">
+        <div class="section">
+            <h2>Self Assessment Rubric - Unit 11</h2>
+            <div class="criteria"><strong>📅 Months & Dates</strong><br>I can name all 12 months and say dates (1st-31st).<br><input type="range" min="1" max="5" value="3" class="slider" id="monthsSlider"><span class="score" id="monthsScore">3</span></div>
+            <div class="criteria"><strong>🎉 Holidays & Celebrations</strong><br>I can name at least 5 holidays and describe how people celebrate.<br><input type="range" min="1" max="5" value="3" class="slider" id="holidaysSlider"><span class="score" id="holidaysScore">3</span></div>
+            <div class="criteria"><strong>🔮 Future with "be going to"</strong><br>I can make plans and ask about others' plans using "be going to".<br><input type="range" min="1" max="5" value="3" class="slider" id="futureSlider"><span class="score" id="futureScore">3</span></div>
+            <div class="criteria"><strong>❓ Wh-questions with "be going to"</strong><br>I can ask What, Where, When, Who questions about future plans.<br><input type="range" min="1" max="5" value="3" class="slider" id="whSlider"><span class="score" id="whScore">3</span></div>
+            <div class="criteria"><strong>💬 Speaking & Pronunciation</strong><br>I can talk about my weekend plans fluently (reduction "gonna").<br><input type="range" min="1" max="5" value="3" class="slider" id="speakingSlider"><span class="score" id="speakingScore">3</span></div>
+            <div class="criteria"><strong>✍️ Writing</strong><br>I can write a paragraph about future plans using "be going to".<br><input type="range" min="1" max="5" value="3" class="slider" id="writingSlider"><span class="score" id="writingScore">3</span></div>
+            <div class="criteria"><strong>👂 Listening</strong><br>I understand conversations about plans and celebrations.<br><input type="range" min="1" max="5" value="3" class="slider" id="listeningSlider"><span class="score" id="listeningScore">3</span></div>
+            <div class="criteria"><strong>💪 Effort & Participation</strong><br>I actively participated in all activities.<br><input type="range" min="1" max="5" value="3" class="slider" id="effortSlider"><span class="score" id="effortScore">3</span></div>
+            <button id="calculateRubric">Calculate My Score</button>
+            <div id="rubricResult" class="result"></div>
         </div>
     </div>
-    <button id="calculateRubric">Calculate My Score</button>
-    <div id="rubricResult" class="result"></div>
+
+    <!-- Lesson Plan Tab (with Quizlet, Kahoot, Wordwall) -->
+    <div id="LessonPlan" class="tabcontent">
+        <div class="section">
+            <h2>Lesson Plan - Unit 11 (5 lectures + test)</h2>
+            <p><strong>Schedule:</strong> Sunday – Thursday (1 hour each). <strong>Test:</strong> Next Sunday (1 hour). <strong>No classes on Friday/Saturday.</strong></p>
+            <p><strong>Digital tools:</strong> Quizlet sets (vocabulary), Kahoot (review games), Wordwall (interactive activities).</p>
+            <table>
+                <tr><th>Day</th><th>Dictation Words</th><th>Warm-up / Guided Practice</th><th>Independent Practice (Digital & Pair)</th><th>Wrap-up & HW</th></tr>
+                <tr>
+                    <td><strong>Sunday</strong></th>
+                    <td><span class="dictation-words">January, February, March, April, May, June</span></th>
+                    <td>Months vocabulary with <strong>Quizlet</strong> flashcards. Teacher asks “What month is after January?” <strong>Wordwall</strong> matching (month ↔ season).</th>
+                    <td>Students use <strong>Quizlet</strong> “Learn”. Pair work: “When is your birthday? – It’s in May.”</th>
+                    <td>Kahoot months quiz. HW: Write the 12 months in order.</th>
+                </tr>
+                <tr>
+                    <td><strong>Monday</strong></th>
+                    <td><span class="dictation-words">July, August, September, October, November, December</span></th>
+                    <td>More months and introduce dates (1st-31st) with <strong>Quizlet</strong>. Teacher says “July 4th – Independence Day.”</th>
+                    <td><strong>Wordwall</strong> “date matching” (digit ↔ word). Pair work: “What’s the date today? – It’s April 12th.”</th>
+                    <td>Kahoot dates. HW: Write 5 important dates in your life (e.g., birthday).</th>
+                </tr>
+                <tr>
+                    <td><strong>Tuesday</strong></th>
+                    <td><span class="dictation-words">birthday, party, celebrate, gift, cake, parade</span></th>
+                    大家一起学习庆祝词汇。教师使用 <strong>Quizlet</strong> 展示单词和图片。学生跟读并造句。</th>
+                    <td><strong>Wordwall</strong> “celebration activities” match. Pair work: “What do you do on your birthday? – I have a party.”</th>
+                    <td>Kahoot celebrations. HW: Write 5 sentences about how you celebrate your birthday.</th>
+                </tr>
+                <tr>
+                    <td><strong>Wednesday</strong></th>
+                    <td><span class="dictation-words">wedding, graduation, dance, cook, travel, relax</span></th>
+                    大家一起学习更多活动。教师使用 <strong>Quizlet</strong> 展示动词。学生跟读并模仿发音。</th>
+                    <td><strong>Wordwall</strong> “future plans” sentence builder. Students talk: “I’m going to travel next summer.”</th>
+                    <td>Kahoot future plans (be going to). HW: Write 5 sentences using “be going to”.</th>
+                </tr>
+                <tr>
+                    <td><strong>Thursday</strong></th>
+                    <td><span class="dictation-words">am going to, is going to, are going to, review all</span></th>
+                    <td>Review with <strong>Kahoot</strong> (full unit). Teacher leads conversation “Birthday plans” (p.??).</th>
+                    <td><strong>Quizlet</strong> “Test” mode. Role‑play: “What are you going to do this weekend? – I’m going to visit my grandparents.”</th>
+                    <td>Final revision. HW: Prepare for Sunday’s test (months, dates, be going to, holidays).</th>
+                </tr>
+                <tr>
+                    <td><strong>Friday</strong></th>
+                    <td colspan="4"><em>No class (official weekend)</em></th>
+                </tr>
+                <tr>
+                    <td><strong>Saturday</strong></th>
+                    <td colspan="4"><em>No class (official weekend)</em></th>
+                </tr>
+                <tr>
+                    <td><strong>Next Sunday</strong></th>
+                    <td colspan="4"><strong>FINAL TEST – Unit 11</strong> (1 hour)<br>Dictation (10 words: months, celebrations), fill in blanks (be going to), matching (date ↔ event), short writing (describe your plans for next weekend), oral (ask & answer about future plans).</th>
+                </tr>
+            </table>
+            <p><strong>Weak performance plan:</strong> Extra Quizlet practice, peer tutoring, audio recordings, Class Dojo rewards.</p>
+        </div>
+    </div>
+
+    <!-- Syllabus Tab -->
+    <div id="Syllabus" class="tabcontent">
+        <div class="section">
+            <h2>Syllabus - Level 2A (Units 9-12)</h2>
+            <p><strong>Duration:</strong> 4 weeks (4 units) + final test<br><strong>Schedule:</strong> Sunday – Thursday (1 hour/day), test on the next Sunday.<br><strong>Audience:</strong> Adult beginners (Dyslexia-friendly)</p>
+            <table>
+                <tr><th>Week</th><th>Unit</th><th>Topics</th><th>Test</th></tr>
+                <tr><td>9</th><td>Unit 9</th><td>Food, count/noncount, some/any, adverbs of frequency</th><td>Next Sunday</th></tr>
+                <tr><td>10</th><td>Unit 10</th><td>Sports, free-time activities, can/can't, Wh-questions</th><td>Next Sunday</th></tr>
+                <tr><td>11</th><td>Unit 11</th><td>Months, dates, holidays, be going to</th><td>Next Sunday</th></tr>
+                <tr><td>12</th><td>Unit 12</th><td>Body parts, health problems, have/feel, imperatives</th><td>Next Sunday</th></tr>
+                <tr><td>13</th><td>Review</th><td>Level 2A final exam</th><td>Next Sunday</th></tr>
+            </table>
+            <p><strong>Assessment:</strong> Dictation (10%), Quiz (20%), Participation (10%), Homework (10%), Presentations (10%), Unit tests (40%)</p>
+            <p><strong>Dyslexia support:</strong> OpenDyslexic font, audio support, extra time, multi‑sensory activities (Quizlet, Wordwall, Kahoot).</p>
+        </div>
+    </div>
 </div>
+
 <script>
+    // Tabs
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) tabcontent[i].style.display = "none";
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) tablinks[i].className = tablinks[i].className.replace(" active", "");
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Rubric calculation
     const sliders = ['months','holidays','future','wh','speaking','writing','listening','effort'];
     sliders.forEach(s => {
         let slider = document.getElementById(`${s}Slider`);
         let span = document.getElementById(`${s}Score`);
-        slider.oninput = () => { span.innerText = slider.value; };
+        if (slider) slider.oninput = () => { span.innerText = slider.value; };
     });
     document.getElementById('calculateRubric').onclick = () => {
         let total = 0;
-        sliders.forEach(s => {
-            total += parseInt(document.getElementById(`${s}Slider`).value);
-        });
+        sliders.forEach(s => { total += parseInt(document.getElementById(`${s}Slider`).value); });
         let percent = (total / 40) * 100;
-        let level = "";
-        if (percent >= 90) level = "Advanced";
-        else if (percent >= 75) level = "Intermediate High";
-        else if (percent >= 60) level = "Intermediate";
-        else if (percent >= 40) level = "Beginner";
-        else level = "Needs Improvement";
+        let level = percent >= 90 ? "Advanced" : percent >= 75 ? "Intermediate High" : percent >= 60 ? "Intermediate" : percent >= 40 ? "Beginner" : "Needs Improvement";
         document.getElementById('rubricResult').innerHTML = `<strong>Your total: ${total}/40 (${percent}%)</strong><br>ESL Level: ${level}<br>Keep up the good work!`;
+    };
+
+    // Print button
+    document.getElementById('printBtn').onclick = () => window.print();
+
+    // Shareable link button
+    document.getElementById('shareBtn').onclick = () => {
+        navigator.clipboard.writeText(window.location.href);
+        alert("Link copied to clipboard: " + window.location.href);
     };
 </script>
 </body>
