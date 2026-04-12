@@ -2,25 +2,124 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit 9 Quiz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interchange Intro - Unit 9 Quiz</title>
     <style>
-        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; }
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
         .container { max-width: 1000px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
         h1 { color: #d35400; text-align: center; }
         .question { background: #fff5e6; padding: 15px; border-radius: 25px; margin: 15px 0; }
-        button { background: #d35400; border: none; color: white; padding: 12px 24px; border-radius: 40px; cursor: pointer; }
-        .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; }
+        button { background: #d35400; border: none; color: white; padding: 12px 24px; border-radius: 40px; cursor: pointer; font-size: 1rem; margin-top: 20px; }
+        .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; font-size: 1.2rem; }
+        input, select { margin: 5px; padding: 8px; border-radius: 20px; border: 1px solid #ccc; }
+        .img-quiz { max-width: 80px; display: block; margin-bottom: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
-<div class="container"><h1>Unit 9 Quiz (50 questions)</h1><div id="quiz"></div><button id="submit">Submit</button><div id="result" class="result"></div></div>
+<div class="container">
+    <h1>📝 Unit 9 Quiz - Do we need any eggs? (50+ questions)</h1>
+    <div id="quizContainer"></div>
+    <button id="submitQuiz">Submit Quiz</button>
+    <div id="quizResult" class="result"></div>
+</div>
 <script>
-const questions=[];
-for(let i=0;i<50;i++){questions.push({text:"Sample question "+i,options:["A","B","C"],answer:"A"});}
-function buildQuiz(){let html="";for(let i=0;i<questions.length;i++){html+=`<div class="question"><strong>${i+1}. ${questions[i].text}</strong><br>`;questions[i].options.forEach(opt=>{html+=`<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label> `;});html+=`</div>`;}document.getElementById('quiz').innerHTML=html;}
-function submitQuiz(){let score=0;for(let i=0;i<questions.length;i++){let radios=document.querySelectorAll(`input[name="q${i}"]`);for(let r of radios)if(r.checked&&r.value===questions[i].answer)score++;}document.getElementById('result').innerHTML=`You got ${score}/${questions.length}.`;}
-buildQuiz();document.getElementById('submit').onclick=submitQuiz;
+    const imageBase = "../images/";
+    const questions = [];
+    // Part 1: Food vocabulary (10 questions)
+    const foods = ["apple","banana","bread","rice","chicken","fish","milk","cheese","egg","tomato"];
+    for (let i=0;i<10;i++) questions.push({ type:"short", text:`What food is this? (${foods[i]})`, answer:foods[i] });
+    // Part 2: Count vs Noncount (5 questions)
+    const cnt = [["apple","count"],["rice","noncount"],["egg","count"],["bread","noncount"],["milk","noncount"]];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:`Is "${cnt[i][0]}" count or noncount?`, answer:cnt[i][1] });
+    // Part 3: Some/Any (10 questions)
+    const sa = [
+        {text:"Do we need ___ eggs?",ans:"any"},
+        {text:"Let's buy ___ bread.",ans:"some"},
+        {text:"We don't have ___ milk.",ans:"any"},
+        {text:"I'd like ___ cheese.",ans:"some"},
+        {text:"There aren't ___ tomatoes.",ans:"any"},
+        {text:"Would you like ___ coffee?",ans:"some"},
+        {text:"She doesn't eat ___ meat.",ans:"any"},
+        {text:"Can I have ___ water?",ans:"some"},
+        {text:"We need ___ lettuce.",ans:"some"},
+        {text:"Is there ___ rice?",ans:"any"}
+    ];
+    for (let i=0;i<10;i++) questions.push({ type:"short", text:sa[i].text, answer:sa[i].ans });
+    // Part 4: Adverbs of frequency (5 questions)
+    const freq = [
+        {text:"100% of the time",ans:"always"},
+        {text:"0% of the time",ans:"never"},
+        {text:"50% of the time",ans:"sometimes"},
+        {text:"90% of the time",ans:"usually"},
+        {text:"10% of the time",ans:"hardly ever"}
+    ];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:freq[i].text, answer:freq[i].ans });
+    // Part 5: Conversation comprehension (5 questions)
+    const conv = [
+        {text:"What does Adam want for the picnic?",ans:"sandwiches"},
+        {text:"What meat do they have?",ans:"chicken"},
+        {text:"Do they have bread?",ans:"no"},
+        {text:"What vegetable do they need?",ans:"lettuce"},
+        {text:"What does everyone like?",ans:"potato salad"}
+    ];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:conv[i].text, answer:conv[i].ans });
+    // Part 6: Image-based (5 images)
+    const imgNames = ["apple","bread","milk","egg","cake"];
+    for (let i=0;i<5;i++) questions.push({ type:"img", img:imgNames[i]+".jpg", text:"What is this?", answer:imgNames[i] });
+    // Part 7: True/False (5 questions)
+    const tf = [["Rice is a count noun.",false],["'Some' is used in affirmative sentences.",true],["'Always' means 100%.",true],["An apple is a vegetable.",false],["We use 'any' in negative sentences.",true]];
+    for (let i=0;i<5;i++) questions.push({ type:"tf", text:tf[i][0], answer:tf[i][1]?"true":"false" });
+    // Part 8: Short answer (5 questions)
+    const short = [
+        {text:"What is a noncount noun example?",ans:"bread"},
+        {text:"What adverb means 'not ever'?",ans:"never"},
+        {text:"Name a dairy product.",ans:"milk"},
+        {text:"What do you put in coffee to make it sweet?",ans:"sugar"},
+        {text:"What grain is eaten with chopsticks?",ans:"rice"}
+    ];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:short[i].text, answer:short[i].ans });
+    // Build HTML
+    function buildQuiz() {
+        let html='';
+        questions.forEach((q,idx)=>{
+            html+=`<div class="question"><strong>${idx+1}. `;
+            if(q.type==='img') html+=`<img src="${imageBase+q.img}" class="img-quiz" onerror="this.onerror=null;this.parentElement.innerHTML+='🍎';">${q.text}`;
+            else html+=q.text;
+            html+=`</strong><br>`;
+            if(q.type==='mc'){
+                q.options.forEach(opt=>{ html+=`<label><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label> `; });
+            } else if(q.type==='tf'){
+                html+=`<label><input type="radio" name="q${idx}" value="true"> True</label> <label><input type="radio" name="q${idx}" value="false"> False</label>`;
+            } else {
+                html+=`<input type="text" name="q${idx}" placeholder="Type answer">`;
+            }
+            html+=`</div>`;
+        });
+        document.getElementById('quizContainer').innerHTML=html;
+    }
+    function submitQuiz(){
+        let score=0;
+        for(let i=0;i<questions.length;i++){
+            let q=questions[i], ans=null;
+            if(q.type==='mc'||q.type==='tf'){
+                let radios=document.querySelectorAll(`input[name="q${i}"]`);
+                for(let r of radios) if(r.checked){ ans=r.value; break; }
+            } else {
+                let inp=document.querySelector(`input[name="q${i}"]`);
+                if(inp) ans=inp.value.trim().toLowerCase();
+            }
+            if(ans===q.answer.toLowerCase()) score++;
+        }
+        let percent=(score/questions.length)*100;
+        let msg=`You got ${score}/${questions.length} (${percent}%). `;
+        if(percent>=90) msg+="Excellent!";
+        else if(percent>=75) msg+="Very good!";
+        else if(percent>=60) msg+="Good. Review some points.";
+        else msg+="Need more practice.";
+        document.getElementById('quizResult').innerHTML=msg;
+    }
+    buildQuiz();
+    document.getElementById('submitQuiz').onclick=submitQuiz;
 </script>
 </body>
 </html>
