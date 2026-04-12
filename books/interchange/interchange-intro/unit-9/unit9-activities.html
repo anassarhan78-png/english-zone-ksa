@@ -2,29 +2,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit 9 Extra Activities</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interchange Intro - Unit 9 Extra Activities</title>
     <style>
-        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; }
-        .container { max-width: 1200px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; }
+        .container { max-width: 1300px; margin: auto; background: #fef9e8; border-radius: 45px; padding: 20px 30px; }
         h1 { color: #d35400; text-align: center; }
-        .card { background: #fff5e6; border-radius: 35px; padding: 20px; margin-bottom: 20px; }
-        button { background: #d35400; border: none; color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; }
+        .activity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; }
+        .card { background: #fff5e6; border-radius: 35px; padding: 20px; border: 1px solid #f0c0a0; }
+        .card h2 { background: #d35400; display: inline-block; padding: 5px 20px; border-radius: 40px; color: white; font-size: 1.3rem; }
+        button { background: #d35400; border: none; color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; margin: 5px; }
+        input, select { padding: 8px; border-radius: 30px; border: 1px solid #ccc; margin: 5px; }
+        .correct-feedback { background: #c8e6d9; border-left: 6px solid #2e7d64; padding: 8px; border-radius: 20px; margin-top: 10px; }
+        .wrong-feedback { background: #ffe0e0; border-left: 6px solid #d9534f; padding: 8px; border-radius: 20px; margin-top: 10px; }
+        .drag-word { background: #2c7da0; color: white; padding: 10px 20px; border-radius: 40px; cursor: grab; display: inline-block; margin: 5px; }
+        .drop-zone { border: 2px dashed #d35400; border-radius: 20px; padding: 12px; min-width: 120px; text-align: center; background: #fff0e0; display: inline-block; margin: 6px; }
+        .crossword-grid { display: grid; grid-template-columns: repeat(6, 45px); gap: 4px; justify-content: center; background: #f0f0f0; padding: 15px; border-radius: 20px; }
+        .crossword-grid input { width: 45px; height: 45px; text-align: center; font-size: 1.2rem; text-transform: uppercase; }
     </style>
 </head>
 <body>
-<div class="container"><h1>Unit 9 Extra Activities</h1>
-<div class="card"><h2>Food Group Drag & Drop</h2><p>Place each food in the correct group: fruit, vegetable, grain, dairy, protein.</p><div id="dragArea"></div><button id="checkDrag">Check</button><div id="dragResult"></div></div>
-<div class="card"><h2>Crossword Puzzle</h2><p>Solve the crossword with food words.</p><div id="crossword"></div><button id="checkCross">Check</button><div id="crossResult"></div></div>
-<div class="card"><h2>Unscramble Food Words</h2><div id="scrambleWord"></div><input id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button><div id="scrambleResult"></div></div>
+<div class="container">
+    <h1>📖 Interchange Intro - Unit 9 🎲 Extra Activities</h1>
+    <div class="activity-grid">
+        <div class="card"><h2>🍎 Drag & Drop: Food → Group</h2><div id="dragDropArea"></div><button id="checkDragDrop">Check</button><div id="dragDropResult"></div></div>
+        <div class="card"><h2>🔠 Crossword (Food)</h2><div id="crosswordGrid"></div><div id="crosswordClues"></div><button id="checkCrossword">Check</button><div id="crosswordResult"></div></div>
+        <div class="card"><h2>🔀 Unscramble (Food)</h2><div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div><input id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button><div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button></div>
+        <div class="card"><h2>⏰ Adverbs of Frequency</h2><div id="freqQuestion">I ___ eat breakfast. (100%)</div><select id="freqSelect"><option value="always">always</option><option value="usually">usually</option><option value="often">often</option><option value="sometimes">sometimes</option><option value="hardly ever">hardly ever</option><option value="never">never</option></select><button id="checkFreq">Check</button><button id="newFreq">Next</button><div id="freqResult"></div></div>
+    </div>
 </div>
 <script>
-document.getElementById('checkDrag').onclick=()=>document.getElementById('dragResult').innerHTML="<div class='correct'>Good try!</div>";
-document.getElementById('checkCross').onclick=()=>document.getElementById('crossResult').innerHTML="<div class='correct'>Check your answers.</div>";
-let scrambleWords=["apple","banana","bread"];let current="apple";
-function updateScramble(){current=scrambleWords[Math.floor(Math.random()*scrambleWords.length)];document.getElementById('scrambleWord').innerText=current.split('').sort(()=>Math.random()-0.5).join('');}
-document.getElementById('checkScramble').onclick=()=>{let ans=document.getElementById('scrambleInput').value.trim().toLowerCase();if(ans===current)document.getElementById('scrambleResult').innerHTML="<div class='correct'>Correct!</div>";else document.getElementById('scrambleResult').innerHTML=`<div class='wrong'>Wrong. It was ${current}.</div>`;};
-document.getElementById('newScramble').onclick=updateScramble;updateScramble();
+    const foodGroup = [["apple","fruit"],["carrot","vegetable"],["bread","grain"],["milk","dairy"],["chicken","protein"]];
+    function imgTag(word) { let name=word.toLowerCase().replace(/ /g,'-'); return `<img src="../images/${name}.jpg" style="width:50px; border-radius:10px;" onerror="this.onerror=null;this.parentElement.innerHTML+='🍎';">`; }
+    function speak(t){ let u=new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+    // Drag & Drop
+    let selected=null;
+    function initDragDrop(){
+        let c=document.getElementById('dragDropArea');
+        c.innerHTML='<div><strong>Click a food, then its group</strong></div><div style="display:flex;flex-wrap:wrap;gap:15px;margin:10px 0;">';
+        foodGroup.forEach(fg=>{ let btn=document.createElement('button'); btn.innerText=fg[0]; btn.classList.add('drag-word'); btn.onclick=()=>{ selected=fg[0]; }; c.appendChild(btn); });
+        c.innerHTML+='</div><div style="display:flex;flex-wrap:wrap;gap:20px;margin-top:20px;">';
+        foodGroup.forEach(fg=>{ let zone=document.createElement('div'); zone.classList.add('drop-zone'); zone.setAttribute('data-group',fg[1]); zone.innerHTML=`${fg[1]}<br><span class="drop-label">???</span>`; zone.onclick=()=>{ if(selected && selected===fg[0]){ zone.querySelector('.drop-label').innerText=selected; zone.style.background="#c8e6d9"; selected=null; } else if(selected) alert(`Wrong! ${selected} is not ${fg[1]}.`); else alert("Click a food first."); }; c.appendChild(zone); });
+        c.innerHTML+='</div>';
+    }
+    document.getElementById('checkDragDrop').onclick=()=>{ let ok=true; document.querySelectorAll('#dragDropArea .drop-zone').forEach(z=>{ let label=z.querySelector('.drop-label').innerText; let expected=foodGroup.find(fg=>fg[1]===z.getAttribute('data-group'))[0]; if(label!==expected) ok=false; }); document.getElementById('dragDropResult').innerHTML=ok?"<div class='correct-feedback'>Perfect!</div>":"<div class='wrong-feedback'>Some wrong.</div>"; };
+    initDragDrop();
+    // Crossword
+    function buildCrossword(){
+        let gridHtml='<div class="crossword-grid">';
+        let pre=[['A','P','P','L','E',''],['','','','','B','A'],['B','R','E','A','D',''],['','','','','N','N'],['R','I','C','E','','A'],['','','','','','']];
+        for(let i=0;i<6;i++){ for(let j=0;j<6;j++){ let val=pre[i][j]||''; gridHtml+=`<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" ${val?'readonly':''}>`; } gridHtml+='<div style="width:100%"></div>'; }
+        gridHtml+='</div>'; document.getElementById('crosswordGrid').innerHTML=gridHtml;
+        document.getElementById('crosswordClues').innerHTML='<strong>Clues:</strong> Row0: red fruit (APPLE), Row2: baked grain (BREAD), Row4: Asian grain (RICE). Down: Col5: yellow fruit (BANANA).';
+    }
+    document.getElementById('checkCrossword').onclick=()=>{ document.getElementById('crosswordResult').innerHTML="<div class='correct-feedback'>✅ Check answers with clues.</div>"; };
+    buildCrossword();
+    // Unscramble
+    const foodList = ["apple","banana","bread","rice","chicken","fish","milk","cheese"];
+    let cur="";
+    function getScrambled(w){ let a=w.split(''); for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a.join(''); }
+    function updateScramble(){ cur=foodList[Math.floor(Math.random()*foodList.length)]; document.getElementById("scrambleWord").innerText=getScrambled(cur); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
+    document.getElementById("checkScramble").onclick=()=>{ let ans=document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans===cur) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${cur}</div>`; };
+    document.getElementById("newScramble").onclick=updateScramble; document.getElementById("speakScramble").onclick=()=>speak(cur); updateScramble();
+    // Adverbs of frequency
+    const freqData = [
+        {text:"I ___ eat breakfast. (100%)",ans:"always"},
+        {text:"He ___ eats fast food. (0%)",ans:"never"},
+        {text:"We ___ have fish on Fridays. (50%)",ans:"sometimes"},
+        {text:"She ___ drinks coffee. (90%)",ans:"usually"},
+        {text:"They ___ go out for dinner. (10%)",ans:"hardly ever"}
+    ];
+    let freqIdx=0;
+    function updateFreq(){ freqIdx=Math.floor(Math.random()*freqData.length); document.getElementById("freqQuestion").innerHTML=freqData[freqIdx].text; document.getElementById("freqSelect").value=""; document.getElementById("freqResult").innerHTML=""; }
+    document.getElementById("checkFreq").onclick=()=>{ let sel=document.getElementById("freqSelect").value; if(sel===freqData[freqIdx].ans) document.getElementById("freqResult").innerHTML="<div class='correct-feedback'>✅ Correct!</div>"; else document.getElementById("freqResult").innerHTML=`<div class='wrong-feedback'>❌ Correct: ${freqData[freqIdx].ans}</div>`; };
+    document.getElementById("newFreq").onclick=updateFreq; updateFreq();
 </script>
 </body>
 </html>
