@@ -26,7 +26,7 @@
 <div class="container">
     <h1>📖 Interchange Intro - Unit 1 🎲 Extra Activities</h1>
     <div class="activity-grid">
-        <!-- Drag & Drop: Match word to meaning -->
+        <!-- Drag & Drop: Match word to definition -->
         <div class="card">
             <h2>🖱️ Drag & Drop</h2>
             <div id="dragDropArea"></div>
@@ -43,7 +43,7 @@
             <div id="crosswordResult"></div>
         </div>
 
-        <!-- Unscramble -->
+        <!-- Unscramble (names) -->
         <div class="card">
             <h2>🔀 Unscramble</h2>
             <div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div>
@@ -51,38 +51,60 @@
             <div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button>
         </div>
 
-        <!-- Fill in the form -->
+        <!-- Fill in the form (extended) -->
         <div class="card">
             <h2>📋 Fill in the form</h2>
-            <div>
-                <p>First name: <input type="text" id="formFirst" placeholder="e.g., Jennifer"></p>
-                <p>Last name: <input type="text" id="formLast" placeholder="e.g., Miller"></p>
-                <p>Phone number: <input type="text" id="formPhone" placeholder="555-1234"></p>
-                <button id="checkForm">Check</button>
-                <div id="formResult"></div>
-            </div>
+            <p>Complete the student registration form:</p>
+            <p>First name: <input type="text" id="formFirst" placeholder="e.g., Jennifer"></p>
+            <p>Last name: <input type="text" id="formLast" placeholder="e.g., Miller"></p>
+            <p>Phone number: <input type="text" id="formPhone" placeholder="555-1234"></p>
+            <p>Title: 
+                <select id="formTitle">
+                    <option value="Miss">Miss</option>
+                    <option value="Mr.">Mr.</option>
+                    <option value="Mrs.">Mrs.</option>
+                    <option value="Ms.">Ms.</option>
+                </select>
+            </p>
+            <button id="checkForm">Check Form</button>
+            <div id="formResult"></div>
+        </div>
+
+        <!-- Conversation completion -->
+        <div class="card">
+            <h2>💬 Complete the Conversation</h2>
+            <p>A: Hello. My name is Michael. <br>
+               B: Hi. ______ Jennifer Miller. <br>
+               A: Nice to meet you, Jennifer. <br>
+               B: Nice to ______ you, too. <br>
+               A: I'm sorry. What's your ______ name again? <br>
+               B: It's Miller.</p>
+            <input type="text" id="conv1" placeholder="Line 1 (missing word)"><br>
+            <input type="text" id="conv2" placeholder="Line 2 (missing word)"><br>
+            <input type="text" id="conv3" placeholder="Line 3 (missing word)"><br>
+            <button id="checkConv">Check Conversation</button>
+            <div id="convResult"></div>
         </div>
     </div>
 </div>
 
 <script>
-    const vocab = [
-        { word: "name", meaning: "what people call you" },
-        { word: "teacher", meaning: "a person who helps you learn" },
-        { word: "student", meaning: "a person who studies" },
-        { word: "book", meaning: "something you read" },
-        { word: "phone number", meaning: "digits to call someone" }
+    const vocabDef = [
+        { word: "name", def: "what people call you" },
+        { word: "teacher", def: "a person who helps you learn" },
+        { word: "student", def: "a person who studies" },
+        { word: "book", def: "something you read" },
+        { word: "phone number", def: "digits to call someone" }
     ];
-    const imageBase = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/interchange/interchange-intro/images/";
     
     function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
 
-    // Drag & Drop (click-based for simplicity)
+    // Drag & Drop
     let selectedWord = null;
     function initDragDrop() {
         let container = document.getElementById('dragDropArea');
-        container.innerHTML = '<div><strong>Click a word, then click its meaning</strong></div><div style="display:flex; flex-wrap:wrap; gap:15px; margin:10px 0;">';
-        vocab.forEach(item => {
+        container.innerHTML = '<div><strong>Click a word, then click its definition</strong></div><div style="display:flex; flex-wrap:wrap; gap:15px; margin:10px 0;">';
+        vocabDef.forEach(item => {
             let btn = document.createElement('button');
             btn.innerText = item.word;
             btn.classList.add('drag-word');
@@ -90,18 +112,18 @@
             container.appendChild(btn);
         });
         container.innerHTML += '</div><div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">';
-        vocab.forEach(item => {
+        vocabDef.forEach(item => {
             let zone = document.createElement('div');
             zone.classList.add('drop-zone');
-            zone.setAttribute('data-expected', item.word);
-            zone.innerHTML = `${item.meaning}<br><span class="drop-label">???</span>`;
+            zone.setAttribute('data-def', item.def);
+            zone.innerHTML = `${item.def}<br><span class="drop-label">???</span>`;
             zone.onclick = () => {
                 if (selectedWord && selectedWord === item.word) {
                     zone.querySelector('.drop-label').innerText = selectedWord;
                     zone.style.background = "#c8e6d9";
                     selectedWord = null;
                 } else if (selectedWord) {
-                    alert(`Wrong match! "${selectedWord}" does not match "${item.meaning}"`);
+                    alert(`Wrong! "${selectedWord}" does not match this definition.`);
                 } else {
                     alert("Click a word first.");
                 }
@@ -114,21 +136,21 @@
         let allOk = true;
         document.querySelectorAll('#dragDropArea .drop-zone').forEach(zone => {
             let label = zone.querySelector('.drop-label').innerText;
-            let expected = zone.getAttribute('data-expected');
-            if (label !== expected) allOk = false;
+            let expectedWord = vocabDef.find(d => d.def === zone.getAttribute('data-def'))?.word;
+            if (label !== expectedWord) allOk = false;
         });
         document.getElementById('dragDropResult').innerHTML = allOk ? "<div class='correct-feedback'>🎉 Perfect! All matched.</div>" : "<div class='wrong-feedback'>⚠️ Some matches are missing or wrong.</div>";
     };
     initDragDrop();
 
-    // Crossword (simple 6x6 with words: NAME, TEACHER, STUDENT, BOOK)
+    // Crossword
     function buildCrossword() {
         let gridHtml = '<div class="crossword-grid">';
         let predefined = [
             ['N','A','M','E','',''],
             ['','','','','T','E'],
-            ['S','T','U','D','E','N'],
-            ['','','','','T','T'],
+            ['T','E','A','C','H','E'],
+            ['','','','','','R'],
             ['B','O','O','K','',''],
             ['','','','','','']
         ];
@@ -142,33 +164,49 @@
         }
         gridHtml += '</div>';
         document.getElementById('crosswordGrid').innerHTML = gridHtml;
-        let clues = `<strong>Clues:</strong> Across: Row0: what people call you (NAME), Row2: a person who studies (STUDENT), Row4: something you read (BOOK). Down: Col5: a person who helps you learn (TEACHER).`;
+        let clues = `<strong>Clues:</strong> Across: Row0: what people call you (NAME), Row2: a person who teaches (TEACHER), Row4: something to read (BOOK). Down: Col5: a person who studies (STUDENT).`;
         document.getElementById('crosswordClues').innerHTML = clues;
     }
     document.getElementById('checkCrossword').onclick = () => {
-        document.getElementById('crosswordResult').innerHTML = "<div class='correct-feedback'>✅ Check your answers with the clues. Great puzzle solving!</div>";
+        document.getElementById('crosswordResult').innerHTML = "<div class='correct-feedback'>✅ Check your answers with the clues.</div>";
     };
     buildCrossword();
 
     // Unscramble
-    const scrambleWords = ["name", "teacher", "student", "book", "phone"];
+    const wordsList = ["name", "teacher", "student", "book", "class", "phone"];
     let currentScramble = "";
     function getScrambled(w) { let arr = w.split(''); for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr.join(''); }
-    function updateScramble() { currentScramble = scrambleWords[Math.floor(Math.random()*scrambleWords.length)]; document.getElementById("scrambleWord").innerText = getScrambled(currentScramble); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
+    function updateScramble() { currentScramble = wordsList[Math.floor(Math.random()*wordsList.length)]; document.getElementById("scrambleWord").innerText = getScrambled(currentScramble); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
     document.getElementById("checkScramble").onclick = () => { let ans = document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans === currentScramble) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${currentScramble}</div>`; };
     document.getElementById("newScramble").onclick = updateScramble;
     document.getElementById("speakScramble").onclick = () => speak(currentScramble);
     updateScramble();
 
-    // Fill in the form
+    // Fill form
     document.getElementById('checkForm').onclick = () => {
         let first = document.getElementById('formFirst').value.trim();
         let last = document.getElementById('formLast').value.trim();
         let phone = document.getElementById('formPhone').value.trim();
+        let title = document.getElementById('formTitle').value;
         if (first && last && phone) {
-            document.getElementById('formResult').innerHTML = `<div class='correct-feedback'>✅ Thank you! You entered: ${first} ${last}, Phone: ${phone}</div>`;
+            document.getElementById('formResult').innerHTML = `<div class='correct-feedback'>✅ Thank you, ${title} ${first} ${last}. Your phone number is ${phone}.</div>`;
         } else {
             document.getElementById('formResult').innerHTML = "<div class='wrong-feedback'>⚠️ Please fill in all fields.</div>";
+        }
+    };
+
+    // Conversation completion
+    document.getElementById('checkConv').onclick = () => {
+        let ans1 = document.getElementById('conv1').value.trim().toLowerCase();
+        let ans2 = document.getElementById('conv2').value.trim().toLowerCase();
+        let ans3 = document.getElementById('conv3').value.trim().toLowerCase();
+        let correct1 = "my name is";
+        let correct2 = "meet";
+        let correct3 = "last";
+        if (ans1 === correct1 && ans2 === correct2 && ans3 === correct3) {
+            document.getElementById('convResult').innerHTML = "<div class='correct-feedback'>✅ Perfect! You completed the conversation correctly.</div>";
+        } else {
+            document.getElementById('convResult').innerHTML = `<div class='wrong-feedback'>❌ Some answers are wrong. Correct answers: "${correct1}", "${correct2}", "${correct3}".</div>`;
         }
     };
 </script>
