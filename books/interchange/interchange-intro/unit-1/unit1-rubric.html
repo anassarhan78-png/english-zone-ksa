@@ -24,6 +24,7 @@
         .tab button.active { background-color: #d35400; color: white; }
         .tabcontent { display: none; padding: 20px 0; animation: fadeEffect 0.3s; }
         @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } }
+        .dictation-words { background: #fff0d6; padding: 5px 10px; border-radius: 20px; display: inline-block; margin: 2px; }
     </style>
 </head>
 <body>
@@ -52,19 +53,48 @@
         </div>
     </div>
 
-    <!-- Lesson Plan Tab -->
+    <!-- Lesson Plan Tab with dictation split over 5 days -->
     <div id="LessonPlan" class="tabcontent">
         <div class="section">
             <h2>Lesson Plan - Unit 1 (5 lectures + test)</h2>
             <p><strong>Before starting:</strong> Introduce teacher, centre, books, WhatsApp group, Class Dojo (15-20 min).</p>
             <table>
-                <tr><th>Day</th><th>Activities (1 hour)</th><th>Homework</th></tr>
-                <tr><td>Sunday</td><td>Vocabulary Quizlet (10 min), Dictation (7 min), Conversation p.2 (10 min), Workbook check (5 min), Listening p.3 (5 min), Titles (10 min), Wrap-up (8 min)</td><td>Page 1 ex1 + dictation</td></tr>
-                <tr><td>Monday</td><td>Vocab review (10 min), Dictation (7 min), Grammar: subject pronouns + verb be (15 min), Pair work (10 min), Listening ex12 (8 min)</td><td>Page 2+3 + dictation titles</td></tr>
-                <tr><td>Tuesday</td><td>Vocab (10 min), Dictation (7 min), Pronunciation linked sounds (10 min), Speaking: introduce yourself (10 min), Workbook correction (10 min), Spelling game (8 min)</td><td>Page 4-5 + business card</td></tr>
-                <tr><td>Wednesday</td><td>Vocab (10 min), Dictation (7 min), Conversation "He's over there" (10 min), Grammar focus (10 min), Listening ex14 (10 min), Business card project (8 min)</td><td>Study for test</td></tr>
-                <tr><td>Thursday</td><td>Revision game (15 min), Presentations (20 min), Dictation review (10 min), Q&A (10 min), Prepare for test (5 min)</td><td>Final revision</td></tr>
-                <tr><td>Friday</td><td colspan="2"><strong>FIRST TEST</strong> (1 hour): dictation, fill blanks, matching, short writing, oral</td></tr>
+                <tr><th>Day</th><th>Dictation Words (5-7 words)</th><th>Other Activities (1 hour)</th><th>Homework</th></tr>
+                <tr>
+                    <td><strong>Sunday</strong></td>
+                    <td><span class="dictation-words">name, first, last, I, am, nice, meet, you</span></td>
+                    <td>Vocabulary Quizlet (10 min), Dictation (7 min), Conversation p.2 (10 min), Workbook check (5 min), Listening p.3 (5 min), Titles (10 min), Wrap-up (8 min)</td>
+                    <td>Page 1 ex1 + dictation</td>
+                </tr>
+                <tr>
+                    <td><strong>Monday</strong></td>
+                    <td><span class="dictation-words">Miss, Mr., Mrs., Ms., teacher, student, he, she</span></td>
+                    <td>Vocab review (10 min), Dictation (7 min), Grammar: subject pronouns + verb be (15 min), Pair work (10 min), Listening ex12 (8 min)</td>
+                    <td>Page 2+3 + dictation titles</td>
+                </tr>
+                <tr>
+                    <td><strong>Tuesday</strong></td>
+                    <td><span class="dictation-words">book, class, math, phone, number, one, two, three</span></td>
+                    <td>Vocab (10 min), Dictation (7 min), Pronunciation linked sounds (10 min), Speaking: introduce yourself (10 min), Workbook correction (10 min), Spelling game (8 min)</td>
+                    <td>Page 4-5 + business card</td>
+                </tr>
+                <tr>
+                    <td><strong>Wednesday</strong></td>
+                    <td><span class="dictation-words">my, your, his, her, our, this, what, is</span></td>
+                    <td>Vocab (10 min), Dictation (7 min), Conversation "He's over there" (10 min), Grammar focus (10 min), Listening ex14 (10 min), Business card project (8 min)</td>
+                    <td>Study for test</td>
+                </tr>
+                <tr>
+                    <td><strong>Thursday</strong></td>
+                    <td><span class="dictation-words">yes, no, not, in, and, there, too, are</span></td>
+                    <td>Revision game (15 min), Presentations (20 min), Dictation review (10 min), Q&A (10 min), Prepare for test (5 min)</td>
+                    <td>Final revision</td>
+                </tr>
+                <tr>
+                    <td><strong>Friday</strong></td>
+                    <td colspan="2"><strong>FIRST TEST</strong> (1 hour): dictation (10 words from week), fill blanks, matching, short writing, oral</td>
+                    <td>-</td>
+                </tr>
             </table>
             <p><strong>Weak performance plan:</strong> Extra dictation practice, peer tutoring, audio recordings, Class Dojo rewards.</p>
         </div>
@@ -92,7 +122,6 @@
 </div>
 
 <script>
-    // Tab functionality
     function openTab(evt, tabName) {
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
@@ -107,7 +136,6 @@
         evt.currentTarget.className += " active";
     }
 
-    // Rubric calculation
     const sliders = ['speaking','writing','vocab','listen','effort','grammar','poss','part'];
     sliders.forEach(s => {
         let slider = document.getElementById(`${s}Slider`);
