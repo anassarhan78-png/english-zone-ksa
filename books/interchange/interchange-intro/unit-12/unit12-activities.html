@@ -26,163 +26,52 @@
 <div class="container">
     <h1>📖 Interchange Intro - Unit 12 🎲 Extra Activities</h1>
     <div class="activity-grid">
-        <!-- Drag & Drop: Symptom to advice -->
-        <div class="card">
-            <h2>💊 Drag & Drop: Symptom → Advice</h2>
-            <div id="dragDropArea"></div>
-            <button id="checkDragDrop">Check All</button>
-            <div id="dragDropResult"></div>
-        </div>
-
-        <!-- Crossword Puzzle (body parts) -->
-        <div class="card">
-            <h2>🔠 Crossword</h2>
-            <div id="crosswordGrid"></div>
-            <div id="crosswordClues" style="margin-top:10px; font-size:0.8rem;"></div>
-            <button id="checkCrossword">Check Crossword</button>
-            <div id="crosswordResult"></div>
-        </div>
-
-        <!-- Unscramble (body parts) -->
-        <div class="card">
-            <h2>🔀 Unscramble</h2>
-            <div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div>
-            <input type="text" id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button>
-            <div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button>
-        </div>
-
-        <!-- Advice generator -->
-        <div class="card">
-            <h2>⚠️ Give Advice</h2>
-            <div id="adviceQuestion">I have a headache.</div>
-            <input type="text" id="adviceInput" placeholder="Give advice (e.g., Take aspirin)">
-            <button id="checkAdvice">Check</button>
-            <button id="newAdvice">Next Problem</button>
-            <div id="adviceResult"></div>
-        </div>
+        <div class="card"><h2>🤒 Drag & Drop: Symptom → Advice</h2><div id="dragDropArea"></div><button id="checkDragDrop">Check</button><div id="dragDropResult"></div></div>
+        <div class="card"><h2>🔠 Crossword (Body Parts)</h2><div id="crosswordGrid"></div><div id="crosswordClues"></div><button id="checkCrossword">Check</button><div id="crosswordResult"></div></div>
+        <div class="card"><h2>🔀 Unscramble (Health Problems)</h2><div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div><input id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button><div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button></div>
+        <div class="card"><h2>⚠️ Give Advice</h2><div id="adviceQuestion">I have a headache.</div><input id="adviceInput" placeholder="Give advice"><button id="checkAdvice">Check</button><button id="newAdvice">Next</button><div id="adviceResult"></div></div>
     </div>
 </div>
-
 <script>
-    const symptomAdvice = [
-        { symptom: "headache", advice: "take aspirin" },
-        { symptom: "stomachache", advice: "drink tea" },
-        { symptom: "toothache", advice: "see a dentist" },
-        { symptom: "cold", advice: "get some rest" },
-        { symptom: "cough", advice: "drink warm water" },
-        { symptom: "fever", advice: "take your temperature" }
-    ];
-    
-    function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
-
+    const symptomAdvice = [["headache","take aspirin"],["stomachache","drink tea"],["toothache","see a dentist"],["cold","get some rest"],["cough","drink warm water"],["fever","take your temperature"]];
+    function imgTag(word) { let name=word.toLowerCase().replace(/ /g,'-'); return `<img src="../images/${name}.jpg" style="width:50px; border-radius:10px;" onerror="this.onerror=null;this.parentElement.innerHTML+='🤒';">`; }
+    function speak(t){ let u=new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
     // Drag & Drop
-    let selectedSymptom = null;
-    function initDragDrop() {
-        let container = document.getElementById('dragDropArea');
-        container.innerHTML = '<div><strong>Click a symptom, then click the correct advice</strong></div><div style="display:flex; flex-wrap:wrap; gap:15px; margin:10px 0;">';
-        symptomAdvice.forEach(item => {
-            let btn = document.createElement('button');
-            btn.innerText = item.symptom;
-            btn.classList.add('drag-word');
-            btn.onclick = () => { selectedSymptom = item.symptom; };
-            container.appendChild(btn);
-        });
-        container.innerHTML += '</div><div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">';
-        symptomAdvice.forEach(item => {
-            let zone = document.createElement('div');
-            zone.classList.add('drop-zone');
-            zone.setAttribute('data-advice', item.advice);
-            zone.innerHTML = `${item.advice}<br><span class="drop-label">???</span>`;
-            zone.onclick = () => {
-                if (selectedSymptom) {
-                    let match = symptomAdvice.find(sa => sa.symptom === selectedSymptom && sa.advice === zone.getAttribute('data-advice'));
-                    if (match) {
-                        zone.querySelector('.drop-label').innerText = selectedSymptom;
-                        zone.style.background = "#c8e6d9";
-                        selectedSymptom = null;
-                    } else {
-                        alert(`Wrong! "${selectedSymptom}" is not treated with "${zone.getAttribute('data-advice')}".`);
-                    }
-                } else {
-                    alert("Click a symptom first.");
-                }
-            };
-            container.appendChild(zone);
-        });
-        container.innerHTML += '</div>';
+    let selected=null;
+    function initDragDrop(){
+        let c=document.getElementById('dragDropArea');
+        c.innerHTML='<div><strong>Click a symptom, then correct advice</strong></div><div style="display:flex;flex-wrap:wrap;gap:15px;margin:10px 0;">';
+        symptomAdvice.forEach(sa=>{ let btn=document.createElement('button'); btn.innerText=sa[0]; btn.classList.add('drag-word'); btn.onclick=()=>{ selected=sa[0]; }; c.appendChild(btn); });
+        c.innerHTML+='</div><div style="display:flex;flex-wrap:wrap;gap:20px;margin-top:20px;">';
+        symptomAdvice.forEach(sa=>{ let zone=document.createElement('div'); zone.classList.add('drop-zone'); zone.setAttribute('data-advice',sa[1]); zone.innerHTML=`${sa[1]}<br><span class="drop-label">???</span>`; zone.onclick=()=>{ if(selected && selected===sa[0]){ zone.querySelector('.drop-label').innerText=selected; zone.style.background="#c8e6d9"; selected=null; } else if(selected) alert(`Wrong! ${selected} is not treated with ${sa[1]}.`); else alert("Click a symptom first."); }; c.appendChild(zone); });
+        c.innerHTML+='</div>';
     }
-    document.getElementById('checkDragDrop').onclick = () => {
-        let allOk = true;
-        document.querySelectorAll('#dragDropArea .drop-zone').forEach(zone => {
-            let label = zone.querySelector('.drop-label').innerText;
-            let advice = zone.getAttribute('data-advice');
-            let expectedSymptom = symptomAdvice.find(sa => sa.advice === advice)?.symptom;
-            if (label !== expectedSymptom) allOk = false;
-        });
-        document.getElementById('dragDropResult').innerHTML = allOk ? "<div class='correct-feedback'>🎉 Perfect! All symptoms matched to advice.</div>" : "<div class='wrong-feedback'>⚠️ Some matches are missing or wrong.</div>";
-    };
+    document.getElementById('checkDragDrop').onclick=()=>{ let ok=true; document.querySelectorAll('#dragDropArea .drop-zone').forEach(z=>{ let label=z.querySelector('.drop-label').innerText; let expected=symptomAdvice.find(sa=>sa[1]===z.getAttribute('data-advice'))[0]; if(label!==expected) ok=false; }); document.getElementById('dragDropResult').innerHTML=ok?"<div class='correct-feedback'>Perfect!</div>":"<div class='wrong-feedback'>Some wrong.</div>"; };
     initDragDrop();
-
-    // Crossword (body parts)
-    function buildCrossword() {
-        let gridHtml = '<div class="crossword-grid">';
-        let predefined = [
-            ['H','E','A','D','',''],
-            ['','','','','A','R'],
-            ['A','R','M','','','M'],
-            ['','','','L','E','G'],
-            ['F','O','O','T','',''],
-            ['','','','','','']
-        ];
-        for(let i=0;i<6;i++){
-            for(let j=0;j<6;j++){
-                let val = predefined[i][j] ? predefined[i][j] : '';
-                let readonly = val ? 'readonly' : '';
-                gridHtml += `<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" style="text-transform:uppercase" ${readonly}>`;
-            }
-            gridHtml += `<div style="width:100%"></div>`;
-        }
-        gridHtml += '</div>';
-        document.getElementById('crosswordGrid').innerHTML = gridHtml;
-        let clues = `<strong>Clues:</strong> Across: Row0: think with it (HEAD), Row2: lift things (ARM), Row4: stand on it (FOOT). Down: Col5: walk with it (LEG).`;
-        document.getElementById('crosswordClues').innerHTML = clues;
+    // Crossword
+    function buildCrossword(){
+        let gridHtml='<div class="crossword-grid">';
+        let pre=[['H','E','A','D','',''],['','','','','A','R'],['A','R','M','','','M'],['','','','L','E','G'],['F','O','O','T','',''],['','','','','','']];
+        for(let i=0;i<6;i++){ for(let j=0;j<6;j++){ let val=pre[i][j]||''; gridHtml+=`<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" ${val?'readonly':''}>`; } gridHtml+='<div style="width:100%"></div>'; }
+        gridHtml+='</div>'; document.getElementById('crosswordGrid').innerHTML=gridHtml;
+        document.getElementById('crosswordClues').innerHTML='<strong>Clues:</strong> Row0: think with it (HEAD), Row2: lift things (ARM), Row4: stand on it (FOOT). Down: Col5: walk with it (LEG).';
     }
-    document.getElementById('checkCrossword').onclick = () => {
-        document.getElementById('crosswordResult').innerHTML = "<div class='correct-feedback'>✅ Check your answers with the clues.</div>";
-    };
+    document.getElementById('checkCrossword').onclick=()=>{ document.getElementById('crosswordResult').innerHTML="<div class='correct-feedback'>✅ Check answers with clues.</div>"; };
     buildCrossword();
-
-    // Unscramble (body parts)
-    const bodyPartsList = ["head", "arm", "leg", "foot", "hand", "eye", "ear", "nose"];
-    let currentScramble = "";
-    function getScrambled(w) { let arr = w.split(''); for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr.join(''); }
-    function updateScramble() { currentScramble = bodyPartsList[Math.floor(Math.random()*bodyPartsList.length)]; document.getElementById("scrambleWord").innerText = getScrambled(currentScramble); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
-    document.getElementById("checkScramble").onclick = () => { let ans = document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans === currentScramble) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${currentScramble}</div>`; };
-    document.getElementById("newScramble").onclick = updateScramble;
-    document.getElementById("speakScramble").onclick = () => speak(currentScramble);
-    updateScramble();
-
+    // Unscramble health problems
+    const ailmentsList = ["headache","stomachache","toothache","earache","cold","cough","fever","flu"];
+    let cur="";
+    function getScrambled(w){ let a=w.split(''); for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a.join(''); }
+    function updateScramble(){ cur=ailmentsList[Math.floor(Math.random()*ailmentsList.length)]; document.getElementById("scrambleWord").innerText=getScrambled(cur); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
+    document.getElementById("checkScramble").onclick=()=>{ let ans=document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans===cur) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${cur}</div>`; };
+    document.getElementById("newScramble").onclick=updateScramble; document.getElementById("speakScramble").onclick=()=>speak(cur); updateScramble();
     // Advice generator
-    const problems = ["I have a headache.", "I have a stomachache.", "I have a toothache.", "I have a cold.", "I have a cough.", "I have a fever."];
-    const correctAdvice = ["take aspirin", "drink tea", "see a dentist", "get some rest", "drink warm water", "take your temperature"];
-    let currentProblem = 0;
-    function updateAdvice() {
-        currentProblem = Math.floor(Math.random() * problems.length);
-        document.getElementById("adviceQuestion").innerHTML = problems[currentProblem];
-        document.getElementById("adviceInput").value = "";
-        document.getElementById("adviceResult").innerHTML = "";
-    }
-    document.getElementById("checkAdvice").onclick = () => {
-        let ans = document.getElementById("adviceInput").value.trim().toLowerCase();
-        let correct = correctAdvice[currentProblem];
-        if (ans === correct || ans.includes(correct)) {
-            document.getElementById("adviceResult").innerHTML = "<div class='correct-feedback'>✅ Good advice!</div>";
-        } else {
-            document.getElementById("adviceResult").innerHTML = `<div class='wrong-feedback'>❌ Try again. Example advice: ${correct}</div>`;
-        }
-    };
-    document.getElementById("newAdvice").onclick = updateAdvice;
-    updateAdvice();
+    const problems = ["I have a headache.","I have a stomachache.","I have a toothache.","I have a cold.","I have a cough.","I have a fever."];
+    const correctAdvice = ["take aspirin","drink tea","see a dentist","get some rest","drink warm water","take your temperature"];
+    let advIdx=0;
+    function updateAdvice(){ advIdx=Math.floor(Math.random()*problems.length); document.getElementById("adviceQuestion").innerHTML=problems[advIdx]; document.getElementById("adviceInput").value=""; document.getElementById("adviceResult").innerHTML=""; }
+    document.getElementById("checkAdvice").onclick=()=>{ let ans=document.getElementById("adviceInput").value.trim().toLowerCase(); let correct=correctAdvice[advIdx]; if(ans===correct || ans.includes(correct)) document.getElementById("adviceResult").innerHTML="<div class='correct-feedback'>✅ Good advice!</div>"; else document.getElementById("adviceResult").innerHTML=`<div class='wrong-feedback'>❌ Example: ${correct}</div>`; };
+    document.getElementById("newAdvice").onclick=updateAdvice; updateAdvice();
 </script>
 </body>
 </html>
