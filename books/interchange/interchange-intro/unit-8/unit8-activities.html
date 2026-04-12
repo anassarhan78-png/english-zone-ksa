@@ -26,170 +26,51 @@
 <div class="container">
     <h1>📖 Interchange Intro - Unit 8 🎲 Extra Activities</h1>
     <div class="activity-grid">
-        <!-- Drag & Drop: Job to workplace -->
-        <div class="card">
-            <h2>🏢 Drag & Drop: Job → Workplace</h2>
-            <div id="dragDropArea"></div>
-            <button id="checkDragDrop">Check All</button>
-            <div id="dragDropResult"></div>
-        </div>
-
-        <!-- Crossword Puzzle (jobs) -->
-        <div class="card">
-            <h2>🔠 Crossword</h2>
-            <div id="crosswordGrid"></div>
-            <div id="crosswordClues" style="margin-top:10px; font-size:0.8rem;"></div>
-            <button id="checkCrossword">Check Crossword</button>
-            <div id="crosswordResult"></div>
-        </div>
-
-        <!-- Unscramble (job names) -->
-        <div class="card">
-            <h2>🔀 Unscramble</h2>
-            <div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div>
-            <input type="text" id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button>
-            <div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button>
-        </div>
-
-        <!-- Adjective matching game -->
-        <div class="card">
-            <h2>📝 Adjective + Job</h2>
-            <div id="adjQuestion">A doctor's job is ______. (exciting / stressful / easy)</div>
-            <select id="adjSelect">
-                <option value="">Select</option>
-                <option value="exciting">exciting</option>
-                <option value="stressful">stressful</option>
-                <option value="easy">easy</option>
-            </select>
-            <button id="checkAdj">Check</button>
-            <button id="newAdj">Next</button>
-            <div id="adjResult"></div>
-        </div>
+        <div class="card"><h2>👔 Drag & Drop: Job → Workplace</h2><div id="dragDropArea"></div><button id="checkDragDrop">Check</button><div id="dragDropResult"></div></div>
+        <div class="card"><h2>🔠 Crossword (Jobs)</h2><div id="crosswordGrid"></div><div id="crosswordClues"></div><button id="checkCrossword">Check</button><div id="crosswordResult"></div></div>
+        <div class="card"><h2>🔀 Unscramble (Jobs)</h2><div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div><input id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button><div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button></div>
+        <div class="card"><h2>💬 Job Interview (Role Play)</h2><div id="roleQuestion">What do you do?</div><input id="roleInput" placeholder="Answer"><button id="checkRole">Check</button><button id="newRole">Next</button><div id="roleResult"></div></div>
     </div>
 </div>
-
 <script>
-    const jobWorkplace = [
-        { job: "doctor", workplace: "hospital" },
-        { job: "teacher", workplace: "school" },
-        { job: "chef", workplace: "restaurant" },
-        { job: "police officer", workplace: "police station" },
-        { job: "receptionist", workplace: "hotel" },
-        { job: "cashier", workplace: "store" }
-    ];
-    
-    function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
-
-    // Drag & Drop: job to workplace
-    let selectedJob = null;
-    function initDragDrop() {
-        let container = document.getElementById('dragDropArea');
-        container.innerHTML = '<div><strong>Click a job, then click its workplace</strong></div><div style="display:flex; flex-wrap:wrap; gap:15px; margin:10px 0;">';
-        jobWorkplace.forEach(item => {
-            let btn = document.createElement('button');
-            btn.innerText = item.job;
-            btn.classList.add('drag-word');
-            btn.onclick = () => { selectedJob = item.job; };
-            container.appendChild(btn);
-        });
-        container.innerHTML += '</div><div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">';
-        jobWorkplace.forEach(item => {
-            let zone = document.createElement('div');
-            zone.classList.add('drop-zone');
-            zone.setAttribute('data-workplace', item.workplace);
-            zone.innerHTML = `${item.workplace}<br><span class="drop-label">???</span>`;
-            zone.onclick = () => {
-                if (selectedJob) {
-                    let match = jobWorkplace.find(jw => jw.job === selectedJob && jw.workplace === zone.getAttribute('data-workplace'));
-                    if (match) {
-                        zone.querySelector('.drop-label').innerText = selectedJob;
-                        zone.style.background = "#c8e6d9";
-                        selectedJob = null;
-                    } else {
-                        alert(`Wrong! "${selectedJob}" does not work in "${zone.getAttribute('data-workplace')}".`);
-                    }
-                } else {
-                    alert("Click a job first.");
-                }
-            };
-            container.appendChild(zone);
-        });
-        container.innerHTML += '</div>';
+    const jobWorkplace = [["doctor","hospital"],["teacher","school"],["chef","restaurant"],["police officer","police station"],["receptionist","hotel"],["cashier","store"]];
+    function imgTag(word) { let name=word.toLowerCase().replace(/ /g,'-'); return `<img src="../images/${name}.jpg" style="width:50px; border-radius:10px;" onerror="this.onerror=null;this.parentElement.innerHTML+='💼';">`; }
+    function speak(t){ let u=new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+    // Drag & Drop
+    let selected=null;
+    function initDragDrop(){
+        let c=document.getElementById('dragDropArea');
+        c.innerHTML='<div><strong>Click a job, then its workplace</strong></div><div style="display:flex;flex-wrap:wrap;gap:15px;margin:10px 0;">';
+        jobWorkplace.forEach(jw=>{ let btn=document.createElement('button'); btn.innerText=jw[0]; btn.classList.add('drag-word'); btn.onclick=()=>{ selected=jw[0]; }; c.appendChild(btn); });
+        c.innerHTML+='</div><div style="display:flex;flex-wrap:wrap;gap:20px;margin-top:20px;">';
+        jobWorkplace.forEach(jw=>{ let zone=document.createElement('div'); zone.classList.add('drop-zone'); zone.setAttribute('data-workplace',jw[1]); zone.innerHTML=`${jw[1]}<br><span class="drop-label">???</span>`; zone.onclick=()=>{ if(selected && selected===jw[0]){ zone.querySelector('.drop-label').innerText=selected; zone.style.background="#c8e6d9"; selected=null; } else if(selected) alert(`Wrong! ${selected} doesn't work in ${jw[1]}.`); else alert("Click a job first."); }; c.appendChild(zone); });
+        c.innerHTML+='</div>';
     }
-    document.getElementById('checkDragDrop').onclick = () => {
-        let allOk = true;
-        document.querySelectorAll('#dragDropArea .drop-zone').forEach(zone => {
-            let label = zone.querySelector('.drop-label').innerText;
-            let expectedJob = jobWorkplace.find(jw => jw.workplace === zone.getAttribute('data-workplace'))?.job;
-            if (label !== expectedJob) allOk = false;
-        });
-        document.getElementById('dragDropResult').innerHTML = allOk ? "<div class='correct-feedback'>🎉 Perfect! All matched.</div>" : "<div class='wrong-feedback'>⚠️ Some matches are missing or wrong.</div>";
-    };
+    document.getElementById('checkDragDrop').onclick=()=>{ let ok=true; document.querySelectorAll('#dragDropArea .drop-zone').forEach(z=>{ let label=z.querySelector('.drop-label').innerText; let expected=jobWorkplace.find(jw=>jw[1]===z.getAttribute('data-workplace'))[0]; if(label!==expected) ok=false; }); document.getElementById('dragDropResult').innerHTML=ok?"<div class='correct-feedback'>Perfect!</div>":"<div class='wrong-feedback'>Some wrong.</div>"; };
     initDragDrop();
-
-    // Crossword (jobs)
-    function buildCrossword() {
-        let gridHtml = '<div class="crossword-grid">';
-        let predefined = [
-            ['D','O','C','T','O','R'],
-            ['','','','','','N'],
-            ['N','U','R','S','E',''],
-            ['','','','','','S'],
-            ['C','H','E','F','','E'],
-            ['','','','','','']
-        ];
-        for(let i=0;i<6;i++){
-            for(let j=0;j<6;j++){
-                let val = predefined[i][j] ? predefined[i][j] : '';
-                let readonly = val ? 'readonly' : '';
-                gridHtml += `<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" style="text-transform:uppercase" ${readonly}>`;
-            }
-            gridHtml += `<div style="width:100%"></div>`;
-        }
-        gridHtml += '</div>';
-        document.getElementById('crosswordGrid').innerHTML = gridHtml;
-        let clues = `<strong>Clues:</strong> Across: Row0: treats patients (DOCTOR), Row2: helps doctors (NURSE), Row4: cooks food (CHEF).`;
-        document.getElementById('crosswordClues').innerHTML = clues;
+    // Crossword
+    function buildCrossword(){
+        let gridHtml='<div class="crossword-grid">';
+        let pre=[['D','O','C','T','O','R'],['','','','','','N'],['N','U','R','S','E',''],['','','','','','S'],['T','E','A','C','H','E'],['','','','','','R']];
+        for(let i=0;i<6;i++){ for(let j=0;j<6;j++){ let val=pre[i][j]||''; gridHtml+=`<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" ${val?'readonly':''}>`; } gridHtml+='<div style="width:100%"></div>'; }
+        gridHtml+='</div>'; document.getElementById('crosswordGrid').innerHTML=gridHtml;
+        document.getElementById('crosswordClues').innerHTML='<strong>Clues:</strong> Row0: treats patients (DOCTOR), Row2: helps doctors (NURSE), Row4: educates students (TEACHER). Down: Col5: cooks food (CHEF).';
     }
-    document.getElementById('checkCrossword').onclick = () => {
-        document.getElementById('crosswordResult').innerHTML = "<div class='correct-feedback'>✅ Check your answers with the clues.</div>";
-    };
+    document.getElementById('checkCrossword').onclick=()=>{ document.getElementById('crosswordResult').innerHTML="<div class='correct-feedback'>✅ Check answers with clues.</div>"; };
     buildCrossword();
-
-    // Unscramble (jobs)
-    const jobWords = ["doctor", "nurse", "teacher", "pilot", "chef", "lawyer"];
-    let currentScramble = "";
-    function getScrambled(w) { let arr = w.split(''); for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr.join(''); }
-    function updateScramble() { currentScramble = jobWords[Math.floor(Math.random()*jobWords.length)]; document.getElementById("scrambleWord").innerText = getScrambled(currentScramble); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
-    document.getElementById("checkScramble").onclick = () => { let ans = document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans === currentScramble) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${currentScramble}</div>`; };
-    document.getElementById("newScramble").onclick = updateScramble;
-    document.getElementById("speakScramble").onclick = () => speak(currentScramble);
-    updateScramble();
-
-    // Adjective matching
-    const adjQuestions = [
-        { text: "A doctor's job is ______.", options: ["exciting", "stressful", "easy"], answer: "stressful" },
-        { text: "A firefighter's job is ______.", options: ["dangerous", "boring", "relaxing"], answer: "dangerous" },
-        { text: "A teacher's job is ______.", options: ["easy", "interesting", "boring"], answer: "interesting" },
-        { text: "A cashier's job can be ______.", options: ["exciting", "dangerous", "boring"], answer: "boring" }
-    ];
-    let currentAdj = 0;
-    function updateAdj() {
-        currentAdj = Math.floor(Math.random() * adjQuestions.length);
-        document.getElementById("adjQuestion").innerHTML = adjQuestions[currentAdj].text;
-        document.getElementById("adjSelect").value = "";
-        document.getElementById("adjResult").innerHTML = "";
-    }
-    document.getElementById("checkAdj").onclick = () => {
-        let selected = document.getElementById("adjSelect").value;
-        if (selected === adjQuestions[currentAdj].answer) {
-            document.getElementById("adjResult").innerHTML = "<div class='correct-feedback'>✅ Correct!</div>";
-        } else {
-            document.getElementById("adjResult").innerHTML = `<div class='wrong-feedback'>❌ Wrong. Correct: ${adjQuestions[currentAdj].answer}</div>`;
-        }
-    };
-    document.getElementById("newAdj").onclick = updateAdj;
-    updateAdj();
+    // Unscramble jobs
+    const jobList = ["doctor","nurse","teacher","chef","pilot","lawyer"];
+    let cur="";
+    function getScrambled(w){ let a=w.split(''); for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a.join(''); }
+    function updateScramble(){ cur=jobList[Math.floor(Math.random()*jobList.length)]; document.getElementById("scrambleWord").innerText=getScrambled(cur); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
+    document.getElementById("checkScramble").onclick=()=>{ let ans=document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans===cur) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${cur}</div>`; };
+    document.getElementById("newScramble").onclick=updateScramble; document.getElementById("speakScramble").onclick=()=>speak(cur); updateScramble();
+    // Job interview
+    const roleQ = [{q:"What do you do?",a:"I am a teacher"},{q:"Where do you work?",a:"I work at a school"},{q:"Do you like your job?",a:"Yes, I do"},{q:"What do you do every day?",a:"I teach students"}];
+    let roleIdx=0;
+    function updateRole(){ roleIdx=Math.floor(Math.random()*roleQ.length); document.getElementById("roleQuestion").innerHTML=roleQ[roleIdx].q; document.getElementById("roleInput").value=""; document.getElementById("roleResult").innerHTML=""; }
+    document.getElementById("checkRole").onclick=()=>{ let ans=document.getElementById("roleInput").value.trim().toLowerCase(); let correct=roleQ[roleIdx].a.toLowerCase(); if(ans===correct) document.getElementById("roleResult").innerHTML="<div class='correct-feedback'>✅ Good answer!</div>"; else document.getElementById("roleResult").innerHTML=`<div class='wrong-feedback'>❌ Example: ${roleQ[roleIdx].a}</div>`; };
+    document.getElementById("newRole").onclick=updateRole; updateRole();
 </script>
 </body>
 </html>
