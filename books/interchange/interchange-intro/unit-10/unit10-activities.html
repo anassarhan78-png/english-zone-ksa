@@ -26,168 +26,57 @@
 <div class="container">
     <h1>📖 Interchange Intro - Unit 10 🎲 Extra Activities</h1>
     <div class="activity-grid">
-        <!-- Drag & Drop: Sport to season -->
-        <div class="card">
-            <h2>🏆 Drag & Drop: Sport → Season</h2>
-            <div id="dragDropArea"></div>
-            <button id="checkDragDrop">Check All</button>
-            <div id="dragDropResult"></div>
-        </div>
-
-        <!-- Crossword Puzzle (sports) -->
-        <div class="card">
-            <h2>🔠 Crossword</h2>
-            <div id="crosswordGrid"></div>
-            <div id="crosswordClues" style="margin-top:10px; font-size:0.8rem;"></div>
-            <button id="checkCrossword">Check Crossword</button>
-            <div id="crosswordResult"></div>
-        </div>
-
-        <!-- Unscramble (sports names) -->
-        <div class="card">
-            <h2>🔀 Unscramble</h2>
-            <div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div>
-            <input type="text" id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button>
-            <div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button>
-        </div>
-
-        <!-- Can/Can't practice -->
-        <div class="card">
-            <h2>💪 Can / Can't Quiz</h2>
-            <div id="canQuestion">______ you play the piano? (Can / Do)</div>
-            <input type="text" id="canInput" placeholder="Can / Do">
-            <button id="checkCan">Check</button>
-            <button id="newCan">Next</button>
-            <div id="canResult"></div>
-        </div>
+        <div class="card"><h2>⚽ Drag & Drop: Sport → Season</h2><div id="dragDropArea"></div><button id="checkDragDrop">Check</button><div id="dragDropResult"></div></div>
+        <div class="card"><h2>🔠 Crossword (Sports)</h2><div id="crosswordGrid"></div><div id="crosswordClues"></div><button id="checkCrossword">Check</button><div id="crosswordResult"></div></div>
+        <div class="card"><h2>🔀 Unscramble (Sports)</h2><div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div><input id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button><div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button></div>
+        <div class="card"><h2>💪 Can/Can't Practice</h2><div id="canQuestion">___ you play the piano? (Can / Do)</div><input id="canInput"><button id="checkCan">Check</button><button id="newCan">Next</button><div id="canResult"></div></div>
     </div>
 </div>
-
 <script>
-    const sportSeason = [
-        { sport: "soccer", season: "spring" },
-        { sport: "baseball", season: "summer" },
-        { sport: "football", season: "fall" },
-        { sport: "hockey", season: "winter" },
-        { sport: "golf", season: "spring" },
-        { sport: "swimming", season: "summer" },
-        { sport: "skiing", season: "winter" }
-    ];
-    
-    function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
-
+    const sportSeason = [["soccer","spring"],["baseball","summer"],["football","fall"],["hockey","winter"],["golf","spring"],["swimming","summer"],["skiing","winter"]];
+    function imgTag(word) { let name=word.toLowerCase().replace(/ /g,'-'); return `<img src="../images/${name}.jpg" style="width:50px; border-radius:10px;" onerror="this.onerror=null;this.parentElement.innerHTML+='⚽';">`; }
+    function speak(t){ let u=new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
     // Drag & Drop
-    let selectedSport = null;
-    function initDragDrop() {
-        let container = document.getElementById('dragDropArea');
-        container.innerHTML = '<div><strong>Click a sport, then click its season</strong></div><div style="display:flex; flex-wrap:wrap; gap:15px; margin:10px 0;">';
-        sportSeason.forEach(item => {
-            let btn = document.createElement('button');
-            btn.innerText = item.sport;
-            btn.classList.add('drag-word');
-            btn.onclick = () => { selectedSport = item.sport; };
-            container.appendChild(btn);
-        });
-        container.innerHTML += '</div><div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">';
-        const seasons = ["spring", "summer", "fall", "winter"];
-        seasons.forEach(season => {
-            let zone = document.createElement('div');
-            zone.classList.add('drop-zone');
-            zone.setAttribute('data-season', season);
-            zone.innerHTML = `${season}<br><span class="drop-label">???</span>`;
-            zone.onclick = () => {
-                if (selectedSport) {
-                    let match = sportSeason.find(ss => ss.sport === selectedSport && ss.season === season);
-                    if (match) {
-                        zone.querySelector('.drop-label').innerText = selectedSport;
-                        zone.style.background = "#c8e6d9";
-                        selectedSport = null;
-                    } else {
-                        alert(`Wrong! "${selectedSport}" is not played in ${season}.`);
-                    }
-                } else {
-                    alert("Click a sport first.");
-                }
-            };
-            container.appendChild(zone);
-        });
-        container.innerHTML += '</div>';
+    let selected=null;
+    function initDragDrop(){
+        let c=document.getElementById('dragDropArea');
+        c.innerHTML='<div><strong>Click a sport, then its season</strong></div><div style="display:flex;flex-wrap:wrap;gap:15px;margin:10px 0;">';
+        sportSeason.forEach(ss=>{ let btn=document.createElement('button'); btn.innerText=ss[0]; btn.classList.add('drag-word'); btn.onclick=()=>{ selected=ss[0]; }; c.appendChild(btn); });
+        c.innerHTML+='</div><div style="display:flex;flex-wrap:wrap;gap:20px;margin-top:20px;">';
+        const seasons = ["spring","summer","fall","winter"];
+        seasons.forEach(season=>{ let zone=document.createElement('div'); zone.classList.add('drop-zone'); zone.setAttribute('data-season',season); zone.innerHTML=`${season}<br><span class="drop-label">???</span>`; zone.onclick=()=>{ if(selected){ let match=sportSeason.find(ss=>ss[0]===selected && ss[1]===season); if(match){ zone.querySelector('.drop-label').innerText=selected; zone.style.background="#c8e6d9"; selected=null; } else alert(`Wrong! ${selected} is not played in ${season}.`); } else alert("Click a sport first."); }; c.appendChild(zone); });
+        c.innerHTML+='</div>';
     }
-    document.getElementById('checkDragDrop').onclick = () => {
-        let allOk = true;
-        document.querySelectorAll('#dragDropArea .drop-zone').forEach(zone => {
-            let label = zone.querySelector('.drop-label').innerText;
-            let season = zone.getAttribute('data-season');
-            let expectedSport = sportSeason.find(ss => ss.season === season)?.sport;
-            if (label !== expectedSport) allOk = false;
-        });
-        document.getElementById('dragDropResult').innerHTML = allOk ? "<div class='correct-feedback'>🎉 Perfect! All sports matched to seasons.</div>" : "<div class='wrong-feedback'>⚠️ Some matches are missing or wrong.</div>";
-    };
+    document.getElementById('checkDragDrop').onclick=()=>{ let ok=true; document.querySelectorAll('#dragDropArea .drop-zone').forEach(z=>{ let label=z.querySelector('.drop-label').innerText; let expected=sportSeason.find(ss=>ss[1]===z.getAttribute('data-season'))[0]; if(label!==expected) ok=false; }); document.getElementById('dragDropResult').innerHTML=ok?"<div class='correct-feedback'>Perfect!</div>":"<div class='wrong-feedback'>Some wrong.</div>"; };
     initDragDrop();
-
-    // Crossword (sports)
-    function buildCrossword() {
-        let gridHtml = '<div class="crossword-grid">';
-        let predefined = [
-            ['S','O','C','C','E','R'],
-            ['','','','','','B'],
-            ['T','E','N','N','I','S'],
-            ['','','','','','K'],
-            ['G','O','L','F','','T'],
-            ['','','','','','B']
-        ];
-        for(let i=0;i<6;i++){
-            for(let j=0;j<6;j++){
-                let val = predefined[i][j] ? predefined[i][j] : '';
-                let readonly = val ? 'readonly' : '';
-                gridHtml += `<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" style="text-transform:uppercase" ${readonly}>`;
-            }
-            gridHtml += `<div style="width:100%"></div>`;
-        }
-        gridHtml += '</div>';
-        document.getElementById('crosswordGrid').innerHTML = gridHtml;
-        let clues = `<strong>Clues:</strong> Across: Row0: popular sport with a round ball (SOCCER), Row2: sport played with a racket (TENNIS), Row4: sport with clubs and a small ball (GOLF). Down: Col5: sport played on ice (HOCKEY).`;
-        document.getElementById('crosswordClues').innerHTML = clues;
+    // Crossword
+    function buildCrossword(){
+        let gridHtml='<div class="crossword-grid">';
+        let pre=[['S','O','C','C','E','R'],['','','','','','B'],['T','E','N','N','I','S'],['','','','','','K'],['G','O','L','F','','T'],['','','','','','B']];
+        for(let i=0;i<6;i++){ for(let j=0;j<6;j++){ let val=pre[i][j]||''; gridHtml+=`<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" ${val?'readonly':''}>`; } gridHtml+='<div style="width:100%"></div>'; }
+        gridHtml+='</div>'; document.getElementById('crosswordGrid').innerHTML=gridHtml;
+        document.getElementById('crosswordClues').innerHTML='<strong>Clues:</strong> Row0: popular world sport (SOCCER), Row2: racket sport (TENNIS), Row4: club sport (GOLF). Down: Col5: ice sport (HOCKEY).';
     }
-    document.getElementById('checkCrossword').onclick = () => {
-        document.getElementById('crosswordResult').innerHTML = "<div class='correct-feedback'>✅ Check your answers with the clues.</div>";
-    };
+    document.getElementById('checkCrossword').onclick=()=>{ document.getElementById('crosswordResult').innerHTML="<div class='correct-feedback'>✅ Check answers with clues.</div>"; };
     buildCrossword();
-
-    // Unscramble (sports)
-    const sportsList = ["soccer", "tennis", "baseball", "hockey", "golf", "swimming"];
-    let currentScramble = "";
-    function getScrambled(w) { let arr = w.split(''); for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr.join(''); }
-    function updateScramble() { currentScramble = sportsList[Math.floor(Math.random()*sportsList.length)]; document.getElementById("scrambleWord").innerText = getScrambled(currentScramble); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
-    document.getElementById("checkScramble").onclick = () => { let ans = document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans === currentScramble) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${currentScramble}</div>`; };
-    document.getElementById("newScramble").onclick = updateScramble;
-    document.getElementById("speakScramble").onclick = () => speak(currentScramble);
-    updateScramble();
-
-    // Can/Can't practice
-    const canQuestions = [
-        { sentence: "______ you play the piano? (Can / Do)", answer: "Can" },
-        { sentence: "She ______ sing very well. (can / can't)", answer: "can" },
-        { sentence: "He ______ swim. He's scared of water. (can / can't)", answer: "can't" },
-        { sentence: "______ he fix cars? (Can / Does)", answer: "Can" }
+    // Unscramble sports
+    const sportList = ["soccer","tennis","baseball","hockey","golf","swimming"];
+    let cur="";
+    function getScrambled(w){ let a=w.split(''); for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a.join(''); }
+    function updateScramble(){ cur=sportList[Math.floor(Math.random()*sportList.length)]; document.getElementById("scrambleWord").innerText=getScrambled(cur); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
+    document.getElementById("checkScramble").onclick=()=>{ let ans=document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans===cur) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${cur}</div>`; };
+    document.getElementById("newScramble").onclick=updateScramble; document.getElementById("speakScramble").onclick=()=>speak(cur); updateScramble();
+    // Can/Can't
+    const canQ = [
+        {s:"___ you play the piano? (Can / Do)",a:"Can"},
+        {s:"She ___ sing very well. (can / can't)",a:"can"},
+        {s:"He ___ swim. (can / can't)",a:"can't"},
+        {s:"___ he fix cars? (Can / Does)",a:"Can"}
     ];
-    let currentCan = 0;
-    function updateCan() {
-        currentCan = Math.floor(Math.random() * canQuestions.length);
-        document.getElementById("canQuestion").innerHTML = canQuestions[currentCan].sentence;
-        document.getElementById("canInput").value = "";
-        document.getElementById("canResult").innerHTML = "";
-    }
-    document.getElementById("checkCan").onclick = () => {
-        let ans = document.getElementById("canInput").value.trim().toLowerCase();
-        if (ans === canQuestions[currentCan].answer.toLowerCase()) {
-            document.getElementById("canResult").innerHTML = "<div class='correct-feedback'>✅ Correct!</div>";
-        } else {
-            document.getElementById("canResult").innerHTML = `<div class='wrong-feedback'>❌ Wrong. Correct: ${canQuestions[currentCan].answer}</div>`;
-        }
-    };
-    document.getElementById("newCan").onclick = updateCan;
-    updateCan();
+    let canIdx=0;
+    function updateCan(){ canIdx=Math.floor(Math.random()*canQ.length); document.getElementById("canQuestion").innerHTML=canQ[canIdx].s; document.getElementById("canInput").value=""; document.getElementById("canResult").innerHTML=""; }
+    document.getElementById("checkCan").onclick=()=>{ let ans=document.getElementById("canInput").value.trim().toLowerCase(); if(ans===canQ[canIdx].a.toLowerCase()) document.getElementById("canResult").innerHTML="<div class='correct-feedback'>✅ Correct!</div>"; else document.getElementById("canResult").innerHTML=`<div class='wrong-feedback'>❌ Correct: ${canQ[canIdx].a}</div>`; };
+    document.getElementById("newCan").onclick=updateCan; updateCan();
 </script>
 </body>
 </html>
