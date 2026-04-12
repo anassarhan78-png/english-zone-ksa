@@ -6,56 +6,104 @@
     <title>Interchange Intro - Unit 5 Quiz</title>
     <style>
         body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
-        .container { max-width: 800px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        .container { max-width: 1000px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
         h1 { color: #d35400; text-align: center; }
         .question { background: #fff5e6; padding: 15px; border-radius: 25px; margin: 15px 0; }
-        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
-        .result { background: #e9ecef; padding: 15px; border-radius: 20px; margin-top: 20px; }
+        button { background: #d35400; border: none; color: white; padding: 12px 24px; border-radius: 40px; cursor: pointer; font-size: 1rem; margin-top: 20px; }
+        .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; font-size: 1.2rem; }
         input, select { margin: 5px; padding: 8px; border-radius: 20px; border: 1px solid #ccc; }
+        .img-quiz { max-width: 80px; display: block; margin-bottom: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📝 Unit 5 Quiz - What time is it?</h1>
-    <div>
-        <div class="question">1. What time is it? (7:00) → It's ______ o'clock.<br>
-            <input type="text" id="q1" placeholder="Number">
-        </div>
-        <div class="question">2. Choose the correct time: 2:15 → It's ______.<br>
-            <select id="q2"><option value="">Select</option><option value="two fifteen">two fifteen</option><option value="two fifty">two fifty</option><option value="two forty-five">two forty-five</option></select>
-        </div>
-        <div class="question">3. Complete: "I ______ breakfast at 7 AM."<br>
-            <select id="q3"><option value="">Select</option><option value="have">have</option><option value="has">has</option><option value="am having">am having</option></select>
-        </div>
-        <div class="question">4. What is the opposite of "get up"?<br>
-            <input type="text" id="q4" placeholder="go to sleep / go to bed">
-        </div>
-        <div class="question">5. True or False: "Noon" is 12:00 PM.<br>
-            <select id="q5"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
-        </div>
-        <div class="question">6. Present continuous: "She ______ (cook) dinner right now."<br>
-            <input type="text" id="q6" placeholder="is cooking / cooks">
-        </div>
-    </div>
+    <h1>📝 Unit 5 Quiz - What time is it? (50+ questions)</h1>
+    <div id="quizContainer"></div>
     <button id="submitQuiz">Submit Quiz</button>
     <div id="quizResult" class="result"></div>
 </div>
 <script>
-    document.getElementById('submitQuiz').onclick = () => {
-        let score = 0;
-        if (document.getElementById('q1').value.trim() === '7') score++;
-        if (document.getElementById('q2').value === 'two fifteen') score++;
-        if (document.getElementById('q3').value === 'have') score++;
-        if (document.getElementById('q4').value.trim().toLowerCase() === 'go to sleep' || document.getElementById('q4').value.trim().toLowerCase() === 'go to bed') score++;
-        if (document.getElementById('q5').value === 'true') score++;
-        if (document.getElementById('q6').value.trim().toLowerCase() === 'is cooking') score++;
-        let percent = (score/6)*100;
-        let message = `You got ${score}/6 (${percent}%). `;
-        if (percent >= 80) message += "Excellent!";
-        else if (percent >= 60) message += "Good! Review your mistakes.";
-        else message += "Try again after studying the unit.";
-        document.getElementById('quizResult').innerHTML = message;
-    };
+    const imageBase = "../images/";
+    const questions = [];
+    // Part 1: Telling time (10 questions)
+    const times = ["1:00","2:15","3:30","4:45","5:10","6:20","7:55","8:00","9:30","10:40"];
+    const timeWords = ["one o'clock","two fifteen","three thirty","four forty-five","five ten","six twenty","seven fifty-five","eight o'clock","nine thirty","ten forty"];
+    for (let i=0;i<10;i++) questions.push({ type:"short", text:`What time is it? ${times[i]} →`, answer:timeWords[i] });
+    // Part 2: Daily routine verbs (10 questions)
+    const verbs = ["get up","have breakfast","go to work","eat lunch","finish work","go home","watch TV","have dinner","go to bed","cook"];
+    for (let i=0;i<10;i++) questions.push({ type:"mc", text:`What do you do in the morning?`, options:[verbs[i],"sleep","study"], answer:verbs[i] });
+    // Part 3: Present continuous (5 questions)
+    const presCont = [{text:"She ______ (cook) dinner now.",ans:"is cooking"},{text:"They ______ (watch) TV.",ans:"are watching"},{text:"He ______ (not work) today.",ans:"is not working"},{text:"I ______ (study) English.",ans:"am studying"},{text:"We ______ (have) breakfast.",ans:"are having"}];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:presCont[i].text, answer:presCont[i].ans });
+    // Part 4: AM/PM (5 questions)
+    const ampm = [{text:"10:00 in the morning is ___.",ans:"10 AM"},{text:"3:00 in the afternoon is ___.",ans:"3 PM"},{text:"12:00 at night is ___.",ans:"midnight"},{text:"12:00 in the day is ___.",ans:"noon"},{text:"8:00 in the evening is ___.",ans:"8 PM"}];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:ampm[i].text, answer:ampm[i].ans });
+    // Part 5: Conversation comprehension (5 questions based on p.30-32)
+    const conv = [
+        {text:"What time is it in Australia?",ans:"10 PM"},
+        {text:"What time is it in the caller's location?",ans:"4 PM"},
+        {text:"Is the caller working?",ans:"no"},
+        {text:"What is Steve doing at 2 AM?",ans:"cooking"},
+        {text:"What is Steve making?",ans:"pizza"}
+    ];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:conv[i].text, answer:conv[i].ans.toLowerCase() });
+    // Part 6: Image-based (5 images)
+    const imgNames = ["clock","breakfast","lunch","dinner","tv"];
+    for (let i=0;i<5;i++) questions.push({ type:"img", img:imgNames[i]+".jpg", text:"What is this?", answer:imgNames[i] });
+    // Part 7: True/False (5 questions)
+    const tf = [["2:30 is 'half past two'.",true],["'Noon' is 12 AM.",false],["'Get up' means go to bed.",false],["You have breakfast in the evening.",false],["Present continuous describes actions happening now.",true]];
+    for (let i=0;i<5;i++) questions.push({ type:"tf", text:tf[i][0], answer:tf[i][1]?"true":"false" });
+    // Part 8: Short answer (5 questions)
+    const short = [
+        {text:"What time do you usually get up? (write a time)",ans:"7 am"},
+        {text:"What is the opposite of 'go to bed'?",ans:"get up"},
+        {text:"What meal is in the middle of the day?",ans:"lunch"},
+        {text:"What is 'watch TV' in present continuous?",ans:"watching TV"},
+        {text:"What time is midnight?",ans:"12 am"}
+    ];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:short[i].text, answer:short[i].ans });
+    // Build HTML
+    function buildQuiz() {
+        let html='';
+        questions.forEach((q,idx)=>{
+            html+=`<div class="question"><strong>${idx+1}. `;
+            if(q.type==='img') html+=`<img src="${imageBase+q.img}" class="img-quiz" onerror="this.onerror=null;this.parentElement.innerHTML+='⏰';">${q.text}`;
+            else html+=q.text;
+            html+=`</strong><br>`;
+            if(q.type==='mc'){
+                q.options.forEach(opt=>{ html+=`<label><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label> `; });
+            } else if(q.type==='tf'){
+                html+=`<label><input type="radio" name="q${idx}" value="true"> True</label> <label><input type="radio" name="q${idx}" value="false"> False</label>`;
+            } else {
+                html+=`<input type="text" name="q${idx}" placeholder="Type answer">`;
+            }
+            html+=`</div>`;
+        });
+        document.getElementById('quizContainer').innerHTML=html;
+    }
+    function submitQuiz(){
+        let score=0;
+        for(let i=0;i<questions.length;i++){
+            let q=questions[i], ans=null;
+            if(q.type==='mc'||q.type==='tf'){
+                let radios=document.querySelectorAll(`input[name="q${i}"]`);
+                for(let r of radios) if(r.checked){ ans=r.value; break; }
+            } else {
+                let inp=document.querySelector(`input[name="q${i}"]`);
+                if(inp) ans=inp.value.trim().toLowerCase();
+            }
+            if(ans===q.answer.toLowerCase()) score++;
+        }
+        let percent=(score/questions.length)*100;
+        let msg=`You got ${score}/${questions.length} (${percent}%). `;
+        if(percent>=90) msg+="Excellent!";
+        else if(percent>=75) msg+="Very good!";
+        else if(percent>=60) msg+="Good. Review some points.";
+        else msg+="Need more practice.";
+        document.getElementById('quizResult').innerHTML=msg;
+    }
+    buildQuiz();
+    document.getElementById('submitQuiz').onclick=submitQuiz;
 </script>
 </body>
 </html>

@@ -3,62 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Interchange Intro - Unit 5 Rubric</title>
+    <title>Interchange Intro - Unit 5 Rubric, Lesson Plan & Syllabus</title>
     <style>
         body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
-        .container { max-width: 800px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        .container { max-width: 1200px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
         h1 { color: #d35400; text-align: center; }
-        .criteria { margin: 20px 0; padding: 15px; background: #fff5e6; border-radius: 25px; }
+        .section { background: #fff5e6; border-radius: 30px; padding: 20px; margin: 20px 0; }
+        .section h2 { background: #d35400; display: inline-block; padding: 5px 20px; border-radius: 40px; color: white; font-size: 1.3rem; margin-top: 0; }
+        .criteria { margin: 15px 0; padding: 10px; background: #fef9e8; border-radius: 20px; }
         .slider { width: 100%; }
         .score { font-weight: bold; color: #d35400; margin-left: 10px; }
-        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
-        .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; }
+        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; margin: 10px 0; }
+        .result { background: #e9ecef; padding: 15px; border-radius: 20px; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #f0c0a0; padding: 8px; text-align: left; vertical-align: top; }
+        th { background: #f0c0a0; color: #333; }
+        .tab { overflow: hidden; border-bottom: 1px solid #ccc; margin-bottom: 20px; }
+        .tab button { background-color: inherit; float: left; border: none; outline: none; cursor: pointer; padding: 10px 20px; transition: 0.3s; font-size: 1rem; margin: 0; border-radius: 30px 30px 0 0; }
+        .tab button:hover { background-color: #f0c0a0; }
+        .tab button.active { background-color: #d35400; color: white; }
+        .tabcontent { display: none; padding: 20px 0; animation: fadeEffect 0.3s; }
+        @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } }
+        .dictation-words { background: #fff0d6; padding: 5px 10px; border-radius: 20px; display: inline-block; margin: 2px; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📊 Self Assessment Rubric - Unit 5</h1>
-    <div>
-        <div class="criteria"><strong>🗣️ Speaking:</strong> I can ask and answer "What time is it?" and talk about daily routines.<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="speakingSlider"><span class="score" id="speakingScore">3</span>
-        </div>
-        <div class="criteria"><strong>✍️ Writing:</strong> I can write about my daily schedule using time expressions.<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="writingSlider"><span class="score" id="writingScore">3</span>
-        </div>
-        <div class="criteria"><strong>📖 Vocabulary:</strong> I know meal words (breakfast, lunch, dinner) and daily activities.<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="vocabSlider"><span class="score" id="vocabScore">3</span>
-        </div>
-        <div class="criteria"><strong>👂 Listening:</strong> I understand when people say the time and what they are doing.<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="listenSlider"><span class="score" id="listenScore">3</span>
-        </div>
-        <div class="criteria"><strong>💪 Effort:</strong> I tried my best in this unit.<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="effortSlider"><span class="score" id="effortScore">3</span>
+    <h1>📘 Interchange Intro - Unit 5</h1>
+    <div class="tab">
+        <button class="tablinks active" onclick="openTab(event, 'Rubric')">📊 Rubric</button>
+        <button class="tablinks" onclick="openTab(event, 'LessonPlan')">📖 Lesson Plan</button>
+        <button class="tablinks" onclick="openTab(event, 'Syllabus')">📚 Syllabus (Level 1B)</button>
+    </div>
+    <div id="Rubric" class="tabcontent" style="display:block;">
+        <div class="section"><h2>Self Assessment Rubric - Unit 5</h2>
+            <div class="criteria"><strong>🗣️ Speaking</strong><br>I can ask and answer "What time is it?" and talk about daily routines.<br><input type="range" min="1" max="5" value="3" class="slider" id="speakingSlider"><span class="score" id="speakingScore">3</span></div>
+            <div class="criteria"><strong>✍️ Writing</strong><br>I can write sentences about my daily schedule using time expressions.<br><input type="range" min="1" max="5" value="3" class="slider" id="writingSlider"><span class="score" id="writingScore">3</span></div>
+            <div class="criteria"><strong>📖 Vocabulary</strong><br>I know time expressions and daily routine verbs.<br><input type="range" min="1" max="5" value="3" class="slider" id="vocabSlider"><span class="score" id="vocabScore">3</span></div>
+            <div class="criteria"><strong>👂 Listening</strong><br>I understand when people say the time and describe what they are doing.<br><input type="range" min="1" max="5" value="3" class="slider" id="listenSlider"><span class="score" id="listenScore">3</span></div>
+            <div class="criteria"><strong>📚 Grammar (Present Continuous)</strong><br>I can use present continuous for actions happening now.<br><input type="range" min="1" max="5" value="3" class="slider" id="grammarSlider"><span class="score" id="grammarScore">3</span></div>
+            <div class="criteria"><strong>🔢 Numbers & Time</strong><br>I can tell time using "o'clock", "half past", "quarter to/after".<br><input type="range" min="1" max="5" value="3" class="slider" id="timeSlider"><span class="score" id="timeScore">3</span></div>
+            <div class="criteria"><strong>💪 Effort</strong><br>I tried my best.<br><input type="range" min="1" max="5" value="3" class="slider" id="effortSlider"><span class="score" id="effortScore">3</span></div>
+            <div class="criteria"><strong>📅 Participation</strong><br>I participated in all activities.<br><input type="range" min="1" max="5" value="3" class="slider" id="partSlider"><span class="score" id="partScore">3</span></div>
+            <button id="calculateRubric">Calculate My Score</button>
+            <div id="rubricResult" class="result"></div>
         </div>
     </div>
-    <button id="calculateRubric">Calculate My Score</button>
-    <div id="rubricResult" class="result"></div>
+    <div id="LessonPlan" class="tabcontent">
+        <div class="section"><h2>Lesson Plan - Unit 5 (5 lectures + test)</h2>
+            <p><strong>Before starting:</strong> Review numbers and daily activities (5 min).</p>
+            <table>
+                <tr><th>Day</th><th>Dictation Words (5-7 words)</th><th>Other Activities (1 hour)</th><th>Homework</th></tr>
+                <tr><td>Sunday</th><td><span class="dictation-words">one o'clock, two fifteen, three thirty, four forty-five, five ten, six twenty</span></th><td>Vocabulary Quizlet (10 min), Dictation (7 min), Conversation p.30 (10 min), Telling time (15 min), Pair work (10 min), Wrap-up (8 min)</th><td>Page 1 ex1 + dictation</th></tr>
+                <tr><td>Monday</th><td><span class="dictation-words">seven fifty-five, eight o'clock, nine thirty, ten forty, eleven fifteen, twelve noon</span></th><td>Vocab review (10 min), Dictation (7 min), Grammar: present continuous (15 min), Listening p.31 (10 min), Workbook check (10 min), Game (8 min)</th><td>Page 2+3 + dictation</th></tr>
+                <tr><td>Tuesday</th><td><span class="dictation-words">get up, have breakfast, go to work, eat lunch, finish work, go home</span></th><td>Vocab (10 min), Dictation (7 min), Pronunciation: rising/falling intonation (10 min), Speaking: daily routine (10 min), Workbook correction (10 min), Spelling game (8 min)</th><td>Page 4-5 + business card</th></tr>
+                <tr><td>Wednesday</th><td><span class="dictation-words">watch TV, have dinner, go to bed, cook, study, exercise</span></th><td>Vocab (10 min), Dictation (7 min), Conversation "I'm really hungry!" p.32 (10 min), Wh-questions present continuous (15 min), Role play (10 min), Project (8 min)</th><td>Study for test</th></tr>
+                <tr><td>Thursday</th><td><span class="dictation-words">Review all time expressions and verbs</span></th><td>Revision game (15 min), Presentations (20 min), Dictation review (10 min), Q&A (10 min), Prepare for test (5 min)</th><td>Final revision</th></tr>
+                <tr><td>Friday</th><td colspan="2"><strong>FIRST TEST</strong> (1 hour): dictation (10 words), fill blanks, matching, short writing, oral</td><td>-</td></tr>
+            </table>
+            <p><strong>Weak performance plan:</strong> Extra dictation practice, peer tutoring, audio recordings, Class Dojo rewards.</p>
+        </div>
+    </div>
+    <div id="Syllabus" class="tabcontent">
+        <div class="section"><h2>Syllabus - Level 1B (Units 5-8)</h2>
+            <p><strong>Duration:</strong> 4 weeks (4 units) + final test<br><strong>Schedule:</strong> Sunday to Thursday (1 hour/day), test on 6th day<br><strong>Audience:</strong> Adult beginners (Dyslexia-friendly)</p>
+            <table>
+                <tr><th>Week</th><th>Unit</th><th>Topics</th><th>Test</th></tr>
+                <tr><td>5</th><td>Unit 5</td><td>Telling time, daily routines, present continuous, AM/PM</td><td>Friday</td></tr>
+                <tr><td>6</th><td>Unit 6</td><td>Transportation, family, simple present Wh-questions, object pronouns</td><td>Friday</td></tr>
+                <tr><td>7</th><td>Unit 7</td><td>Houses, furniture, there is/are, prepositions of place</td><td>Friday</td></tr>
+                <tr><td>8</th><td>Unit 8</td><td>Jobs, workplaces, adjectives, simple present questions</td><td>Friday</td></tr>
+                <tr><td>9</th><td>Review</td><td>Level 1B final exam</td><td>-</td></tr>
+            </table>
+            <p><strong>Assessment:</strong> Dictation (10%), Quiz (20%), Participation (10%), Homework (10%), Presentations (10%), Unit tests (40%)</p>
+            <p><strong>Dyslexia support:</strong> OpenDyslexic font, audio support, extra time, multi-sensory activities.</p>
+        </div>
+    </div>
 </div>
 <script>
-    const sliders = ['speaking','writing','vocab','listen','effort'];
-    sliders.forEach(s => {
-        let slider = document.getElementById(`${s}Slider`);
-        let span = document.getElementById(`${s}Score`);
-        slider.oninput = () => { span.innerText = slider.value; };
-    });
-    document.getElementById('calculateRubric').onclick = () => {
-        let total = 0;
-        sliders.forEach(s => {
-            total += parseInt(document.getElementById(`${s}Slider`).value);
-        });
-        let percent = (total / 25) * 100;
-        let level = "";
-        if (percent >= 90) level = "Advanced";
-        else if (percent >= 75) level = "Intermediate High";
-        else if (percent >= 60) level = "Intermediate";
-        else if (percent >= 40) level = "Beginner";
-        else level = "Needs Improvement";
-        document.getElementById('rubricResult').innerHTML = `<strong>Your total: ${total}/25 (${percent}%)</strong><br>ESL Level: ${level}<br>Keep up the good work!`;
-    };
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) tabcontent[i].style.display = "none";
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) tablinks[i].className = tablinks[i].className.replace(" active", "");
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+    const sliders = ['speaking','writing','vocab','listen','grammar','time','effort','part'];
+    sliders.forEach(s=>{ let slider=document.getElementById(`${s}Slider`); let span=document.getElementById(`${s}Score`); if(slider) slider.oninput=()=>{ span.innerText=slider.value; }; });
+    document.getElementById('calculateRubric').onclick=()=>{ let total=0; sliders.forEach(s=>{ total+=parseInt(document.getElementById(`${s}Slider`).value); }); let percent=(total/40)*100; let level=percent>=90?"Advanced":percent>=75?"Intermediate High":percent>=60?"Intermediate":percent>=40?"Beginner":"Needs Improvement"; document.getElementById('rubricResult').innerHTML=`<strong>Total: ${total}/40 (${percent}%)</strong><br>Level: ${level}<br>Keep up!`; };
 </script>
 </body>
 </html>
