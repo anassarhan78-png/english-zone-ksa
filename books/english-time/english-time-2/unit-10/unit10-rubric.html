@@ -2,62 +2,193 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit 10 Rubric</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Time 2 - Unit 10: At the Clinic - Parent Guide</title>
     <style>
-        body { background: linear-gradient(135deg, #1e5f8e, #0d3b55); margin: 0; padding: 20px; font-family: 'Segoe UI', sans-serif; }
-        .container { max-width: 800px; margin: auto; background: white; border-radius: 40px; padding: 30px; }
-        h1 { color: #ff8c42; text-align: center; }
-        .criteria { margin: 20px 0; padding: 15px; background: #fef7e0; border-radius: 25px; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        body { background: linear-gradient(135deg, #1e5f8e, #0d3b55); margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; margin-top: 0; }
+        .toolbar { display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .toolbar button { background: #d35400; border: none; color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-weight: bold; }
+        .toolbar button:hover { background: #a04000; }
+        .section { background: #fff5e6; border-radius: 30px; padding: 20px; margin: 20px 0; }
+        .section h2 { background: #d35400; display: inline-block; padding: 5px 20px; border-radius: 40px; color: white; font-size: 1.3rem; margin-top: 0; }
+        .criteria { margin: 15px 0; padding: 10px; background: #fef9e8; border-radius: 20px; }
         .slider { width: 100%; }
-        .score { font-weight: bold; color: #ff8c42; }
-        button { background: #ff8c42; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
-        .result { background: #e9f0f5; padding: 20px; border-radius: 25px; margin-top: 20px; }
+        .score { font-weight: bold; color: #d35400; margin-left: 10px; }
+        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; margin: 10px 0; }
+        .result { background: #e9ecef; padding: 15px; border-radius: 20px; margin-top: 15px; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #f0c0a0; padding: 8px; text-align: left; vertical-align: top; }
+        th { background: #f0c0a0; color: #333; }
+        .tab { overflow: hidden; border-bottom: 1px solid #ccc; margin-bottom: 20px; }
+        .tab button { background-color: inherit; float: left; border: none; outline: none; cursor: pointer; padding: 10px 20px; transition: 0.3s; font-size: 1rem; margin: 0; border-radius: 30px 30px 0 0; }
+        .tab button:hover { background-color: #f0c0a0; }
+        .tab button.active { background-color: #d35400; color: white; }
+        .tabcontent { display: none; padding: 20px 0; animation: fadeEffect 0.3s; }
+        @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } }
+        .dictation-words { background: #fff0d6; padding: 5px 10px; border-radius: 20px; display: inline-block; margin: 2px; }
+        .parent-note { background: #d4edda; border-left: 6px solid #2e7d64; padding: 10px; border-radius: 20px; margin-bottom: 20px; }
+        @media (max-width: 700px) { .container { padding: 15px; } th, td { font-size: 0.8rem; } }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📊 Self Assessment Rubric - Unit 10</h1>
-    <div>
-        <div class="criteria"><strong>🗣️ Speaking:</strong> I can talk about illnesses using "has" and "doesn't have".<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="speakingSlider"><span class="score" id="speakingScore">3</span>
-        </div>
-        <div class="criteria"><strong>✍️ Writing:</strong> I can write sentences about what someone has/doesn't have.<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="writingSlider"><span class="score" id="writingScore">3</span>
-        </div>
-        <div class="criteria"><strong>📖 Vocabulary:</strong> I know the illness words (stomachache, rash, sore throat, fever, cold, cough).<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="vocabSlider"><span class="score" id="vocabScore">3</span>
-        </div>
-        <div class="criteria"><strong>👂 Listening:</strong> I understand when people describe symptoms.<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="listenSlider"><span class="score" id="listenScore">3</span>
-        </div>
-        <div class="criteria"><strong>💪 Effort:</strong> I tried my best in this unit.<br>
-            <input type="range" min="1" max="5" value="3" class="slider" id="effortSlider"><span class="score" id="effortScore">3</span>
+    <div class="toolbar">
+        <button id="printBtn">🖨️ Print / طباعة</button>
+        <button id="shareBtn">🔗 Share Link / رابط للمشاركة</button>
+    </div>
+    <h1>📘 English Time 2 - Unit 10: At the Clinic</h1>
+    <div class="parent-note">
+        👪 **Dear parents / أولياء الأمور الكرام:** <br>
+        This guide helps you support your child at home. Each day has a short dictation (5-7 words), fun online games (Quizlet, Kahoot, Wordwall), and a small homework task. No classes on Friday or Saturday. Test will be on <strong>next Sunday</strong>.<br>
+        يوضح هذا الدليل خطة التعلم الأسبوعية. كل يوم يحتوي على إملاء قصير وألعاب تفاعلية وواجب بسيط. لا دوام يومي الجمعة والسبت. الاختبار يوم الأحد التالي.
+    </div>
+    <div class="tab">
+        <button class="tablinks active" onclick="openTab(event, 'Rubric')">⭐ Child's Self Assessment</button>
+        <button class="tablinks" onclick="openTab(event, 'LessonPlan')">📅 Weekly Lesson Plan</button>
+        <button class="tablinks" onclick="openTab(event, 'Syllabus')">📚 Course Syllabus (Level 2)</button>
+    </div>
+
+    <!-- Rubric Tab (for the child) -->
+    <div id="Rubric" class="tabcontent" style="display:block;">
+        <div class="section">
+            <h2>⭐ How well did I do in Unit 10?</h2>
+            <p>Move the stars (1 = needs help, 5 = I can do it alone).</p>
+            <div class="criteria"><strong>🗣️ Speaking</strong><br>I can say "Hey! That's mine. – No, it isn't. It's mine. – Oops! Sorry. – That's okay." and "He has a stomachache. He doesn't have a cold."<br><input type="range" min="1" max="5" value="3" class="slider" id="speakingSlider"><span class="score" id="speakingScore">3</span></div>
+            <div class="criteria"><strong>✍️ Writing</strong><br>I can write the words: stomachache, rash, sore throat, fever, cold, cough.<br><input type="range" min="1" max="5" value="3" class="slider" id="writingSlider"><span class="score" id="writingScore">3</span></div>
+            <div class="criteria"><strong>📖 Vocabulary</strong><br>I know all the illness words.<br><input type="range" min="1" max="5" value="3" class="slider" id="vocabSlider"><span class="score" id="vocabScore">3</span></div>
+            <div class="criteria"><strong>👂 Listening</strong><br>I understand "He has a fever. She doesn't have a cough." and the short/long e sounds (bed, desk, pen / eat, green, seal).<br><input type="range" min="1" max="5" value="3" class="slider" id="listenSlider"><span class="score" id="listenScore">3</span></div>
+            <div class="criteria"><strong>💪 Effort</strong><br>I tried my best in class and at home.<br><input type="range" min="1" max="5" value="3" class="slider" id="effortSlider"><span class="score" id="effortScore">3</span></div>
+            <div class="criteria"><strong>🔤 Phonics (short e & long e)</strong><br>I can say "bed, desk, pen" (short e) and "eat, green, seal" (long e).<br><input type="range" min="1" max="5" value="3" class="slider" id="phonicsSlider"><span class="score" id="phonicsScore">3</span></div>
+            <div class="criteria"><strong>🤝 Participation</strong><br>I played the games and did my homework.<br><input type="range" min="1" max="5" value="3" class="slider" id="partSlider"><span class="score" id="partScore">3</span></div>
+            <button id="calculateRubric">Show my score / اعرض نتيجتي</button>
+            <div id="rubricResult" class="result"></div>
         </div>
     </div>
-    <button id="calculateRubric">Calculate My Score</button>
-    <div id="rubricResult" class="result"></div>
+
+    <!-- Lesson Plan Tab (for parents) -->
+    <div id="LessonPlan" class="tabcontent">
+        <div class="section">
+            <h2>📅 Weekly Lesson Plan – Unit 10</h2>
+            <p><strong>Schedule / الجدول:</strong> Sunday – Thursday (1 hour each). <strong>Test:</strong> Next Sunday (1 hour). <strong>No classes on Friday/Saturday.</strong></p>
+            <p><strong>Online tools / الأدوات الرقمية:</strong> <span style="background:#ffd966;">🔊 Quizlet</span> (vocabulary audio), <span style="background:#ffd966;">🎮 Kahoot</span> (review games), <span style="background:#ffd966;">🧩 Wordwall</span> (matching, sorting).</p>
+            <table>
+                <tr><th>Day</th><th>Dictation (5-7 words)</th><th>Class Activities</th><th>Homework (for parents)</th></tr>
+                <tr>
+                    <td><strong>Sunday</strong></th>
+                    <td><span class="dictation-words">stomachache, rash, sore throat, fever, cold, cough</span></th>
+                    <td>🤒 Introduce illness vocabulary with flashcards and gestures<br>🎮 Wordwall: match illness to picture<br>🗣️ Repeat "I have a stomachache. I have a fever."</th>
+                    <td>Draw a person with a fever and a person with a cold, label the illnesses.</th>
+                </tr>
+                <tr>
+                    <td><strong>Monday</strong></th>
+                    <td><span class="dictation-words">hey, mine, isn't, oops, sorry, okay</span></th>
+                    <td>💬 Conversation: "Hey! That's mine. – No, it isn't. It's mine. – Oops! Sorry. – That's okay."<br>🎮 Quizlet: listen and repeat<br>🤝 Role‑play arguing about an object and apologizing</th>
+                    <td>Practice the conversation with a toy. Write the dialogue once.</th>
+                <tr>
+                <tr>
+                    <td><strong>Tuesday</strong></th>
+                    <td><span class="dictation-words">short e: bed, desk, pen; long e: eat, green, seal</span></th>
+                    <td>🔤 Phonics short e vs. long e sounds<br>🎮 Wordwall: sort short e and long e pictures<br>✏️ Trace and write e words (bed, eat, etc.)</th>
+                    <td>Find 3 short e and 3 long e words at home (bed, pen, desk / eat, green, seal). Say them aloud.</th>
+                </tr>
+                <tr>
+                    <td><strong>Wednesday</strong></th>
+                    <td><span class="dictation-words">he, she, has, doesn't, have, stomachache, cold</span></th>
+                    <td>📖 Practice "He/She has ___." and "He/She doesn't have ___." with illness flashcards<br>🎮 Kahoot: has/doesn't have quiz<br>🎨 Draw two people, one sick and one healthy, and write sentences like "He has a fever. She doesn't have a cough."</th>
+                    <td>Describe what family members have or don't have: "My father has a headache. My sister doesn't have a cold."</th>
+                </tr>
+                <tr>
+                    <td><strong>Thursday</strong></th>
+                    <td><span class="dictation-words">Review: all illnesses, conversation, has/doesn't have, short/long e</span></th>
+                    <td>⭐ Unit review game (Wordwall/Kahoot)<br>🗣️ Students role‑play doctor and patient: "What's the matter? – I have a sore throat."<br>📝 Practice test</th>
+                    <td>Prepare for Sunday test: review all words, "has/doesn't have", and short/long e phonics.</th>
+                </tr>
+                <tr>
+                    <td><strong>Friday</strong></th>
+                    <td colspan="3"><em>No class (official weekend / عطلة رسمية)</em></th>
+                </tr>
+                <tr>
+                    <td><strong>Saturday</strong></th>
+                    <td colspan="3"><em>No class (official weekend / عطلة رسمية)</em></th>
+                </tr>
+                <tr>
+                    <td><strong>Next Sunday</strong></th>
+                    <td colspan="3"><strong>📝 Unit 10 Test</strong> (1 hour)<br>✅ Dictation (5 illness words) – ✅ Fill in the blanks (has/doesn't have) – ✅ Matching – ✅ Short speaking (say what someone has or doesn't have) – ✅ Phonics (short e vs long e)</th>
+                </tr>
+            </table>
+            <p><strong>💡 How parents can help / كيف يمكنك مساعدة طفلك:</strong><br>
+            - When someone is sick, ask "What's the matter? – I have a cold." in English.<br>
+            - Practice the conversation about "That's mine" with toys.<br>
+            - Play "I spy" with short e and long e words (e.g., "I spy a bed" (short e), "I spy a green leaf" (long e)).<br>
+            - Use Quizlet live or Kahoot at home for fun revision.<br>
+            - Praise effort, not just correct answers.</p>
+        </div>
+    </div>
+
+    <!-- Syllabus Tab -->
+    <div id="Syllabus" class="tabcontent">
+        <div class="section">
+            <h2>📚 English Time 2 – Course Syllabus (Level 2)</h2>
+            <p><strong>Duration:</strong> 10 weeks (10 units) + final review.<br>
+            <strong>Schedule:</strong> Sunday – Thursday (1 hour/day). Test on the next Sunday.<br>
+            <strong>Target:</strong> Young learners (ages 7-10). Dyslexia-friendly font and activities.</p>
+            <table>
+                <tr><th>Week</th><th>Unit</th><th>Topics</th><th>Test Date</th></tr>
+                <tr><td colspan="4"><em>Units 1-9 completed. Unit 10: illnesses (stomachache, rash, sore throat, fever, cold, cough), has/doesn't have (he/she), conversation about ownership, short e vs long e phonics.</em></th></tr>
+                <tr><td colspan="4"><em>English Time 2 complete. Next: Review and final exam.</em></th></tr>
+            </table>
+            <p><strong>Assessment / التقييم:</strong><br>
+            - Daily dictation (10%)<br>
+            - Weekly quiz (20%)<br>
+            - Class participation (10%)<br>
+            - Homework (10%)<br>
+            - Unit test (50%)</p>
+            <p><strong>Dyslexia support / دعم صعوبات التعلم:</strong><br>
+            ✅ OpenDyslexic font – ✅ Audio support (text-to-speech) – ✅ Extra time for tasks – ✅ Multi‑sensory games (Quizlet, Wordwall, Kahoot).</p>
+        </div>
+    </div>
 </div>
+
 <script>
-    const sliders = ['speaking','writing','vocab','listen','effort'];
+    // Tabs
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) tabcontent[i].style.display = "none";
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) tablinks[i].className = tablinks[i].className.replace(" active", "");
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Rubric calculation
+    const sliders = ['speaking','writing','vocab','listen','effort','phonics','part'];
     sliders.forEach(s => {
         let slider = document.getElementById(`${s}Slider`);
         let span = document.getElementById(`${s}Score`);
-        slider.oninput = () => { span.innerText = slider.value; };
+        if (slider) slider.oninput = () => { span.innerText = slider.value; };
     });
     document.getElementById('calculateRubric').onclick = () => {
         let total = 0;
-        sliders.forEach(s => {
-            total += parseInt(document.getElementById(`${s}Slider`).value);
-        });
-        let percent = (total / 25) * 100;
-        let level = "";
-        if (percent >= 90) level = "Advanced";
-        else if (percent >= 75) level = "Intermediate High";
-        else if (percent >= 60) level = "Intermediate";
-        else if (percent >= 40) level = "Beginner";
-        else level = "Needs Improvement";
-        document.getElementById('rubricResult').innerHTML = `<strong>Your total: ${total}/25 (${percent}%)</strong><br>ESL Level: ${level}<br>Keep up the good work!`;
+        sliders.forEach(s => { total += parseInt(document.getElementById(`${s}Slider`).value); });
+        let percent = (total / 35) * 100;
+        let message = `Your total: ${total} / 35 (${percent}%). `;
+        if (percent >= 85) message += "🎉 Great job! You are a star!";
+        else if (percent >= 65) message += "👍 Good work! Keep practicing.";
+        else message += "🌱 You are learning. Let's try again together!";
+        document.getElementById('rubricResult').innerHTML = message;
+    };
+
+    // Print button
+    document.getElementById('printBtn').onclick = () => window.print();
+
+    // Shareable link
+    document.getElementById('shareBtn').onclick = () => {
+        navigator.clipboard.writeText(window.location.href);
+        alert("✅ Link copied to clipboard / تم نسخ الرابط");
     };
 </script>
 </body>
