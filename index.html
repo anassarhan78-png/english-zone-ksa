@@ -130,6 +130,19 @@
             color: #6a7c9f;
             font-size: 0.75rem;
         }
+        .share-btn {
+            background: #2c7da0;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-right: 10px;
+        }
+        .share-btn:hover {
+            background: #1a5a7a;
+        }
         @media (max-width: 700px) {
             .main-container { padding: 15px; }
             .neon-btn { padding: 14px 5px; font-size: 1rem; }
@@ -255,7 +268,7 @@
         10: "Unit 10: At the Clinic"
     };
 
-    // أسماء الوحدات لـ Interchange Intro (اختياري للعرض)
+    // أسماء الوحدات لـ Interchange Intro (محدثة)
     const unitNamesInterchange = {
         1: "Unit 1: It's nice to meet you",
         2: "Unit 2: What's this?",
@@ -264,11 +277,11 @@
         5: "Unit 5: What time is it?",
         6: "Unit 6: Transportation & Family",
         7: "Unit 7: Does it have a view?",
-        8: "Unit 8: (قيد الإعداد)",
-        9: "Unit 9: (قيد الإعداد)",
-        10: "Unit 10: (قيد الإعداد)",
-        11: "Unit 11: (قيد الإعداد)",
-        12: "Unit 12: (قيد الإعداد)",
+        8: "Unit 8: What do you do?",
+        9: "Unit 9: Do we need any eggs?",
+        10: "Unit 10: What sports do you play?",
+        11: "Unit 11: What are you going to do?",
+        12: "Unit 12: What's the matter?",
         13: "Unit 13: (قيد الإعداد)",
         14: "Unit 14: (قيد الإعداد)",
         15: "Unit 15: (قيد الإعداد)",
@@ -315,6 +328,12 @@
         dynamicArea.style.display = "block";
     }
 
+    function copyUnitLink() {
+        const url = `${window.location.origin}${window.location.pathname}#${selectedBookId}/${selectedUnit}`;
+        navigator.clipboard.writeText(url);
+        alert("✅ تم نسخ رابط الوحدة: " + url);
+    }
+
     function loadActivity(bookId, unitNum, activityKey) {
         const book = books[bookId];
         if (!book || book.comingSoon) {
@@ -342,7 +361,18 @@
         selectedUnit = unitNum;
         currentView = "activities";
         updateLocation();
-        let html = `<div style="margin-bottom: 15px;"><h3 style="color:#aaf0ff;">🎯 أنشطة الوحدة ${unitNum} - ${books[bookId].name}</h3></div>`;
+        // تحديث رابط الصفحة (hash) ليكون قابلاً للمشاركة
+        window.location.hash = `${bookId}/${unitNum}`;
+        
+        const bookName = books[bookId].name;
+        let unitTitle = `Unit ${unitNum}`;
+        if (bookId === "et2") unitTitle = unitNamesET2[unitNum] || `Unit ${unitNum}`;
+        if (bookId === "interchangeIntro") unitTitle = unitNamesInterchange[unitNum] || `Unit ${unitNum}`;
+        
+        let html = `<div style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                        <h3 style="color:#aaf0ff;">🎯 أنشطة ${unitTitle} - ${bookName}</h3>
+                        <button class="share-btn" id="copyUnitLinkBtn">🔗 نسخ رابط الوحدة</button>
+                    </div>`;
         html += `<div class="grid-activities">`;
         activitiesList.forEach(act => {
             html += `<div class="neon-btn" data-activity="${act.key}">${act.label}</div>`;
@@ -350,6 +380,9 @@
         html += `</div>`;
         dynamicArea.innerHTML = html;
         hideIframe();
+        
+        document.getElementById("copyUnitLinkBtn").addEventListener("click", copyUnitLink);
+        
         document.querySelectorAll("[data-activity]").forEach(btn => {
             btn.addEventListener("click", (e) => {
                 const actKey = btn.getAttribute("data-activity");
@@ -368,6 +401,9 @@
         selectedBookId = bookId;
         currentView = "units";
         updateLocation();
+        // مسح الـ hash عند العودة إلى قائمة الوحدات
+        if (window.location.hash) window.location.hash = "";
+        
         let totalUnits = book.units;
         let html = `<div style="margin-bottom: 15px;"><h3 style="color:#aaf0ff;">📚 وحدات ${book.name}</h3></div>`;
         html += `<div class="grid-units">`;
@@ -396,6 +432,7 @@
     function showBooks() {
         currentView = "books";
         updateLocation();
+        if (window.location.hash) window.location.hash = "";
         let html = `<div class="grid-books">`;
         for (let [id, book] of Object.entries(books)) {
             let extraStyle = book.comingSoon ? "style='opacity:0.7'" : "";
@@ -426,8 +463,30 @@
         }
     }
 
-    function init() {
+    // معالجة الروابط العميقة (deep linking)
+    function handleHashChange() {
+        const hash = window.location.hash.slice(1); // remove #
+        if (hash) {
+            const parts = hash.split('/');
+            if (parts.length === 2 && books[parts[0]] && !books[parts[0]].comingSoon) {
+                const bookId = parts[0];
+                const unitNum = parseInt(parts[1]);
+                if (unitNum >= 1 && unitNum <= books[bookId].units) {
+                    // إظهار الوحدة مباشرة
+                    selectedBookId = bookId;
+                    selectedUnit = unitNum;
+                    showActivities(bookId, unitNum);
+                    return;
+                }
+            }
+        }
+        // إذا لم يكن هناك رابط صالح، نعرض الكتب
         showBooks();
+    }
+
+    function init() {
+        window.addEventListener("hashchange", handleHashChange);
+        handleHashChange(); // load initial
         backBtn.addEventListener("click", goBack);
         activityFrame.onerror = () => {
             alert("⚠️ تعذر تحميل النشاط. تأكد من وجود الملف في المسار الصحيح.");
