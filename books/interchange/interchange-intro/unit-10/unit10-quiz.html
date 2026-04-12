@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Interchange Intro - Unit 10 Quiz (50 Questions)</title>
+    <title>Interchange Intro - Unit 10 Quiz</title>
     <style>
         body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
         .container { max-width: 1000px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
@@ -12,187 +12,120 @@
         button { background: #d35400; border: none; color: white; padding: 12px 24px; border-radius: 40px; cursor: pointer; font-size: 1rem; margin-top: 20px; }
         .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; font-size: 1.2rem; }
         input, select { margin: 5px; padding: 8px; border-radius: 20px; border: 1px solid #ccc; }
-        .img-quiz { max-width: 80px; vertical-align: middle; margin-left: 10px; border-radius: 10px; display: block; margin-bottom: 10px; }
-        hr { margin: 20px 0; }
+        .img-quiz { max-width: 80px; display: block; margin-bottom: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📝 Unit 10 Quiz - What sports do you play? (50 questions)</h1>
+    <h1>📝 Unit 10 Quiz - What sports do you play? (50+ questions)</h1>
     <div id="quizContainer"></div>
     <button id="submitQuiz">Submit Quiz</button>
     <div id="quizResult" class="result"></div>
 </div>
 <script>
-    const imageBase = "https://raw.githubusercontent.com/anassarhan78-png/english-zone-ksa/main/books/interchange/interchange-intro/images/";
+    const imageBase = "../images/";
     const questions = [];
-
-    // Part 1: Vocabulary (10 questions - sports names)
-    const sports = ["soccer", "baseball", "basketball", "volleyball", "tennis", "golf", "hockey", "swimming", "running", "cycling"];
-    for (let i = 0; i < 10; i++) {
-        questions.push({
-            type: "mc",
-            text: `What sport is this? ${sports[i]}`,
-            options: ["soccer", "baseball", "basketball", "volleyball", "tennis", "golf", "hockey", "swimming", "running", "cycling"],
-            answer: sports[i]
-        });
-    }
-
-    // Part 2: Wh-questions (5 questions)
-    const whQuestions = [
-        { text: "______ do you play soccer? (On Sundays)", options: ["What", "Where", "When", "Who"], answer: "When" },
-        { text: "______ do you play with? (My friends)", options: ["What", "Where", "When", "Who"], answer: "Who" },
-        { text: "______ do you play? (At the park)", options: ["What", "Where", "When", "Who"], answer: "Where" },
-        { text: "______ sports do you like? (Soccer and basketball)", options: ["What", "Where", "When", "Who"], answer: "What" },
-        { text: "______ often do you practice? (Twice a week)", options: ["How", "What", "Where", "When"], answer: "How" }
+    // Part 1: Sports vocabulary (10 questions)
+    const sports = ["soccer","baseball","basketball","volleyball","tennis","golf","hockey","swimming","running","cycling"];
+    for (let i=0;i<10;i++) questions.push({ type:"short", text:`What sport uses a ${sports[i]==="soccer"?"ball":sports[i]==="baseball"?"bat and ball":sports[i]==="basketball"?"hoop":sports[i]==="tennis"?"racket":sports[i]==="golf"?"club":sports[i]==="hockey"?"stick":"body"}?`, answer:sports[i] });
+    // Part 2: Can/Can't (10 questions)
+    const canQ = [
+        {text:"I ___ play the piano. (ability)",ans:"can"},
+        {text:"She ___ sing at all. (no ability)",ans:"can't"},
+        {text:"___ you swim?",ans:"Can"},
+        {text:"He ___ fix cars.",ans:"can"},
+        {text:"We ___ speak French. (we only know English)",ans:"can't"},
+        {text:"___ he play hockey?",ans:"Can"},
+        {text:"They ___ bake a cake.",ans:"can"},
+        {text:"My sister ___ ride a horse. (scared)",ans:"can't"},
+        {text:"I ___ download videos.",ans:"can"},
+        {text:"___ you do yoga?",ans:"Can"}
     ];
-    for (let i = 0; i < 5; i++) {
-        questions.push({
-            type: "mc",
-            text: whQuestions[i].text,
-            options: whQuestions[i].options,
-            answer: whQuestions[i].answer
-        });
-    }
-
-    // Part 3: Can / Can't (10 questions)
-    const canQuestions = [
-        { text: "I ______ play the piano. (ability)", options: ["can", "can't", "do"], answer: "can" },
-        { text: "She ______ sing at all. (no ability)", options: ["can", "can't", "does"], answer: "can't" },
-        { text: "______ you swim?", options: ["Do", "Are", "Can"], answer: "Can" },
-        { text: "He ______ fix cars. He's a mechanic.", options: ["can", "can't", "is"], answer: "can" },
-        { text: "We ______ speak French. We only know English.", options: ["can", "can't", "don't"], answer: "can't" },
-        { text: "______ he play hockey?", options: ["Does", "Can", "Is"], answer: "Can" },
-        { text: "They ______ bake a cake. It's delicious!", options: ["can", "can't", "are"], answer: "can" },
-        { text: "My sister ______ ride a horse. She's scared.", options: ["can", "can't", "doesn't"], answer: "can't" },
-        { text: "I ______ download videos easily.", options: ["can", "can't", "am"], answer: "can" },
-        { text: "______ you do yoga?", options: ["Do", "Are", "Can"], answer: "Can" }
+    for (let i=0;i<10;i++) questions.push({ type:"short", text:canQ[i].text, answer:canQ[i].ans });
+    // Part 3: Wh-questions (5 questions)
+    const wh = [
+        {text:"___ sports do you like?",ans:"What"},
+        {text:"___ do you play with?",ans:"Who"},
+        {text:"___ do you play?",ans:"Where"},
+        {text:"___ often do you practice?",ans:"How"},
+        {text:"___ time do you start?",ans:"What"}
     ];
-    for (let i = 0; i < 10; i++) {
-        questions.push({
-            type: "mc",
-            text: canQuestions[i].text,
-            options: canQuestions[i].options,
-            answer: canQuestions[i].answer
-        });
-    }
-
-    // Part 4: Adverbs of frequency (10 questions)
-    const freqQuestions = [
-        { text: "I ______ eat breakfast. (100%)", options: ["always", "sometimes", "never"], answer: "always" },
-        { text: "He ______ plays soccer. (0%)", options: ["often", "always", "never"], answer: "never" },
-        { text: "We ______ go swimming in summer. (50%)", options: ["always", "sometimes", "never"], answer: "sometimes" },
-        { text: "She ______ drinks coffee in the morning. (90%)", options: ["never", "usually", "hardly ever"], answer: "usually" },
-        { text: "They ______ watch baseball. (10%)", options: ["always", "often", "hardly ever"], answer: "hardly ever" },
-        { text: "I ______ play golf. (20%)", options: ["always", "often", "never"], answer: "often" },
-        { text: "My brother ______ goes to the gym. (95%)", options: ["always", "usually", "never"], answer: "usually" },
-        { text: "We ______ have pizza on weekends. (80%)", options: ["often", "never", "hardly ever"], answer: "often" },
-        { text: "She ______ gets up early. (5%)", options: ["always", "hardly ever", "sometimes"], answer: "hardly ever" },
-        { text: "They ______ eat dinner together. (100%)", options: ["always", "sometimes", "never"], answer: "always" }
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:wh[i].text, answer:wh[i].ans });
+    // Part 4: Adverbs of frequency (5 questions)
+    const freq = [
+        {text:"100% of the time",ans:"always"},
+        {text:"0% of the time",ans:"never"},
+        {text:"50% of the time",ans:"sometimes"},
+        {text:"90% of the time",ans:"usually"},
+        {text:"10% of the time",ans:"hardly ever"}
     ];
-    for (let i = 0; i < 10; i++) {
-        questions.push({
-            type: "mc",
-            text: freqQuestions[i].text,
-            options: freqQuestions[i].options,
-            answer: freqQuestions[i].answer
-        });
-    }
-
-    // Part 5: Reading comprehension (5 questions based on conversation)
-    for (let i = 0; i < 5; i++) {
-        questions.push({
-            type: "mc",
-            text: `(Reading) ${i===0?"What sports does Justin like?":i===1?"Does Justin play these sports?":i===2?"What does Lauren think about Justin?":i===3?"What does Justin actually do?":i===4?"What is Justin's real talent?"}`,
-            options: i===0?["Soccer, hockey, baseball, volleyball","Tennis and golf","Basketball only"]:i===1?["Yes","No","Sometimes"]:i===2?["He's a good athlete","He's lazy","He's funny"]:i===3?["He plays them","He watches them on TV","He coaches them"]:i===4?["Playing sports","Watching sports","Cooking"],
-            answer: i===0?"Soccer, hockey, baseball, volleyball":i===1?"No":i===2?"He's a good athlete":i===3?"He watches them on TV":i===4?"Watching sports"
-        });
-    }
-
-    // Part 6: Image-based questions (5 questions)
-    const imgQuestions = [
-        { img: "soccer.jpg", correct: "soccer" },
-        { img: "basketball.jpg", correct: "basketball" },
-        { img: "tennis.jpg", correct: "tennis" },
-        { img: "swimming.jpg", correct: "swimming" },
-        { img: "baseball.jpg", correct: "baseball" }
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:freq[i].text, answer:freq[i].ans });
+    // Part 5: Conversation comprehension (5 questions based on p.??)
+    const conv = [
+        {text:"What sports does Justin like?",ans:"soccer, hockey, baseball, volleyball"},
+        {text:"Does Justin play these sports?",ans:"no"},
+        {text:"What does Lauren think about Justin?",ans:"good athlete"},
+        {text:"What does Justin actually do?",ans:"watches them on TV"},
+        {text:"What is Justin's real talent?",ans:"watching sports"}
     ];
-    for (let i = 0; i < 5; i++) {
-        questions.push({
-            type: "img",
-            img: imgQuestions[i].img,
-            text: "What sport is this?",
-            answer: imgQuestions[i].correct
-        });
-    }
-
-    // Part 7: Short answer (5 questions)
-    const shortAnswers = [
-        { text: "Name a sport played on ice.", answer: "hockey" },
-        { text: "What do you use to hit a baseball?", answer: "bat" },
-        { text: "Where do you play tennis?", answer: "court" },
-        { text: "What activity uses a piano?", answer: "music" },
-        { text: "Name a water sport.", answer: "swimming" }
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:conv[i].text, answer:conv[i].ans.toLowerCase() });
+    // Part 6: Image-based (5 images)
+    const imgNames = ["soccer","basketball","tennis","swimming","baseball"];
+    for (let i=0;i<5;i++) questions.push({ type:"img", img:imgNames[i]+".jpg", text:"What sport is this?", answer:imgNames[i] });
+    // Part 7: True/False (5 questions)
+    const tf = [["Golf is played on ice.",false],["You need a racket for tennis.",true],["Swimming is a water sport.",true],["Basketball uses a bat.",false],["'Can' expresses ability.",true]];
+    for (let i=0;i<5;i++) questions.push({ type:"tf", text:tf[i][0], answer:tf[i][1]?"true":"false" });
+    // Part 8: Short answer (5 questions)
+    const short = [
+        {text:"Name a sport played on ice.",ans:"hockey"},
+        {text:"What do you use to hit a baseball?",ans:"bat"},
+        {text:"Where do you play tennis?",ans:"court"},
+        {text:"What activity uses a piano?",ans:"music"},
+        {text:"Name a water sport.",ans:"swimming"}
     ];
-    for (let i = 0; i < 5; i++) {
-        questions.push({
-            type: "short",
-            text: shortAnswers[i].text,
-            answer: shortAnswers[i].answer
-        });
-    }
-
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:short[i].text, answer:short[i].ans });
     // Build HTML
     function buildQuiz() {
-        const container = document.getElementById('quizContainer');
-        let html = '';
-        questions.forEach((q, idx) => {
-            html += `<div class="question"><strong>${idx+1}. `;
-            if (q.type === 'img') {
-                html += `<img src="${imageBase + q.img}" class="img-quiz" onerror="this.src='https://placehold.co/100x100?text=No+Image'"><br>${q.text}`;
+        let html='';
+        questions.forEach((q,idx)=>{
+            html+=`<div class="question"><strong>${idx+1}. `;
+            if(q.type==='img') html+=`<img src="${imageBase+q.img}" class="img-quiz" onerror="this.onerror=null;this.parentElement.innerHTML+='⚽';">${q.text}`;
+            else html+=q.text;
+            html+=`</strong><br>`;
+            if(q.type==='mc'){
+                q.options.forEach(opt=>{ html+=`<label><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label> `; });
+            } else if(q.type==='tf'){
+                html+=`<label><input type="radio" name="q${idx}" value="true"> True</label> <label><input type="radio" name="q${idx}" value="false"> False</label>`;
             } else {
-                html += q.text;
+                html+=`<input type="text" name="q${idx}" placeholder="Type answer">`;
             }
-            html += `</strong><br>`;
-            if (q.type === 'mc') {
-                q.options.forEach(opt => {
-                    html += `<label><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label> `;
-                });
-            } else if (q.type === 'short' || q.type === 'img') {
-                html += `<input type="text" name="q${idx}" placeholder="Type your answer">`;
-            }
-            html += `</div>`;
+            html+=`</div>`;
         });
-        container.innerHTML = html;
+        document.getElementById('quizContainer').innerHTML=html;
     }
-
-    function submitQuiz() {
-        let score = 0;
-        for (let i = 0; i < questions.length; i++) {
-            const q = questions[i];
-            let userAnswer = null;
-            if (q.type === 'mc') {
-                const radios = document.querySelectorAll(`input[name="q${i}"]`);
-                for (let r of radios) {
-                    if (r.checked) { userAnswer = r.value; break; }
-                }
+    function submitQuiz(){
+        let score=0;
+        for(let i=0;i<questions.length;i++){
+            let q=questions[i], ans=null;
+            if(q.type==='mc'||q.type==='tf'){
+                let radios=document.querySelectorAll(`input[name="q${i}"]`);
+                for(let r of radios) if(r.checked){ ans=r.value; break; }
             } else {
-                const input = document.querySelector(`input[name="q${i}"]`);
-                if (input) userAnswer = input.value.trim().toLowerCase();
+                let inp=document.querySelector(`input[name="q${i}"]`);
+                if(inp) ans=inp.value.trim().toLowerCase();
             }
-            if (userAnswer === q.answer.toLowerCase()) score++;
+            if(ans===q.answer.toLowerCase()) score++;
         }
-        const percent = (score / questions.length) * 100;
-        let message = `You got ${score} out of ${questions.length} (${percent}%). `;
-        if (percent >= 90) message += "Excellent! You are a master of sports vocabulary and grammar.";
-        else if (percent >= 75) message += "Very good! Review a few points and you'll be perfect.";
-        else if (percent >= 60) message += "Good. Study the unit again, especially Wh-questions and can/can't.";
-        else message += "You need more practice. Go through the activities and try again.";
-        document.getElementById('quizResult').innerHTML = message;
+        let percent=(score/questions.length)*100;
+        let msg=`You got ${score}/${questions.length} (${percent}%). `;
+        if(percent>=90) msg+="Excellent!";
+        else if(percent>=75) msg+="Very good!";
+        else if(percent>=60) msg+="Good. Review some points.";
+        else msg+="Need more practice.";
+        document.getElementById('quizResult').innerHTML=msg;
     }
-
     buildQuiz();
-    document.getElementById('submitQuiz').onclick = submitQuiz;
+    document.getElementById('submitQuiz').onclick=submitQuiz;
 </script>
 </body>
 </html>
