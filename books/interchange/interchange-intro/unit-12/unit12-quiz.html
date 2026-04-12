@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Interchange Intro - Unit 12 Quiz (50 Questions)</title>
+    <title>Interchange Intro - Unit 12 Quiz</title>
     <style>
         body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
         .container { max-width: 1000px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
@@ -12,151 +12,114 @@
         button { background: #d35400; border: none; color: white; padding: 12px 24px; border-radius: 40px; cursor: pointer; font-size: 1rem; margin-top: 20px; }
         .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; font-size: 1.2rem; }
         input, select { margin: 5px; padding: 8px; border-radius: 20px; border: 1px solid #ccc; }
+        .img-quiz { max-width: 80px; display: block; margin-bottom: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📝 Unit 12 Quiz - What's the matter? (50 questions)</h1>
+    <h1>📝 Unit 12 Quiz - What's the matter? (50+ questions)</h1>
     <div id="quizContainer"></div>
     <button id="submitQuiz">Submit Quiz</button>
     <div id="quizResult" class="result"></div>
 </div>
 <script>
+    const imageBase = "../images/";
     const questions = [];
-
     // Part 1: Body parts (10 questions)
-    const bodyParts = ["head", "eye", "ear", "nose", "mouth", "neck", "arm", "hand", "leg", "foot"];
-    for (let i = 0; i < 10; i++) {
-        questions.push({
-            type: "mc",
-            text: `What body part do you use to ${bodyParts[i] === "eye" ? "see" : bodyParts[i] === "ear" ? "hear" : bodyParts[i] === "nose" ? "smell" : bodyParts[i] === "mouth" ? "eat" : bodyParts[i] === "neck" ? "turn your head" : bodyParts[i] === "arm" ? "lift things" : bodyParts[i] === "hand" ? "hold things" : bodyParts[i] === "leg" ? "walk" : bodyParts[i] === "foot" ? "stand" : "think"}?`,
-            options: [bodyParts[i], "stomach", "back"],
-            answer: bodyParts[i]
-        });
-    }
-
+    const body = ["head","eye","ear","nose","mouth","neck","arm","hand","leg","foot"];
+    for (let i=0;i<10;i++) questions.push({ type:"short", text:`What body part do you use to ${body[i]==="head"?"think":body[i]==="eye"?"see":body[i]==="ear"?"hear":body[i]==="nose"?"smell":body[i]==="mouth"?"eat":body[i]==="neck"?"turn":body[i]==="arm"?"lift":body[i]==="hand"?"hold":body[i]==="leg"?"walk":"stand"}?`, answer:body[i] });
     // Part 2: Health problems (10 questions)
-    const healthProblems = ["headache", "stomachache", "toothache", "earache", "cold", "cough", "fever", "flu", "sore throat", "backache"];
-    for (let i = 0; i < 10; i++) {
-        questions.push({
-            type: "mc",
-            text: `What do you have if your ${healthProblems[i] === "headache" ? "head hurts" : healthProblems[i] === "stomachache" ? "stomach hurts" : healthProblems[i] === "toothache" ? "tooth hurts" : healthProblems[i] === "earache" ? "ear hurts" : healthProblems[i] === "cold" ? "nose is runny" : healthProblems[i] === "cough" ? "throat is itchy" : healthProblems[i] === "fever" ? "temperature is high" : healthProblems[i] === "flu" ? "body aches" : healthProblems[i] === "sore throat" ? "throat hurts" : "back hurts"}?`,
-            options: [healthProblems[i], "a cold", "a rash"],
-            answer: healthProblems[i]
-        });
-    }
-
+    const ailments = ["headache","stomachache","toothache","earache","cold","cough","fever","flu","sore throat","backache"];
+    for (let i=0;i<10;i++) questions.push({ type:"short", text:`What do you have if your ${ailments[i]==="headache"?"head hurts":ailments[i]==="stomachache"?"stomach hurts":ailments[i]==="toothache"?"tooth hurts":ailments[i]==="earache"?"ear hurts":ailments[i]==="cold"?"nose is runny":ailments[i]==="cough"?"throat is itchy":ailments[i]==="fever"?"temperature is high":ailments[i]==="flu"?"body aches":ailments[i]==="sore throat"?"throat hurts":"back hurts"}?`, answer:ailments[i] });
     // Part 3: Have + noun / Feel + adjective (10 questions)
-    const symptomQuestions = [
-        { text: "I ______ a headache.", options: ["have", "has", "am"], answer: "have" },
-        { text: "She ______ a fever.", options: ["have", "has", "is"], answer: "has" },
-        { text: "How do you ______?", options: ["have", "feel", "are"], answer: "feel" },
-        { text: "I ______ terrible today.", options: ["have", "feel", "am"], answer: "feel" },
-        { text: "He ______ the flu.", options: ["have", "has", "is"], answer: "has" },
-        { text: "They ______ a cold.", options: ["have", "has", "are"], answer: "have" },
-        { text: "I ______ sick.", options: ["have", "feel", "am"], answer: "feel" },
-        { text: "She doesn't ______ well.", options: ["have", "feel", "be"], answer: "feel" },
-        { text: "What's the ______?", options: ["problem", "matter", "wrong"], answer: "matter" },
-        { text: "What's ______?", options: ["matter", "wrong", "problem"], answer: "wrong" }
+    const hf = [
+        {text:"I ___ a headache.",ans:"have"},
+        {text:"She ___ a fever.",ans:"has"},
+        {text:"How do you ___?",ans:"feel"},
+        {text:"I ___ terrible today.",ans:"feel"},
+        {text:"He ___ the flu.",ans:"has"},
+        {text:"They ___ a cold.",ans:"have"},
+        {text:"I ___ sick.",ans:"feel"},
+        {text:"She doesn't ___ well.",ans:"feel"},
+        {text:"What's the ___?",ans:"matter"},
+        {text:"What's ___?",ans:"wrong"}
     ];
-    for (let i = 0; i < 10; i++) {
-        questions.push({
-            type: "mc",
-            text: symptomQuestions[i].text,
-            options: symptomQuestions[i].options,
-            answer: symptomQuestions[i].answer
-        });
-    }
-
-    // Part 4: Imperatives for advice (10 questions)
-    const adviceQuestions = [
-        { text: "______ some rest.", options: ["Get", "Take", "Do"], answer: "Get" },
-        { text: "______ lots of water.", options: ["Drink", "Eat", "Take"], answer: "Drink" },
-        { text: "______ a doctor.", options: ["See", "Look", "Watch"], answer: "See" },
-        { text: "______ to bed early.", options: ["Go", "Come", "Walk"], answer: "Go" },
-        { text: "______ any coffee.", options: ["Don't drink", "Not drink", "No drink"], answer: "Don't drink" },
-        { text: "______ two aspirin.", options: ["Take", "Eat", "Drink"], answer: "Take" },
-        { text: "______ work too hard.", options: ["Don't", "Not", "No"], answer: "Don't" },
-        { text: "______ your hands often.", options: ["Wash", "Clean", "Dry"], answer: "Wash" },
-        { text: "______ a dentist.", options: ["Call", "Go", "Look"], answer: "Call" },
-        { text: "______ up late.", options: ["Don't stay", "Not stay", "No stay"], answer: "Don't stay" }
+    for (let i=0;i<10;i++) questions.push({ type:"short", text:hf[i].text, answer:hf[i].ans });
+    // Part 4: Imperatives for advice (5 questions)
+    const imp = [
+        {text:"___ some rest.",ans:"Get"},
+        {text:"___ lots of water.",ans:"Drink"},
+        {text:"___ a doctor.",ans:"See"},
+        {text:"___ any coffee.",ans:"Don't drink"},
+        {text:"___ two aspirin.",ans:"Take"}
     ];
-    for (let i = 0; i < 10; i++) {
-        questions.push({
-            type: "mc",
-            text: adviceQuestions[i].text,
-            options: adviceQuestions[i].options,
-            answer: adviceQuestions[i].answer
-        });
-    }
-
-    // Part 5: Reading comprehension (5 questions based on conversation)
-    for (let i = 0; i < 5; i++) {
-        questions.push({
-            type: "mc",
-            text: `(Reading) ${i===0?"What problem does Kyle have?":i===1?"What does Steve offer Kyle?":i===2?"Does Kyle want anything to drink?":i===3?"What is Steve going to eat?":i===4?"How does Kyle feel?"}`,
-            options: i===0?["A headache","The flu","He feels sick"]:i===1?["Pizza","Soda","Medicine"]:i===2?["Yes","No","Maybe"]:i===3?["Pizza","Salad","Sandwich"]:i===4?["Great","Sick","Happy"],
-            answer: i===0?"He feels sick":i===1?"Soda":i===2?"No":i===3?"Pizza":i===4?"Sick"
-        });
-    }
-
-    // Part 6: True/False (5 questions)
-    const tfQuestions = [
-        { text: "You should drink coffee when you have a cold.", answer: "false" },
-        { text: "A headache means your head hurts.", answer: "true" },
-        { text: "You can take aspirin for a toothache.", answer: "true" },
-        { text: "Rest is good when you are sick.", answer: "true" },
-        { text: "You should exercise a lot when you have the flu.", answer: "false" }
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:imp[i].text, answer:imp[i].ans });
+    // Part 5: Conversation comprehension (5 questions)
+    const conv = [
+        {text:"What problem does Kyle have?",ans:"feels sick"},
+        {text:"What does Steve offer Kyle?",ans:"soda"},
+        {text:"Does Kyle want anything to drink?",ans:"no"},
+        {text:"What is Steve going to eat?",ans:"pizza"},
+        {text:"How does Kyle feel?",ans:"sick"}
     ];
-    for (let i = 0; i < 5; i++) {
-        questions.push({
-            type: "tf",
-            text: tfQuestions[i].text,
-            answer: tfQuestions[i].answer
-        });
-    }
-
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:conv[i].text, answer:conv[i].ans.toLowerCase() });
+    // Part 6: Image-based (5 images)
+    const imgNames = ["head","stomach","fever","doctor","medicine"];
+    for (let i=0;i<5;i++) questions.push({ type:"img", img:imgNames[i]+".jpg", text:"What is this?", answer:imgNames[i] });
+    // Part 7: True/False (5 questions)
+    const tf = [["You should drink coffee when you have a cold.",false],["A headache means your head hurts.",true],["You can take aspirin for a toothache.",true],["Rest is good when you are sick.",true],["You should exercise a lot when you have the flu.",false]];
+    for (let i=0;i<5;i++) questions.push({ type:"tf", text:tf[i][0], answer:tf[i][1]?"true":"false" });
+    // Part 8: Short answer (5 questions)
+    const short = [
+        {text:"What do you say when someone is sick? (I hope you feel ___)",ans:"better"},
+        {text:"Name a medication for a headache.",ans:"aspirin"},
+        {text:"What body part is in your mouth?",ans:"tongue"},
+        {text:"What does a dentist treat?",ans:"toothache"},
+        {text:"What does a thermometer measure?",ans:"fever"}
+    ];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:short[i].text, answer:short[i].ans });
     // Build HTML
     function buildQuiz() {
-        const container = document.getElementById('quizContainer');
-        let html = '';
-        questions.forEach((q, idx) => {
-            html += `<div class="question"><strong>${idx+1}. ${q.text}</strong><br>`;
-            if (q.type === 'mc') {
-                q.options.forEach(opt => {
-                    html += `<label><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label> `;
-                });
-            } else if (q.type === 'tf') {
-                html += `<label><input type="radio" name="q${idx}" value="true"> True</label> `;
-                html += `<label><input type="radio" name="q${idx}" value="false"> False</label>`;
+        let html='';
+        questions.forEach((q,idx)=>{
+            html+=`<div class="question"><strong>${idx+1}. `;
+            if(q.type==='img') html+=`<img src="${imageBase+q.img}" class="img-quiz" onerror="this.onerror=null;this.parentElement.innerHTML+='🩺';">${q.text}`;
+            else html+=q.text;
+            html+=`</strong><br>`;
+            if(q.type==='mc'){
+                q.options.forEach(opt=>{ html+=`<label><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label> `; });
+            } else if(q.type==='tf'){
+                html+=`<label><input type="radio" name="q${idx}" value="true"> True</label> <label><input type="radio" name="q${idx}" value="false"> False</label>`;
+            } else {
+                html+=`<input type="text" name="q${idx}" placeholder="Type answer">`;
             }
-            html += `</div>`;
+            html+=`</div>`;
         });
-        container.innerHTML = html;
+        document.getElementById('quizContainer').innerHTML=html;
     }
-
-    function submitQuiz() {
-        let score = 0;
-        for (let i = 0; i < questions.length; i++) {
-            const q = questions[i];
-            let userAnswer = null;
-            const radios = document.querySelectorAll(`input[name="q${i}"]`);
-            for (let r of radios) {
-                if (r.checked) { userAnswer = r.value; break; }
+    function submitQuiz(){
+        let score=0;
+        for(let i=0;i<questions.length;i++){
+            let q=questions[i], ans=null;
+            if(q.type==='mc'||q.type==='tf'){
+                let radios=document.querySelectorAll(`input[name="q${i}"]`);
+                for(let r of radios) if(r.checked){ ans=r.value; break; }
+            } else {
+                let inp=document.querySelector(`input[name="q${i}"]`);
+                if(inp) ans=inp.value.trim().toLowerCase();
             }
-            if (userAnswer === q.answer) score++;
+            if(ans===q.answer.toLowerCase()) score++;
         }
-        const percent = (score / questions.length) * 100;
-        let message = `You got ${score} out of ${questions.length} (${percent}%). `;
-        if (percent >= 90) message += "Excellent! You are a master of health vocabulary and giving advice.";
-        else if (percent >= 75) message += "Very good! Review a few points and you'll be perfect.";
-        else if (percent >= 60) message += "Good. Study the unit again, especially imperatives and 'have/feel'.";
-        else message += "You need more practice. Go through the activities and try again.";
-        document.getElementById('quizResult').innerHTML = message;
+        let percent=(score/questions.length)*100;
+        let msg=`You got ${score}/${questions.length} (${percent}%). `;
+        if(percent>=90) msg+="Excellent!";
+        else if(percent>=75) msg+="Very good!";
+        else if(percent>=60) msg+="Good. Review some points.";
+        else msg+="Need more practice.";
+        document.getElementById('quizResult').innerHTML=msg;
     }
-
     buildQuiz();
-    document.getElementById('submitQuiz').onclick = submitQuiz;
+    document.getElementById('submitQuiz').onclick=submitQuiz;
 </script>
 </body>
 </html>
