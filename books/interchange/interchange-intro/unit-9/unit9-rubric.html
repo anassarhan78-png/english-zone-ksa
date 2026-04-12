@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Interchange Intro - Unit 9 Rubric, Lesson Plan & Syllabus</title>
+    <title>Interchange Intro - Unit 9: Rubric, Lesson Plan & Syllabus</title>
     <style>
-        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; }
         .container { max-width: 1200px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
-        h1 { color: #d35400; text-align: center; }
+        h1 { color: #d35400; text-align: center; margin-top: 0; }
+        .toolbar { display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .toolbar button { background: #d35400; border: none; color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-weight: bold; }
+        .toolbar button:hover { background: #a04000; }
         .section { background: #fff5e6; border-radius: 30px; padding: 20px; margin: 20px 0; }
         .section h2 { background: #d35400; display: inline-block; padding: 5px 20px; border-radius: 40px; color: white; font-size: 1.3rem; margin-top: 0; }
         .criteria { margin: 15px 0; padding: 10px; background: #fef9e8; border-radius: 20px; }
@@ -25,18 +29,26 @@
         .tabcontent { display: none; padding: 20px 0; animation: fadeEffect 0.3s; }
         @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } }
         .dictation-words { background: #fff0d6; padding: 5px 10px; border-radius: 20px; display: inline-block; margin: 2px; }
+        @media (max-width: 700px) { .container { padding: 15px; } th, td { font-size: 0.8rem; } }
     </style>
 </head>
 <body>
 <div class="container">
+    <div class="toolbar">
+        <button id="printBtn">🖨️ Print</button>
+        <button id="shareBtn">🔗 Shareable Link</button>
+    </div>
     <h1>📘 Interchange Intro - Unit 9</h1>
     <div class="tab">
         <button class="tablinks active" onclick="openTab(event, 'Rubric')">📊 Rubric</button>
         <button class="tablinks" onclick="openTab(event, 'LessonPlan')">📖 Lesson Plan</button>
         <button class="tablinks" onclick="openTab(event, 'Syllabus')">📚 Syllabus (Level 2A)</button>
     </div>
+
+    <!-- Rubric Tab -->
     <div id="Rubric" class="tabcontent" style="display:block;">
-        <div class="section"><h2>Self Assessment Rubric - Unit 9</h2>
+        <div class="section">
+            <h2>Self Assessment Rubric - Unit 9</h2>
             <div class="criteria"><strong>🍎 Vocabulary (Foods)</strong><br>I can name at least 15 different foods and their categories.<br><input type="range" min="1" max="5" value="3" class="slider" id="vocabSlider"><span class="score" id="vocabScore">3</span></div>
             <div class="criteria"><strong>📦 Count & Noncount Nouns</strong><br>I can distinguish count from noncount nouns.<br><input type="range" min="1" max="5" value="3" class="slider" id="countSlider"><span class="score" id="countScore">3</span></div>
             <div class="criteria"><strong>🔹 Some / Any</strong><br>I can use some and any correctly in statements and questions.<br><input type="range" min="1" max="5" value="3" class="slider" id="someSlider"><span class="score" id="someScore">3</span></div>
@@ -49,37 +61,88 @@
             <div id="rubricResult" class="result"></div>
         </div>
     </div>
+
+    <!-- Lesson Plan Tab (with Quizlet, Kahoot, Wordwall) -->
     <div id="LessonPlan" class="tabcontent">
-        <div class="section"><h2>Lesson Plan - Unit 9 (5 lectures + test)</h2>
+        <div class="section">
+            <h2>Lesson Plan - Unit 9 (5 lectures + test)</h2>
+            <p><strong>Schedule:</strong> Sunday – Thursday (1 hour each). <strong>Test:</strong> Next Sunday (1 hour). <strong>No classes on Friday/Saturday.</strong></p>
+            <p><strong>Digital tools:</strong> Quizlet sets (vocabulary), Kahoot (review games), Wordwall (interactive activities).</p>
             <table>
-                <tr><th>Day</th><th>Dictation Words (5-7 words)</th><th>Other Activities (1 hour)</th><th>Homework</th></tr>
-                <tr><td>Sunday</th><td><span class="dictation-words">apple, banana, bread, rice, chicken, fish</span></th><td>Vocabulary Quizlet (10 min), Dictation (7 min), Conversation p.?? (10 min), Food vocabulary (15 min), Pair work (10 min), Wrap-up (8 min)</th><td>Page 1 ex1 + dictation</th></tr>
-                <tr><td>Monday</th><td><span class="dictation-words">milk, cheese, egg, tomato, carrot, lettuce</span></th><td>Vocab review (10 min), Dictation (7 min), Count/Noncount nouns (15 min), Listening (10 min), Workbook check (10 min), Game (8 min)</th><td>Page 2+3 + dictation</th></tr>
-                <tr><td>Tuesday</th><td><span class="dictation-words">coffee, tea, cake, cookie, always, usually</span></th><td>Vocab (10 min), Dictation (7 min), Some/Any (15 min), Speaking: food preferences (10 min), Workbook correction (10 min), Spelling game (8 min)</th><td>Page 4-5 + business card</th></tr>
-                <tr><td>Wednesday</th><td><span class="dictation-words">often, sometimes, hardly ever, never</span></th><td>Vocab (10 min), Dictation (7 min), Conversation "How about some sandwiches?" (10 min), Adverbs of frequency (15 min), Role play (10 min), Project (8 min)</th><td>Study for test</th></tr>
-                <tr><td>Thursday</th><td><span class="dictation-words">Review all foods and adverbs</span></th><td>Revision game (15 min), Presentations (20 min), Dictation review (10 min), Q&A (10 min), Prepare for test (5 min)</th><td>Final revision</th></tr>
-                <tr><td>Friday</th><td colspan="2"><strong>FIRST TEST</strong> (1 hour): dictation (10 words), fill blanks, matching, short writing, oral</th><td>-</th></tr>
+                <tr><th>Day</th><th>Dictation Words</th><th>Warm-up / Guided Practice</th><th>Independent Practice (Digital & Pair)</th><th>Wrap-up & HW</th></tr>
+                <tr>
+                    <td><strong>Sunday</strong></th>
+                    <td><span class="dictation-words">apple, banana, bread, rice, chicken, fish</span></th>
+                    <td>Food vocabulary with <strong>Quizlet</strong> flashcards. Teacher shows pictures: “This is an apple.” <strong>Wordwall</strong> matching (food ↔ picture).</th>
+                    <td>Students use <strong>Quizlet</strong> “Learn”. Pair work: “Do you like apples? – Yes, I do.”</th>
+                    <td>Kahoot food quiz. HW: Write 5 sentences “I like/don’t like ...”.</th>
+                </tr>
+                <tr>
+                    <td><strong>Monday</strong></th>
+                    <td><span class="dictation-words">milk, cheese, egg, tomato, carrot, lettuce</span></th>
+                    <td>More foods and introduce count/noncount with <strong>Quizlet</strong>. Teacher explains “milk is noncount.”</th>
+                    <td><strong>Wordwall</strong> “count vs noncount” sort. Pair work: “Do we need any eggs? – Yes, we need some eggs.”</th>
+                    <td>Kahoot count/noncount. HW: Write 5 sentences using “some” or “any”.</th>
+                </tr>
+                <tr>
+                    <td><strong>Tuesday</strong></th>
+                    <td><span class="dictation-words">coffee, tea, cake, cookie, always, usually</span></th>
+                    大家一起学习副词。教师使用 <strong>Quizlet</strong> 展示频率副词。学生跟读并造句。</th>
+                    <td><strong>Wordwall</strong> “adverbs of frequency” ordering. Students talk about habits: “I always drink coffee in the morning.”</th>
+                    <td>Kahoot adverbs. HW: Write 5 sentences about your habits using always/usually.</th>
+                </tr>
+                <tr>
+                    <td><strong>Wednesday</strong></th>
+                    <td><span class="dictation-words">often, sometimes, hardly ever, never</span></th>
+                    <td>More adverbs with <strong>Quizlet</strong>. Teacher asks “How often do you eat pizza?”</th>
+                    <td><strong>Wordwall</strong> “frequency” match. Pair work: interview each other “How often do you...?”</th>
+                    <td>Kahoot frequency. HW: Write 5 questions with “How often do you...?” and answer them.</th>
+                </tr>
+                <tr>
+                    <td><strong>Thursday</strong></th>
+                    <td><span class="dictation-words">Review all foods and adverbs</span></th>
+                    <td>Review with <strong>Kahoot</strong> (full unit). Teacher leads conversation “How about some sandwiches?” (p.??).</th>
+                    <td><strong>Quizlet</strong> “Test” mode. Role‑play: shopping for a picnic – “Do we have any bread? – No, we need some.”</th>
+                    <td>Final revision. HW: Prepare for Sunday’s test (count/noncount, some/any, adverbs of frequency).</th>
+                </tr>
+                <tr>
+                    <td><strong>Friday</strong></th>
+                    <td colspan="4"><em>No class (official weekend)</em></th>
+                </tr>
+                <tr>
+                    <td><strong>Saturday</strong></th>
+                    <td colspan="4"><em>No class (official weekend)</em></th>
+                </tr>
+                <tr>
+                    <td><strong>Next Sunday</strong></th>
+                    <td colspan="4"><strong>FINAL TEST – Unit 9</strong> (1 hour)<br>Dictation (10 food words), fill in blanks (some/any, adverbs), matching (food ↔ category), short writing (describe your eating habits), oral (ask & answer about food preferences).</th>
+                </tr>
             </table>
-            <p><strong>Weak performance plan:</strong> Extra dictation practice, peer tutoring, audio recordings, Class Dojo rewards.</p>
+            <p><strong>Weak performance plan:</strong> Extra Quizlet practice, peer tutoring, audio recordings, Class Dojo rewards.</p>
         </div>
     </div>
+
+    <!-- Syllabus Tab -->
     <div id="Syllabus" class="tabcontent">
-        <div class="section"><h2>Syllabus - Level 2A (Units 9-12)</h2>
-            <p><strong>Duration:</strong> 4 weeks (4 units) + final test<br><strong>Schedule:</strong> Sunday to Thursday (1 hour/day), test on 6th day<br><strong>Audience:</strong> Adult beginners (Dyslexia-friendly)</p>
+        <div class="section">
+            <h2>Syllabus - Level 2A (Units 9-12)</h2>
+            <p><strong>Duration:</strong> 4 weeks (4 units) + final test<br><strong>Schedule:</strong> Sunday – Thursday (1 hour/day), test on the next Sunday.<br><strong>Audience:</strong> Adult beginners (Dyslexia-friendly)</p>
             <table>
                 <tr><th>Week</th><th>Unit</th><th>Topics</th><th>Test</th></tr>
-                <tr><td>9</th><td>Unit 9</th><td>Food, count/noncount, some/any, adverbs of frequency</th><td>Friday</th></tr>
-                <tr><td>10</th><td>Unit 10</th><td>Sports, free-time activities, can/can't</th><td>Friday</th></tr>
-                <tr><td>11</th><td>Unit 11</th><td>Months, dates, holidays, be going to</th><td>Friday</th></tr>
-                <tr><td>12</th><td>Unit 12</th><td>Body parts, health problems, imperatives</th><td>Friday</th></tr>
-                <tr><td>13</th><td>Review</th><td>Level 2A final exam</th><td>-</th></tr>
+                <tr><td>9</th><td>Unit 9</th><td>Food, count/noncount, some/any, adverbs of frequency</th><td>Next Sunday</th></tr>
+                <tr><td>10</th><td>Unit 10</th><td>Sports, free-time activities, can/can't, Wh-questions</th><td>Next Sunday</th></tr>
+                <tr><td>11</th><td>Unit 11</th><td>Months, dates, holidays, be going to</th><td>Next Sunday</th></tr>
+                <tr><td>12</th><td>Unit 12</th><td>Body parts, health problems, have/feel, imperatives</th><td>Next Sunday</th></tr>
+                <tr><td>13</th><td>Review</th><td>Level 2A final exam</th><td>Next Sunday</th></td>
             </table>
             <p><strong>Assessment:</strong> Dictation (10%), Quiz (20%), Participation (10%), Homework (10%), Presentations (10%), Unit tests (40%)</p>
-            <p><strong>Dyslexia support:</strong> OpenDyslexic font, audio support, extra time, multi-sensory activities.</p>
+            <p><strong>Dyslexia support:</strong> OpenDyslexic font, audio support, extra time, multi‑sensory activities (Quizlet, Wordwall, Kahoot).</p>
         </div>
     </div>
 </div>
+
 <script>
+    // Tabs
     function openTab(evt, tabName) {
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
@@ -89,9 +152,30 @@
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " active";
     }
+
+    // Rubric calculation
     const sliders = ['vocab','count','some','freq','speaking','writing','listening','effort'];
-    sliders.forEach(s=>{ let slider=document.getElementById(`${s}Slider`); let span=document.getElementById(`${s}Score`); if(slider) slider.oninput=()=>{ span.innerText=slider.value; }; });
-    document.getElementById('calculateRubric').onclick=()=>{ let total=0; sliders.forEach(s=>{ total+=parseInt(document.getElementById(`${s}Slider`).value); }); let percent=(total/40)*100; let level=percent>=90?"Advanced":percent>=75?"Intermediate High":percent>=60?"Intermediate":percent>=40?"Beginner":"Needs Improvement"; document.getElementById('rubricResult').innerHTML=`<strong>Total: ${total}/40 (${percent}%)</strong><br>Level: ${level}<br>Keep up!`; };
+    sliders.forEach(s => {
+        let slider = document.getElementById(`${s}Slider`);
+        let span = document.getElementById(`${s}Score`);
+        if (slider) slider.oninput = () => { span.innerText = slider.value; };
+    });
+    document.getElementById('calculateRubric').onclick = () => {
+        let total = 0;
+        sliders.forEach(s => { total += parseInt(document.getElementById(`${s}Slider`).value); });
+        let percent = (total / 40) * 100;
+        let level = percent >= 90 ? "Advanced" : percent >= 75 ? "Intermediate High" : percent >= 60 ? "Intermediate" : percent >= 40 ? "Beginner" : "Needs Improvement";
+        document.getElementById('rubricResult').innerHTML = `<strong>Your total: ${total}/40 (${percent}%)</strong><br>ESL Level: ${level}<br>Keep up the good work!`;
+    };
+
+    // Print button
+    document.getElementById('printBtn').onclick = () => window.print();
+
+    // Shareable link button
+    document.getElementById('shareBtn').onclick = () => {
+        navigator.clipboard.writeText(window.location.href);
+        alert("Link copied to clipboard: " + window.location.href);
+    };
 </script>
 </body>
 </html>
