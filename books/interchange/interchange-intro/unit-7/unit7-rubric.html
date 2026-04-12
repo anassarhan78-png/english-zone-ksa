@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Interchange Intro - Unit 7 Rubric, Lesson Plan & Syllabus</title>
+    <title>Interchange Intro - Unit 7: Rubric, Lesson Plan & Syllabus</title>
     <style>
-        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; }
         .container { max-width: 1200px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
-        h1 { color: #d35400; text-align: center; }
+        h1 { color: #d35400; text-align: center; margin-top: 0; }
+        .toolbar { display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .toolbar button { background: #d35400; border: none; color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-weight: bold; }
+        .toolbar button:hover { background: #a04000; }
         .section { background: #fff5e6; border-radius: 30px; padding: 20px; margin: 20px 0; }
         .section h2 { background: #d35400; display: inline-block; padding: 5px 20px; border-radius: 40px; color: white; font-size: 1.3rem; margin-top: 0; }
         .criteria { margin: 15px 0; padding: 10px; background: #fef9e8; border-radius: 20px; }
@@ -25,18 +29,26 @@
         .tabcontent { display: none; padding: 20px 0; animation: fadeEffect 0.3s; }
         @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } }
         .dictation-words { background: #fff0d6; padding: 5px 10px; border-radius: 20px; display: inline-block; margin: 2px; }
+        @media (max-width: 700px) { .container { padding: 15px; } th, td { font-size: 0.8rem; } }
     </style>
 </head>
 <body>
 <div class="container">
+    <div class="toolbar">
+        <button id="printBtn">🖨️ Print</button>
+        <button id="shareBtn">🔗 Shareable Link</button>
+    </div>
     <h1>📘 Interchange Intro - Unit 7</h1>
     <div class="tab">
         <button class="tablinks active" onclick="openTab(event, 'Rubric')">📊 Rubric</button>
         <button class="tablinks" onclick="openTab(event, 'LessonPlan')">📖 Lesson Plan</button>
         <button class="tablinks" onclick="openTab(event, 'Syllabus')">📚 Syllabus (Level 1B)</button>
     </div>
+
+    <!-- Rubric Tab -->
     <div id="Rubric" class="tabcontent" style="display:block;">
-        <div class="section"><h2>Self Assessment Rubric - Unit 7</h2>
+        <div class="section">
+            <h2>Self Assessment Rubric - Unit 7</h2>
             <div class="criteria"><strong>🗣️ Speaking</strong><br>I can describe my house and furniture using there is/are and prepositions.<br><input type="range" min="1" max="5" value="3" class="slider" id="speakingSlider"><span class="score" id="speakingScore">3</span></div>
             <div class="criteria"><strong>✍️ Writing</strong><br>I can write sentences about rooms and furniture.<br><input type="range" min="1" max="5" value="3" class="slider" id="writingSlider"><span class="score" id="writingScore">3</span></div>
             <div class="criteria"><strong>📖 Vocabulary</strong><br>I know rooms, furniture, and appliances.<br><input type="range" min="1" max="5" value="3" class="slider" id="vocabSlider"><span class="score" id="vocabScore">3</span></div>
@@ -49,38 +61,88 @@
             <div id="rubricResult" class="result"></div>
         </div>
     </div>
+
+    <!-- Lesson Plan Tab (with Quizlet, Kahoot, Wordwall) -->
     <div id="LessonPlan" class="tabcontent">
-        <div class="section"><h2>Lesson Plan - Unit 7 (5 lectures + test)</h2>
-            <p><strong>Before starting:</strong> Review rooms and furniture (5 min).</p>
+        <div class="section">
+            <h2>Lesson Plan - Unit 7 (5 lectures + test)</h2>
+            <p><strong>Schedule:</strong> Sunday – Thursday (1 hour each). <strong>Test:</strong> Next Sunday (1 hour). <strong>No classes on Friday/Saturday.</strong></p>
+            <p><strong>Digital tools:</strong> Quizlet sets (vocabulary), Kahoot (review games), Wordwall (interactive activities).</p>
             <table>
-                <tr><th>Day</th><th>Dictation Words (5-7 words)</th><th>Other Activities (1 hour)</th><th>Homework</th></tr>
-                <tr><td>Sunday</th><td><span class="dictation-words">house, apartment, living room, dining room, bedroom, bathroom</span></th><td>Vocabulary Quizlet (10 min), Dictation (7 min), Conversation p.46 (10 min), Rooms vocabulary (15 min), Pair work (10 min), Wrap-up (8 min)</th><td>Page 1 ex1 + dictation</th></tr>
-                <tr><td>Monday</th><td><span class="dictation-words">kitchen, garage, yard, balcony, elevator, lobby</span></th><td>Vocab review (10 min), Dictation (7 min), Grammar: there is/are (15 min), Listening (10 min), Workbook check (10 min), Game (8 min)</th><td>Page 2+3 + dictation</th></tr>
-                <tr><td>Tuesday</th><td><span class="dictation-words">window, door, floor, stairs, sofa, armchair, table</span></th><td>Vocab (10 min), Dictation (7 min), Pronunciation: /th/ (10 min), Speaking: describe a room (10 min), Workbook correction (10 min), Spelling game (8 min)</th><td>Page 4-5 + business card</th></tr>
-                <tr><td>Wednesday</th><td><span class="dictation-words">chair, bed, dresser, mirror, lamp, rug, curtains, bookcase</span></th><td>Vocab (10 min), Dictation (7 min), Conversation "There aren't any chairs" p.49 (10 min), Prepositions of place (15 min), Role play (10 min), Project (8 min)</th><td>Study for test</th></tr>
-                <tr><td>Thursday</th><td><span class="dictation-words">stove, refrigerator, microwave, coffee maker, review all</span></th><td>Revision game (15 min), Presentations (20 min), Dictation review (10 min), Q&A (10 min), Prepare for test (5 min)</th><td>Final revision</th></tr>
-                <tr><td>Friday</th><td colspan="2"><strong>FIRST TEST</strong> (1 hour): dictation (10 words), fill blanks, matching, short writing, oral</th><td>-</th></tr>
+                <tr><th>Day</th><th>Dictation Words</th><th>Warm-up / Guided Practice</th><th>Independent Practice (Digital & Pair)</th><th>Wrap-up & HW</th></tr>
+                <tr>
+                    <td><strong>Sunday</strong></th>
+                    <td><span class="dictation-words">house, apartment, living room, dining room, bedroom, bathroom</span></th>
+                    <td>Rooms vocabulary with <strong>Quizlet</strong> flashcards. Teacher points to picture: “This is the living room.” <strong>Wordwall</strong> matching (room ↔ picture).</th>
+                    <td>Students use <strong>Quizlet</strong> “Learn”. Pair work: “What room is this? – It’s the kitchen.”</th>
+                    <td>Kahoot rooms quiz. HW: Draw your house/apartment and label 5 rooms.</th>
+                </tr>
+                <tr>
+                    <td><strong>Monday</strong></th>
+                    <td><span class="dictation-words">kitchen, garage, yard, balcony, elevator, lobby</span></th>
+                    <td>More rooms and features with <strong>Quizlet</strong>. Teacher asks “Does your apartment have a balcony?”</th>
+                    <td><strong>Wordwall</strong> “house vs apartment” sort. Pair work: “What is there in your kitchen? – There is a stove.”</th>
+                    <td>Kahoot house features. HW: Write 5 sentences “There is/are ... in my ...”.</th>
+                </tr>
+                <tr>
+                    <td><strong>Tuesday</strong></th>
+                    <td><span class="dictation-words">window, door, floor, stairs, sofa, armchair, table</span></th>
+                    <td>Furniture vocabulary via <strong>Quizlet</strong>. Teacher models “This is a sofa.” <strong>Wordwall</strong> furniture match.</th>
+                    <td>Students describe their living room: “There is a sofa and a table.”</th>
+                    <td>Kahoot furniture. HW: List 10 furniture items in your home.</th>
+                </tr>
+                <tr>
+                    <td><strong>Wednesday</strong></th>
+                    <td><span class="dictation-words">chair, bed, dresser, mirror, lamp, rug, curtains, bookcase</span></th>
+                    大家一起学习更多家具。教师使用 <strong>Quizlet</strong> 展示图片和单词。强调“curtains”是复数。</th>
+                    <td><strong>Wordwall</strong> “furniture in rooms” drag & drop. Students write sentences: “There is a bed in the bedroom.”</th>
+                    <td>Kahoot furniture & rooms. HW: Write 5 sentences describing your bedroom using “There is/are”.</th>
+                </tr>
+                <tr>
+                    <td><strong>Thursday</strong></th>
+                    <td><span class="dictation-words">stove, refrigerator, microwave, coffee maker, review all rooms & furniture</span></th>
+                    <td>Review with <strong>Kahoot</strong> (full unit). Teacher leads conversation “There aren’t any chairs” (p.49).</th>
+                    <td><strong>Quizlet</strong> “Test” mode. Role‑play: “Is there a balcony? – No, there isn’t.”</th>
+                    <td>Final revision. HW: Prepare for Sunday’s test (there is/are, prepositions, furniture).</th>
+                </tr>
+                <tr>
+                    <td><strong>Friday</strong></th>
+                    <td colspan="4"><em>No class (official weekend)</em></th>
+                </tr>
+                <tr>
+                    <td><strong>Saturday</strong></th>
+                    <td colspan="4"><em>No class (official weekend)</em></th>
+                </tr>
+                <tr>
+                    <td><strong>Next Sunday</strong></th>
+                    <td colspan="4"><strong>FINAL TEST – Unit 7</strong> (1 hour)<br>Dictation (10 words: rooms/furniture), fill in blanks (there is/are), matching (furniture ↔ room), short writing (describe a room), oral (ask & answer about home).</th>
+                </tr>
             </table>
-            <p><strong>Weak performance plan:</strong> Extra dictation practice, peer tutoring, audio recordings, Class Dojo rewards.</p>
+            <p><strong>Weak performance plan:</strong> Extra Quizlet practice, peer tutoring, audio recordings, Class Dojo rewards.</p>
         </div>
     </div>
+
+    <!-- Syllabus Tab -->
     <div id="Syllabus" class="tabcontent">
-        <div class="section"><h2>Syllabus - Level 1B (Units 5-8)</h2>
-            <p><strong>Duration:</strong> 4 weeks (4 units) + final test<br><strong>Schedule:</strong> Sunday to Thursday (1 hour/day), test on 6th day<br><strong>Audience:</strong> Adult beginners (Dyslexia-friendly)</p>
+        <div class="section">
+            <h2>Syllabus - Level 1B (Units 5-8)</h2>
+            <p><strong>Duration:</strong> 4 weeks (4 units) + final test<br><strong>Schedule:</strong> Sunday – Thursday (1 hour/day), test on the next Sunday.<br><strong>Audience:</strong> Adult beginners (Dyslexia-friendly)</p>
             <table>
                 <tr><th>Week</th><th>Unit</th><th>Topics</th><th>Test</th></tr>
-                <tr><td>5</th><td>Unit 5</th><td>Telling time, daily routines, present continuous, AM/PM</th><td>Friday</th></tr>
-                <tr><td>6</th><td>Unit 6</th><td>Transportation, family, simple present Wh-questions, object pronouns</th><td>Friday</th></tr>
-                <tr><td>7</th><td>Unit 7</th><td>Houses, furniture, there is/are, prepositions of place</th><td>Friday</th></tr>
-                <tr><td>8</th><td>Unit 8</th><td>Jobs, workplaces, adjectives, simple present questions</th><td>Friday</th></tr>
-                <tr><td>9</th><td>Review</th><td>Level 1B final exam</th><td>-</th></tr>
+                <tr><td>5</th><td>Unit 5</th><td>Telling time, daily routines, present continuous, AM/PM</th><td>Next Sunday</th></tr>
+                <tr><td>6</th><td>Unit 6</th><td>Transportation, family, simple present Wh-questions, object pronouns</th><td>Next Sunday</th></tr>
+                <tr><td>7</th><td>Unit 7</th><td>Houses, furniture, there is/are, prepositions of place</th><td>Next Sunday</th></tr>
+                <tr><td>8</th><td>Unit 8</th><td>Jobs, workplaces, adjectives, simple present questions</th><td>Next Sunday</th></tr>
+                <tr><td>9</th><td>Review</th><td>Level 1B final exam</th><td>Next Sunday</th></tr>
             </table>
             <p><strong>Assessment:</strong> Dictation (10%), Quiz (20%), Participation (10%), Homework (10%), Presentations (10%), Unit tests (40%)</p>
-            <p><strong>Dyslexia support:</strong> OpenDyslexic font, audio support, extra time, multi-sensory activities.</p>
+            <p><strong>Dyslexia support:</strong> OpenDyslexic font, audio support, extra time, multi‑sensory activities (Quizlet, Wordwall, Kahoot).</p>
         </div>
     </div>
 </div>
+
 <script>
+    // Tabs
     function openTab(evt, tabName) {
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
@@ -90,9 +152,30 @@
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " active";
     }
+
+    // Rubric calculation
     const sliders = ['speaking','writing','vocab','listen','grammar','prep','effort','part'];
-    sliders.forEach(s=>{ let slider=document.getElementById(`${s}Slider`); let span=document.getElementById(`${s}Score`); if(slider) slider.oninput=()=>{ span.innerText=slider.value; }; });
-    document.getElementById('calculateRubric').onclick=()=>{ let total=0; sliders.forEach(s=>{ total+=parseInt(document.getElementById(`${s}Slider`).value); }); let percent=(total/40)*100; let level=percent>=90?"Advanced":percent>=75?"Intermediate High":percent>=60?"Intermediate":percent>=40?"Beginner":"Needs Improvement"; document.getElementById('rubricResult').innerHTML=`<strong>Total: ${total}/40 (${percent}%)</strong><br>Level: ${level}<br>Keep up!`; };
+    sliders.forEach(s => {
+        let slider = document.getElementById(`${s}Slider`);
+        let span = document.getElementById(`${s}Score`);
+        if (slider) slider.oninput = () => { span.innerText = slider.value; };
+    });
+    document.getElementById('calculateRubric').onclick = () => {
+        let total = 0;
+        sliders.forEach(s => { total += parseInt(document.getElementById(`${s}Slider`).value); });
+        let percent = (total / 40) * 100;
+        let level = percent >= 90 ? "Advanced" : percent >= 75 ? "Intermediate High" : percent >= 60 ? "Intermediate" : percent >= 40 ? "Beginner" : "Needs Improvement";
+        document.getElementById('rubricResult').innerHTML = `<strong>Your total: ${total}/40 (${percent}%)</strong><br>ESL Level: ${level}<br>Keep up the good work!`;
+    };
+
+    // Print button
+    document.getElementById('printBtn').onclick = () => window.print();
+
+    // Shareable link button
+    document.getElementById('shareBtn').onclick = () => {
+        navigator.clipboard.writeText(window.location.href);
+        alert("Link copied to clipboard: " + window.location.href);
+    };
 </script>
 </body>
 </html>
