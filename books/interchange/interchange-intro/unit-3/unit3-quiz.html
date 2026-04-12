@@ -6,56 +6,100 @@
     <title>Interchange Intro - Unit 3 Quiz</title>
     <style>
         body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
-        .container { max-width: 800px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        .container { max-width: 1000px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
         h1 { color: #d35400; text-align: center; }
         .question { background: #fff5e6; padding: 15px; border-radius: 25px; margin: 15px 0; }
-        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
-        .result { background: #e9ecef; padding: 15px; border-radius: 20px; margin-top: 20px; }
+        button { background: #d35400; border: none; color: white; padding: 12px 24px; border-radius: 40px; cursor: pointer; font-size: 1rem; margin-top: 20px; }
+        .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; font-size: 1.2rem; }
         input, select { margin: 5px; padding: 8px; border-radius: 20px; border: 1px solid #ccc; }
+        .img-quiz { max-width: 80px; display: block; margin-bottom: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📝 Unit 3 Quiz - Where are you from?</h1>
-    <div>
-        <div class="question">1. Complete the sentence: "My family is from South Korea. We are ______."<br>
-            <select id="q1"><option value="">Select</option><option value="Korean">Korean</option><option value="China">China</option><option value="Japan">Japan</option></select>
-        </div>
-        <div class="question">2. What is the opposite of "tall"?<br>
-            <input type="text" id="q2" placeholder="Answer">
-        </div>
-        <div class="question">3. Choose the correct question: "______ is your mother?" → "She is very nice."<br>
-            <select id="q3"><option value="">Select</option><option value="What">What</option><option value="Where">Where</option><option value="What's she like">What's she like</option></select>
-        </div>
-        <div class="question">4. Write the number: "Forty" = ______<br>
-            <input type="text" id="q4" placeholder="Number">
-        </div>
-        <div class="question">5. True or False: "She is handsome." is correct for a woman.<br>
-            <select id="q5"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
-        </div>
-        <div class="question">6. Make negative: "He is from Brazil." → He ______ from Brazil.<br>
-            <input type="text" id="q6" placeholder="isn't / is not">
-        </div>
-    </div>
+    <h1>📝 Unit 3 Quiz - Where are you from? (50+ questions)</h1>
+    <div id="quizContainer"></div>
     <button id="submitQuiz">Submit Quiz</button>
     <div id="quizResult" class="result"></div>
 </div>
 <script>
-    document.getElementById('submitQuiz').onclick = () => {
-        let score = 0;
-        if (document.getElementById('q1').value === 'Korean') score++;
-        if (document.getElementById('q2').value.trim().toLowerCase() === 'short') score++;
-        if (document.getElementById('q3').value === "What's she like") score++;
-        if (document.getElementById('q4').value.trim() === '40') score++;
-        if (document.getElementById('q5').value === 'false') score++;
-        if (document.getElementById('q6').value.trim().toLowerCase() === "isn't" || document.getElementById('q6').value.trim().toLowerCase() === "is not") score++;
-        let percent = (score/6)*100;
-        let message = `You got ${score}/6 (${percent}%). `;
-        if (percent >= 80) message += "Excellent!";
-        else if (percent >= 60) message += "Good! Review your mistakes.";
-        else message += "Try again after studying the unit.";
-        document.getElementById('quizResult').innerHTML = message;
-    };
+    const imageBase = "../images/";
+    const questions = [];
+    // Part 1: Countries (10 questions)
+    const countries = ["Japan","Korea","China","Mexico","Brazil","USA","Canada","UK","Australia","India"];
+    for (let i=0;i<10;i++) questions.push({ type:"mc", text:`Where is ${countries[i]}?`, options:["Asia","Europe","Africa","South America"], answer: (countries[i]=="Japan"||countries[i]=="Korea"||countries[i]=="China"||countries[i]=="India")?"Asia":(countries[i]=="Mexico"||countries[i]=="Brazil")?"South America":"North America/Europe" });
+    // Part 2: Family (5 questions)
+    const family = ["mother","father","brother","sister","friend"];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:`What is the English word for "أم"?`, answer:"mother" });
+    // Part 3: Adjectives (10 questions)
+    const adj = ["tall","short","friendly","funny","quiet","shy","smart","handsome","pretty","old"];
+    for (let i=0;i<10;i++) questions.push({ type:"mc", text:`What does "${adj[i]}" mean?`, options:["positive","neutral","negative"], answer:"positive" });
+    // Part 4: Verb be negative (5 questions)
+    const neg = [{text:"She ___ from Korea. (negative)",ans:"isn't"},{text:"They ___ from Brazil. (negative)",ans:"aren't"},{text:"I ___ from Mexico. (negative)",ans:"am not"},{text:"He ___ tall. (negative)",ans:"isn't"},{text:"We ___ friends. (negative)",ans:"aren't"}];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:neg[i].text, answer:neg[i].ans });
+    // Part 5: Wh-questions (5 questions)
+    const wh = [{text:"___ is that? (He's my brother)",ans:"Who"},{text:"___ are you from?",ans:"Where"},{text:"___ old is he?",ans:"How"},{text:"___ is your name?",ans:"What"},{text:"___ is he like? (He's nice)",ans:"What"}];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:wh[i].text, answer:wh[i].ans });
+    // Part 6: Numbers and ages (5 questions)
+    const ages = ["twenty","thirty","forty","fifty","sixty"];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:`Write the number: ${ages[i]} →`, answer: (i+2)*10+"" });
+    // Part 7: Conversation comprehension (5 questions based on p.16-19)
+    const conv = [
+        {text:"Where is Jessica's family from?",ans:"South Korea"},
+        {text:"What is Tim's mother's nationality?",ans:"Korean"},
+        {text:"How old is Jill's brother?",ans:"21"},
+        {text:"What is James called?",ans:"Jim"},
+        {text:"Is Jill's brother smart?",ans:"yes"}
+    ];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:conv[i].text, answer:conv[i].ans.toLowerCase() });
+    // Part 8: Image-based (5 images)
+    const imgNames = ["japan","korea","china","mother","friend"];
+    for (let i=0;i<5;i++) questions.push({ type:"img", img:imgNames[i]+".jpg", text:"What is this?", answer:imgNames[i] });
+    // Part 9: True/False (5 questions)
+    const tf = [["Brazil is in Asia.",false],["'Handsome' is used for men.",true],["'Shy' means talkative.",false],["'Pretty' is for women.",true],["The capital of Japan is Tokyo.",true]];
+    for (let i=0;i<5;i++) questions.push({ type:"tf", text:tf[i][0], answer:tf[i][1]?"true":"false" });
+    // Build HTML
+    function buildQuiz() {
+        let html='';
+        questions.forEach((q,idx)=>{
+            html+=`<div class="question"><strong>${idx+1}. `;
+            if(q.type==='img') html+=`<img src="${imageBase+q.img}" class="img-quiz" onerror="this.onerror=null;this.parentElement.innerHTML+='🌍';">${q.text}`;
+            else html+=q.text;
+            html+=`</strong><br>`;
+            if(q.type==='mc'){
+                q.options.forEach(opt=>{ html+=`<label><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label> `; });
+            } else if(q.type==='tf'){
+                html+=`<label><input type="radio" name="q${idx}" value="true"> True</label> <label><input type="radio" name="q${idx}" value="false"> False</label>`;
+            } else {
+                html+=`<input type="text" name="q${idx}" placeholder="Type answer">`;
+            }
+            html+=`</div>`;
+        });
+        document.getElementById('quizContainer').innerHTML=html;
+    }
+    function submitQuiz(){
+        let score=0;
+        for(let i=0;i<questions.length;i++){
+            let q=questions[i], ans=null;
+            if(q.type==='mc'||q.type==='tf'){
+                let radios=document.querySelectorAll(`input[name="q${i}"]`);
+                for(let r of radios) if(r.checked){ ans=r.value; break; }
+            } else {
+                let inp=document.querySelector(`input[name="q${i}"]`);
+                if(inp) ans=inp.value.trim().toLowerCase();
+            }
+            if(ans===q.answer.toLowerCase()) score++;
+        }
+        let percent=(score/questions.length)*100;
+        let msg=`You got ${score}/${questions.length} (${percent}%). `;
+        if(percent>=90) msg+="Excellent!";
+        else if(percent>=75) msg+="Very good!";
+        else if(percent>=60) msg+="Good. Review some points.";
+        else msg+="Need more practice.";
+        document.getElementById('quizResult').innerHTML=msg;
+    }
+    buildQuiz();
+    document.getElementById('submitQuiz').onclick=submitQuiz;
 </script>
 </body>
 </html>
