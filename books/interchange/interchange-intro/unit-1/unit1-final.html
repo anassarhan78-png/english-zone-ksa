@@ -29,12 +29,8 @@
 <div class="container">
     <h1>📖 Interchange Intro - Unit 1 <small>It's nice to meet you</small> 🎮 Dictation Games</h1>
     <div class="word-list">
-        📚 كلمات الأسبوع: 
-        <span>name</span> <span>first</span> <span>last</span> <span>I</span> <span>am</span> <span>nice</span> <span>meet</span> <span>you</span>
-        <span>Miss</span> <span>Mr.</span> <span>Mrs.</span> <span>Ms.</span> <span>teacher</span> <span>student</span> <span>he</span> <span>she</span>
-        <span>book</span> <span>class</span> <span>math</span> <span>phone</span> <span>number</span> <span>one</span> <span>two</span> <span>three</span>
-        <span>my</span> <span>your</span> <span>his</span> <span>her</span> <span>our</span> <span>this</span> <span>what</span> <span>is</span>
-        <span>yes</span> <span>no</span> <span>not</span> <span>in</span> <span>and</span> <span>there</span> <span>too</span> <span>are</span>
+        📚 كلمات الوحدة: 
+        <span>name</span> <span>first</span> <span>last</span> <span>teacher</span> <span>student</span> <span>book</span> <span>class</span> <span>phone number</span>
     </div>
     <div class="games-grid">
         <!-- HANGMAN -->
@@ -57,7 +53,7 @@
             <button id="newMissing">كلمة جديدة</button>
         </div>
 
-        <!-- MATCH -->
+        <!-- MATCH with image -->
         <div class="game-card">
             <h2>🃏 Match</h2>
             <div id="matchQuestion"></div>
@@ -77,10 +73,10 @@
             <button id="newFill">جملة جديدة</button>
         </div>
 
-        <!-- CLASSIC DICTATION -->
+        <!-- CLASSIC DICTATION with image -->
         <div class="game-card">
             <h2>🎧 Classic Dictation</h2>
-            <div id="dictImage"><div id="dictIcon" style="font-size:3rem; text-align:center;">📝</div></div>
+            <div id="dictImage"><img id="dictImg" src="" style="max-width:120px; border-radius:20px;"></div>
             <button id="speakDict" class="speak-btn">🔊 Speak</button>
             <input type="text" id="dictInput" placeholder="اكتب الكلمة">
             <button id="checkDict">تحقق</button>
@@ -91,56 +87,18 @@
 </div>
 
 <script>
-    const words = [
-        "name", "first", "last", "I", "am", "nice", "meet", "you",
-        "Miss", "Mr.", "Mrs.", "Ms.", "teacher", "student", "he", "she",
-        "book", "class", "math", "phone", "number", "one", "two", "three",
-        "my", "your", "his", "her", "our", "this", "what", "is",
-        "yes", "no", "not", "in", "and", "there", "too", "are"
-    ];
-    
+    const words = ["name", "first", "last", "teacher", "student", "book", "class", "phone number"];
     const sentences = {
         name: "My name is Jennifer.",
         first: "What is your first name?",
         last: "My last name is Miller.",
-        I: "I am a student.",
-        am: "I am in class.",
-        nice: "Nice to meet you.",
-        meet: "Nice to meet you.",
-        you: "How are you?",
-        Miss: "Miss Ito is a teacher.",
-        "Mr.": "Mr. Garcia is here.",
-        "Mrs.": "Mrs. Morgan is nice.",
-        "Ms.": "Ms. Chen is my teacher.",
         teacher: "Mr. Garcia is a teacher.",
         student: "Jennifer is a student.",
-        he: "He is over there.",
-        she: "She is in my class.",
         book: "This is your book.",
         class: "We are in math class.",
-        math: "Math is interesting.",
-        phone: "What is your phone number?",
-        number: "My number is 555-2301.",
-        one: "I have one book.",
-        two: "Two students are here.",
-        three: "Three teachers are in the room.",
-        my: "This is my book.",
-        your: "Is this your phone?",
-        his: "His name is Michael.",
-        her: "Her name is Jennifer.",
-        our: "Our class is room 5.",
-        this: "This is my friend.",
-        what: "What is your name?",
-        is: "She is a teacher.",
-        yes: "Yes, I am.",
-        no: "No, I'm not.",
-        not: "I am not a teacher.",
-        in: "She is in my class.",
-        and: "He is a teacher and a friend.",
-        there: "He is over there.",
-        too: "Nice to meet you, too.",
-        are: "How are you?"
+        "phone number": "My phone number is 555-2301."
     };
+    const imageBase = "../images/";
     
     function speak(text) {
         let utterance = new SpeechSynthesisUtterance(text);
@@ -204,7 +162,7 @@
             btn.onclick = () => {
                 if (guessedLetters.includes(l)) return;
                 guessedLetters.push(l);
-                if (hangmanWord.includes(l)) {
+                if (hangmanWord.toLowerCase().includes(l)) {
                     updateHangmanDisplay();
                 } else {
                     wrongGuesses++;
@@ -230,7 +188,7 @@
     }
     document.getElementById("checkMissing").onclick = () => {
         let ans = document.getElementById("missingInput").value.trim().toLowerCase();
-        if (ans === missingWord[missingIndex].toLowerCase()) {
+        if (ans === missingWord[missingIndex]) {
             document.getElementById("missingResult").innerHTML = "<div class='correct'>✅ Correct!</div>";
         } else {
             document.getElementById("missingResult").innerHTML = `<div class='wrong'>❌ Wrong! The letter is '${missingWord[missingIndex]}'</div>`;
@@ -239,11 +197,12 @@
     document.getElementById("newMissing").onclick = updateMissing;
     updateMissing();
 
-    // MATCH
+    // MATCH with image
     let matchWord = "";
     function updateMatch() {
         matchWord = words[Math.floor(Math.random() * words.length)];
-        document.getElementById("matchQuestion").innerHTML = `<div style="font-size:1.5rem;">✏️ Match the word: ______</div>`;
+        let imgName = matchWord.replace(/ /g, '-').toLowerCase();
+        document.getElementById("matchQuestion").innerHTML = `<img src="${imageBase + imgName}.jpg" style="max-width:150px; border-radius:20px;" onerror="this.src='https://placehold.co/150x150?text=No+Image'"><br>Choose the matching word:`;
         let select = document.getElementById("matchSelect");
         select.innerHTML = "";
         let opts = [...words].sort(() => Math.random() - 0.5);
@@ -270,7 +229,7 @@
     let fillWord = "";
     function updateFill() {
         fillWord = words[Math.floor(Math.random() * words.length)];
-        let sentence = sentences[fillWord] || `This is a sentence with the word ${fillWord}.`;
+        let sentence = sentences[fillWord];
         let blankSentence = sentence.replace(fillWord, '______');
         document.getElementById("fillSentence").innerHTML = `<div style="font-size:1.2rem;">${blankSentence}</div>`;
         document.getElementById("fillInput").value = "";
@@ -278,7 +237,7 @@
     }
     document.getElementById("checkFill").onclick = () => {
         let ans = document.getElementById("fillInput").value.trim().toLowerCase();
-        if (ans === fillWord.toLowerCase()) {
+        if (ans === fillWord) {
             document.getElementById("fillResult").innerHTML = "<div class='correct'>✅ Correct!</div>";
         } else {
             document.getElementById("fillResult").innerHTML = `<div class='wrong'>❌ Wrong! The correct word is ${fillWord}</div>`;
@@ -287,18 +246,19 @@
     document.getElementById("newFill").onclick = updateFill;
     updateFill();
 
-    // CLASSIC DICTATION
+    // CLASSIC DICTATION with image
     let dictWord = "";
     function updateDict() {
         dictWord = words[Math.floor(Math.random() * words.length)];
-        document.getElementById("dictIcon").innerHTML = `📖 ${dictWord}`;
+        let imgName = dictWord.replace(/ /g, '-').toLowerCase();
+        document.getElementById("dictImg").src = imageBase + imgName + ".jpg";
         document.getElementById("dictInput").value = "";
         document.getElementById("dictResult").innerHTML = "";
     }
     document.getElementById("speakDict").onclick = () => speak(dictWord);
     document.getElementById("checkDict").onclick = () => {
         let ans = document.getElementById("dictInput").value.trim().toLowerCase();
-        if (ans === dictWord.toLowerCase()) {
+        if (ans === dictWord) {
             document.getElementById("dictResult").innerHTML = "<div class='correct'>✅ Correct!</div>";
         } else {
             document.getElementById("dictResult").innerHTML = `<div class='wrong'>❌ Wrong! Correct: ${dictWord}</div>`;
