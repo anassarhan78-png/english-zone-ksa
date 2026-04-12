@@ -29,30 +29,7 @@
         .tabcontent { display: none; padding: 20px 0; animation: fadeEffect 0.3s; }
         @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } }
         .dictation-words { background: #fff0d6; padding: 5px 10px; border-radius: 20px; display: inline-block; margin: 2px; }
-        .number-showcase { 
-            background: linear-gradient(145deg, #f9e0a0, #f5c542);
-            display: inline-block;
-            padding: 12px 24px;
-            border-radius: 60px;
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: #1e3a5f;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            letter-spacing: 1px;
-            margin: 5px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            font-family: 'Courier New', monospace;
-        }
-        .number-example {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #1e6f5c;
-            background: #e0f2f1;
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 40px;
-            margin: 3px;
-        }
+        .emoji-note { background: #e9ecef; padding: 10px; border-radius: 20px; font-size: 0.9rem; margin-top: 10px; }
         @media (max-width: 700px) { .container { padding: 15px; } th, td { font-size: 0.8rem; } }
     </style>
 </head>
@@ -78,7 +55,7 @@
             <div class="criteria"><strong>📖 Vocabulary</strong><br>I know countries, family members, and adjectives.<br><input type="range" min="1" max="5" value="3" class="slider" id="vocabSlider"><span class="score" id="vocabScore">3</span></div>
             <div class="criteria"><strong>👂 Listening</strong><br>I understand when people talk about nationality and description.<br><input type="range" min="1" max="5" value="3" class="slider" id="listenSlider"><span class="score" id="listenScore">3</span></div>
             <div class="criteria"><strong>📚 Grammar (negative statements & Wh-questions)</strong><br>I can form negatives and questions with be.<br><input type="range" min="1" max="5" value="3" class="slider" id="grammarSlider"><span class="score" id="grammarScore">3</span></div>
-            <div class="criteria"><strong>🔢 Numbers & Ages</strong><br>I can say ages and numbers up to 100.<br><input type="range" min="1" max="5" value="3" class="slider" id="numSlider"><span class="score" id="numScore">3</span></div>
+            <div class="criteria"><strong>🔢 Numbers & Ages</strong><br>I can say ages and numbers up to 100 (using words for 1-10, regular text for higher numbers).<br><input type="range" min="1" max="5" value="3" class="slider" id="numSlider"><span class="score" id="numScore">3</span></div>
             <div class="criteria"><strong>💪 Effort</strong><br>I tried my best.<br><input type="range" min="1" max="5" value="3" class="slider" id="effortSlider"><span class="score" id="effortScore">3</span></div>
             <div class="criteria"><strong>📅 Participation</strong><br>I participated in all activities.<br><input type="range" min="1" max="5" value="3" class="slider" id="partSlider"><span class="score" id="partScore">3</span></div>
             <button id="calculateRubric">Calculate My Score</button>
@@ -86,16 +63,14 @@
         </div>
     </div>
 
-    <!-- Lesson Plan Tab (with styled numbers instead of emojis) -->
+    <!-- Lesson Plan Tab (with normal-sized numbers) -->
     <div id="LessonPlan" class="tabcontent">
         <div class="section">
             <h2>Lesson Plan - Unit 3 (5 lectures + test)</h2>
             <p><strong>Schedule:</strong> Sunday – Thursday (1 hour each). <strong>Test:</strong> Next Sunday (1 hour). <strong>No classes on Friday/Saturday.</strong></p>
             <p><strong>Digital tools:</strong> Quizlet sets (vocabulary), Kahoot (review games), Wordwall (interactive activities).</p>
-            <div class="emoji-note" style="background:#e9ecef; padding:12px; border-radius:20px;">
-                📘 <strong>Note on numbers:</strong> Numbers 1‑10 are practiced as words (one, two, three...).  
-                For numbers 11‑100, we use <span class="number-showcase">eleven</span> <span class="number-showcase">twenty‑three</span> <span class="number-showcase">forty‑five</span> <span class="number-showcase">seventy‑eight</span> <span class="number-showcase">one hundred</span>  
-                (written in a large, colored font to resemble images). Students learn to write and pronounce them.
+            <div class="emoji-note">
+                📘 <strong>Note on numbers:</strong> Numbers 1‑10 are practiced as words (one, two, three...). For numbers 11‑100, students learn the written forms (e.g., eleven, twenty‑three, one hundred) using regular text.
             </div>
             <table>
                 <tr><th>Day</th><th>Dictation Words</th><th>Warm-up / Guided Practice</th><th>Independent Practice (Digital & Pair)</th><th>Wrap-up & HW</th></tr>
@@ -123,7 +98,7 @@
                 <tr>
                     <td><strong>Wednesday</strong></th>
                     <td><span class="dictation-words">handsome, pretty, old, young, twenty, thirty, forty</span></th>
-                    <td>Introduce numbers 20‑100 using <strong>Quizlet</strong> audio and <span class="number-example">twenty (20)</span>, <span class="number-example">thirty (30)</span>, <span class="number-example">forty (40)</span>, etc. Teacher explains pattern.</th>
+                    <td>Introduce numbers 20‑100 using <strong>Quizlet</strong> audio. Teacher explains “twenty” = 20, “thirty” = 30, “forty” = 40, etc. Students repeat.</th>
                     <td><strong>Wordwall</strong> number match (digit ↔ word). Pairs ask “How old is he? – He is twenty.”</th>
                     <td>Kahoot numbers and ages. HW: Write ages of 3 family members.</th>
                 </tr>
@@ -138,7 +113,7 @@
                     <td><strong>Friday</strong></th>
                     <td colspan="4"><em>No class (official weekend)</em></th>
                 </tr>
-                </tr>
+                <tr>
                     <td><strong>Saturday</strong></th>
                     <td colspan="4"><em>No class (official weekend)</em></th>
                 </tr>
@@ -160,7 +135,7 @@
                 <tr><th>Week</th><th>Unit</th><th>Topics</th><th>Test</th></tr>
                 <tr><td>1</th><td>Unit 1</th><td>Names, introductions, titles, verb be, numbers 0‑10</th><td>Next Sunday</th></tr>
                 <tr><td>2</th><td>Unit 2</th><td>Classroom objects, plurals, this/that, articles, prepositions</th><td>Next Sunday</th></tr>
-                <tr><td>3</th><td>Unit 3</th><td>Countries, family, adjectives, negative statements, Wh‑questions, ages, numbers 1‑100 (written words, large colorful font)</th><td>Next Sunday</th></tr>
+                </tr><td>3</th><td>Unit 3</th><td>Countries, family, adjectives, negative statements, Wh‑questions, ages, numbers 1‑100 (written words)</th><td>Next Sunday</th></tr>
                 <tr><td>4</th><td>Unit 4</th><td>Clothes, colors, weather, present continuous, possessives (mine/yours/his/hers)</th><td>Next Sunday</th></tr>
                 <tr><td>5</th><td>Review</th><td>Level 1A final exam</th><td>Next Sunday</th></tr>
             </table>
