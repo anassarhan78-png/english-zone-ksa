@@ -26,129 +26,51 @@
 <div class="container">
     <h1>📖 Interchange Intro - Unit 6 🎲 Extra Activities</h1>
     <div class="activity-grid">
-        <div class="card"><h2>🚗 Drag & Drop: Transportation</h2>
-            <div id="dragDropArea"></div>
-            <button id="checkDragDrop">Check All</button>
-            <div id="dragDropResult"></div>
-        </div>
-        <div class="card"><h2>🔠 Crossword</h2>
-            <div id="crosswordGrid"></div>
-            <div id="crosswordClues" style="margin-top:10px; font-size:0.8rem;"></div>
-            <button id="checkCrossword">Check Crossword</button>
-            <div id="crosswordResult"></div>
-        </div>
-        <div class="card"><h2>🔀 Unscramble (Family)</h2>
-            <div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div>
-            <input type="text" id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button>
-            <div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button>
-        </div>
-        <div class="card"><h2>📅 Weekly Routine Quiz</h2>
-            <div id="routineQuestion">What do you do on Sundays?</div>
-            <input type="text" id="routineInput" placeholder="e.g., I relax at home">
-            <button id="checkRoutine">Submit</button>
-            <div id="routineResult"></div>
-        </div>
+        <div class="card"><h2>🚗 Drag & Drop: Transport → Verb</h2><div id="dragDropArea"></div><button id="checkDragDrop">Check</button><div id="dragDropResult"></div></div>
+        <div class="card"><h2>🔠 Crossword (Family)</h2><div id="crosswordGrid"></div><div id="crosswordClues"></div><button id="checkCrossword">Check</button><div id="crosswordResult"></div></div>
+        <div class="card"><h2>🔀 Unscramble (Days)</h2><div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div><input id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button><div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button></div>
+        <div class="card"><h2>❓ Wh-questions Practice</h2><div id="whQuestion">___ do you go to work? (By bus)</div><input id="whInput"><button id="checkWh">Check</button><button id="newWh">Next</button><div id="whResult"></div></div>
     </div>
 </div>
 <script>
-    const transports = [
-        { name: "drive", emoji: "🚗" },
-        { name: "walk", emoji: "🚶" },
-        { name: "bus", emoji: "🚌" },
-        { name: "subway", emoji: "🚇" },
-        { name: "train", emoji: "🚆" },
-        { name: "bike", emoji: "🚲" },
-        { name: "taxi", emoji: "🚕" }
-    ];
-    function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+    const transportVerb = [["bike","ride"],["bus","take"],["car","drive"],["train","take"],["taxi","take"],["subway","take"]];
+    function imgTag(word) { let name=word.toLowerCase(); return `<img src="../images/${name}.jpg" style="width:50px; border-radius:10px;" onerror="this.onerror=null;this.parentElement.innerHTML+='🚲';">`; }
+    function speak(t){ let u=new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
     // Drag & Drop
-    let selectedTransport = null;
-    function initDragDrop() {
-        let container = document.getElementById('dragDropArea');
-        container.innerHTML = '<div><strong>Click a transport word, then click its emoji</strong></div><div style="display:flex; flex-wrap:wrap; gap:15px; margin:10px 0;">';
-        transports.forEach(t => {
-            let btn = document.createElement('button');
-            btn.innerText = t.name;
-            btn.classList.add('drag-word');
-            btn.onclick = () => { selectedTransport = t.name; };
-            container.appendChild(btn);
-        });
-        container.innerHTML += '</div><div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">';
-        transports.forEach(t => {
-            let zone = document.createElement('div');
-            zone.classList.add('drop-zone');
-            zone.setAttribute('data-name', t.name);
-            zone.innerHTML = `${t.emoji}<br><span class="drop-label">???</span>`;
-            zone.onclick = () => {
-                if (selectedTransport && selectedTransport === zone.getAttribute('data-name')) {
-                    zone.querySelector('.drop-label').innerText = selectedTransport;
-                    zone.style.background = "#c8e6d9";
-                    selectedTransport = null;
-                } else if (selectedTransport) {
-                    alert(`Wrong! "${selectedTransport}" does not match this emoji.`);
-                } else {
-                    alert("Click a transport word first.");
-                }
-            };
-            container.appendChild(zone);
-        });
-        container.innerHTML += '</div>';
+    let selected=null;
+    function initDragDrop(){
+        let c=document.getElementById('dragDropArea');
+        c.innerHTML='<div><strong>Click a transport, then matching verb</strong></div><div style="display:flex;flex-wrap:wrap;gap:15px;margin:10px 0;">';
+        transportVerb.forEach(tv=>{ let btn=document.createElement('button'); btn.innerText=tv[0]; btn.classList.add('drag-word'); btn.onclick=()=>{ selected=tv[0]; }; c.appendChild(btn); });
+        c.innerHTML+='</div><div style="display:flex;flex-wrap:wrap;gap:20px;margin-top:20px;">';
+        transportVerb.forEach(tv=>{ let zone=document.createElement('div'); zone.classList.add('drop-zone'); zone.setAttribute('data-verb',tv[1]); zone.innerHTML=`${tv[1]}<br><span class="drop-label">???</span>`; zone.onclick=()=>{ if(selected && selected===tv[0]){ zone.querySelector('.drop-label').innerText=selected; zone.style.background="#c8e6d9"; selected=null; } else if(selected) alert(`Wrong! ${selected} is not ${tv[1]}.`); else alert("Click a transport first."); }; c.appendChild(zone); });
+        c.innerHTML+='</div>';
     }
-    document.getElementById('checkDragDrop').onclick = () => {
-        let allOk = true;
-        document.querySelectorAll('#dragDropArea .drop-zone').forEach(zone => {
-            let label = zone.querySelector('.drop-label').innerText;
-            let expected = zone.getAttribute('data-name');
-            if (label !== expected) allOk = false;
-        });
-        document.getElementById('dragDropResult').innerHTML = allOk ? "<div class='correct-feedback'>🎉 Perfect! All matched.</div>" : "<div class='wrong-feedback'>⚠️ Some matches missing or wrong.</div>";
-    };
+    document.getElementById('checkDragDrop').onclick=()=>{ let ok=true; document.querySelectorAll('#dragDropArea .drop-zone').forEach(z=>{ let label=z.querySelector('.drop-label').innerText; let expected=transportVerb.find(tv=>tv[1]===z.getAttribute('data-verb'))[0]; if(label!==expected) ok=false; }); document.getElementById('dragDropResult').innerHTML=ok?"<div class='correct-feedback'>Perfect!</div>":"<div class='wrong-feedback'>Some wrong.</div>"; };
     initDragDrop();
     // Crossword (family)
-    function buildCrossword() {
-        let gridHtml = '<div class="crossword-grid">';
-        let predefined = [
-            ['F','A','T','H','E','R'],
-            ['','','','','','M'],
-            ['M','O','T','H','E','R'],
-            ['','','','','','S'],
-            ['B','R','O','T','H','E'],
-            ['','','','','','R']
-        ];
-        for(let i=0;i<6;i++){
-            for(let j=0;j<6;j++){
-                let val = predefined[i][j] || '';
-                let readonly = val ? 'readonly' : '';
-                gridHtml += `<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" style="text-transform:uppercase" ${readonly}>`;
-            }
-            gridHtml += `<div style="width:100%"></div>`;
-        }
-        gridHtml += '</div>';
-        document.getElementById('crosswordGrid').innerHTML = gridHtml;
-        document.getElementById('crosswordClues').innerHTML = `<strong>Clues:</strong> Across: Row0: male parent (FATHER), Row2: female parent (MOTHER), Row4: male sibling (BROTHER). Down: Col5: female sibling (SISTER).`;
+    function buildCrossword(){
+        let gridHtml='<div class="crossword-grid">';
+        let pre=[['F','A','T','H','E','R'],['','','','','','M'],['M','O','T','H','E','R'],['','','','','','S'],['B','R','O','T','H','E'],['','','','','','R']];
+        for(let i=0;i<6;i++){ for(let j=0;j<6;j++){ let val=pre[i][j]||''; gridHtml+=`<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" ${val?'readonly':''}>`; } gridHtml+='<div style="width:100%"></div>'; }
+        gridHtml+='</div>'; document.getElementById('crosswordGrid').innerHTML=gridHtml;
+        document.getElementById('crosswordClues').innerHTML='<strong>Clues:</strong> Row0: male parent (FATHER), Row2: female parent (MOTHER), Row4: male sibling (BROTHER). Down: Col5: female sibling (SISTER).';
     }
-    document.getElementById('checkCrossword').onclick = () => {
-        document.getElementById('crosswordResult').innerHTML = "<div class='correct-feedback'>✅ Check your answers with the clues.</div>";
-    };
+    document.getElementById('checkCrossword').onclick=()=>{ document.getElementById('crosswordResult').innerHTML="<div class='correct-feedback'>✅ Check answers with clues.</div>"; };
     buildCrossword();
-    // Unscramble
-    const familyWords = ["father", "mother", "brother", "sister", "parents", "daughter"];
-    let currentScramble = "";
-    function getScrambled(w) { let arr = w.split(''); for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr.join(''); }
-    function updateScramble() { currentScramble = familyWords[Math.floor(Math.random()*familyWords.length)]; document.getElementById("scrambleWord").innerText = getScrambled(currentScramble); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
-    document.getElementById("checkScramble").onclick = () => { let ans = document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans === currentScramble) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${currentScramble}</div>`; };
-    document.getElementById("newScramble").onclick = updateScramble;
-    document.getElementById("speakScramble").onclick = () => speak(currentScramble);
-    updateScramble();
-    // Routine question (free answer)
-    document.getElementById('checkRoutine').onclick = () => {
-        let answer = document.getElementById('routineInput').value.trim();
-        if (answer.length > 0) {
-            document.getElementById('routineResult').innerHTML = "<div class='correct-feedback'>✅ Great! Your routine is recorded.</div>";
-        } else {
-            document.getElementById('routineResult').innerHTML = "<div class='wrong-feedback'>⚠️ Please write something about your weekly routine.</div>";
-        }
-    };
+    // Unscramble days
+    const daysList = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+    let cur="";
+    function getScrambled(w){ let a=w.split(''); for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a.join(''); }
+    function updateScramble(){ cur=daysList[Math.floor(Math.random()*daysList.length)]; document.getElementById("scrambleWord").innerText=getScrambled(cur); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
+    document.getElementById("checkScramble").onclick=()=>{ let ans=document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans===cur.toLowerCase()) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${cur}</div>`; };
+    document.getElementById("newScramble").onclick=updateScramble; document.getElementById("speakScramble").onclick=()=>speak(cur); updateScramble();
+    // Wh-questions
+    const whQ = [{s:"___ do you go to work? (By bus)",a:"How"},{s:"___ does she live? (In New York)",a:"Where"},{s:"___ time do you get up?",a:"What"},{s:"___ does your father work? (At a hospital)",a:"Where"},{s:"___ do they go on vacation? (To the beach)",a:"Where"}];
+    let whIdx=0;
+    function updateWh(){ whIdx=Math.floor(Math.random()*whQ.length); document.getElementById("whQuestion").innerHTML=whQ[whIdx].s; document.getElementById("whInput").value=""; document.getElementById("whResult").innerHTML=""; }
+    document.getElementById("checkWh").onclick=()=>{ let ans=document.getElementById("whInput").value.trim().toLowerCase(); if(ans===whQ[whIdx].a.toLowerCase()) document.getElementById("whResult").innerHTML="<div class='correct-feedback'>✅ Correct!</div>"; else document.getElementById("whResult").innerHTML=`<div class='wrong-feedback'>❌ Correct: ${whQ[whIdx].a}</div>`; };
+    document.getElementById("newWh").onclick=updateWh; updateWh();
 </script>
 </body>
 </html>

@@ -30,142 +30,80 @@
     <h1>📖 Interchange Intro - Unit 6 <small>Transportation & Family</small> 🎮 Dictation Games</h1>
     <div class="word-list">
         📚 كلمات الوحدة: 
-        <span>drive</span> <span>walk</span> <span>bus</span> <span>subway</span> <span>train</span> <span>bike</span> <span>taxi</span> <span>motorcycle</span>
-        <span>mother</span> <span>father</span> <span>parents</span> <span>brother</span> <span>sister</span> <span>son</span> <span>daughter</span> <span>kids</span>
-        <span>get up</span> <span>eat breakfast</span> <span>go to work</span> <span>study</span> <span>exercise</span> <span>sleep</span>
+        <span>bike</span> <span>bus</span> <span>car</span> <span>motorcycle</span> <span>subway</span> <span>train</span> <span>taxi</span>
+        <span>father</span> <span>mother</span> <span>brother</span> <span>sister</span> <span>son</span> <span>daughter</span> <span>husband</span> <span>wife</span>
+        <span>house</span> <span>apartment</span> <span>school</span> <span>work</span> <span>Monday</span> <span>Tuesday</span> <span>Wednesday</span> <span>Thursday</span> <span>Friday</span> <span>Saturday</span> <span>Sunday</span>
+        <span>drive</span> <span>ride</span> <span>take</span> <span>walk</span> <span>live</span> <span>work</span>
     </div>
     <div class="games-grid">
-        <div class="game-card"><h2>🪢 Hangman</h2>
-            <canvas id="hangmanCanvas" width="250" height="180" style="width:100%; max-width:250px;"></canvas>
-            <div id="hangmanWord" style="font-size:28px; letter-spacing:8px; text-align:center; margin:10px 0; font-weight:bold;"></div>
-            <div id="hangmanMessage"></div>
-            <div id="hangmanLetters" style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center;"></div>
-            <button id="newHangmanGame">🔄 كلمة جديدة</button>
-        </div>
-        <div class="game-card"><h2>🔤 Missing Letter</h2>
-            <div id="missingQuestion"></div>
-            <input type="text" id="missingInput" placeholder="اكتب الحرف الناقص" maxlength="1" style="width:80px; text-align:center;">
-            <button id="checkMissing">تحقق</button>
-            <div id="missingResult"></div>
-            <button id="newMissing">كلمة جديدة</button>
-        </div>
-        <div class="game-card"><h2>🃏 Match</h2>
-            <div id="matchQuestion"></div>
-            <select id="matchSelect"></select>
-            <button id="checkMatch">تحقق</button>
-            <div id="matchResult"></div>
-            <button id="newMatch">بطاقة جديدة</button>
-        </div>
-        <div class="game-card"><h2>📝 Fill Gap</h2>
-            <div id="fillSentence"></div>
-            <input type="text" id="fillInput" placeholder="أكمل الكلمة">
-            <button id="checkFill">تحقق</button>
-            <div id="fillResult"></div>
-            <button id="newFill">جملة جديدة</button>
-        </div>
-        <div class="game-card"><h2>🎧 Classic Dictation</h2>
-            <div id="dictImage"><div id="dictIcon" style="font-size:3rem; text-align:center;">📝</div></div>
-            <button id="speakDict" class="speak-btn">🔊 Speak</button>
-            <input type="text" id="dictInput" placeholder="اكتب الكلمة">
-            <button id="checkDict">تحقق</button>
-            <div id="dictResult"></div>
-            <button id="newDict">كلمة جديدة</button>
-        </div>
+        <div class="game-card"><h2>🪢 Hangman</h2><canvas id="hangmanCanvas" width="250" height="180"></canvas><div id="hangmanWord" style="font-size:28px; letter-spacing:8px;"></div><div id="hangmanMessage"></div><div id="hangmanLetters"></div><button id="newHangmanGame">🔄 كلمة جديدة</button></div>
+        <div class="game-card"><h2>🔤 Missing Letter</h2><div id="missingQuestion"></div><input id="missingInput" maxlength="1" style="width:80px;"><button id="checkMissing">تحقق</button><div id="missingResult"></div><button id="newMissing">كلمة جديدة</button></div>
+        <div class="game-card"><h2>🃏 Match</h2><div id="matchQuestion"></div><select id="matchSelect"></select><button id="checkMatch">تحقق</button><div id="matchResult"></div><button id="newMatch">بطاقة جديدة</button></div>
+        <div class="game-card"><h2>📝 Fill Gap</h2><div id="fillSentence"></div><input id="fillInput"><button id="checkFill">تحقق</button><div id="fillResult"></div><button id="newFill">جملة جديدة</button></div>
+        <div class="game-card"><h2>🎧 Classic Dictation</h2><div><img id="dictImg" src="" style="max-width:120px; border-radius:20px;"></div><button id="speakDict" class="speak-btn">🔊 Speak</button><input id="dictInput"><button id="checkDict">تحقق</button><div id="dictResult"></div><button id="newDict">كلمة جديدة</button></div>
     </div>
 </div>
 <script>
-    const words = ["drive","walk","bus","subway","train","bike","taxi","motorcycle","mother","father","parents","brother","sister","son","daughter","kids","get up","eat breakfast","go to work","study","exercise","sleep"];
+    const words = ["bike","bus","car","motorcycle","subway","train","taxi","father","mother","brother","sister","son","daughter","husband","wife","house","apartment","school","work","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","drive","ride","take","walk","live","work"];
     const sentences = {
-        drive: "She drives to work.",
-        walk: "I walk to school.",
-        bus: "He takes the bus downtown.",
-        subway: "We take the subway every day.",
-        train: "They take the train to work.",
-        bike: "She rides her bike.",
-        taxi: "Let's take a taxi.",
-        motorcycle: "He rides a motorcycle.",
-        mother: "My mother is a teacher.",
-        father: "His father works downtown.",
-        parents: "My parents live in the suburbs.",
-        brother: "I have one brother.",
-        sister: "Her sister is a student.",
-        son: "Their son is five years old.",
-        daughter: "My daughter loves school.",
-        kids: "The kids play outside.",
-        "get up": "I get up at 7 AM.",
-        "eat breakfast": "They eat breakfast together.",
-        "go to work": "She goes to work at 8 AM.",
-        study: "He studies every night.",
-        exercise: "We exercise on weekends.",
-        sleep: "The baby sleeps all night."
+        bike:"I ride my bike.", bus:"She takes the bus.", car:"He drives a car.", motorcycle:"My brother has a motorcycle.", subway:"We take the subway.", train:"The train arrives.", taxi:"Let's take a taxi.",
+        father:"My father is a teacher.", mother:"Her mother works.", brother:"I have one brother.", sister:"His sister is in college.", son:"Their son is five.", daughter:"My daughter loves music.", husband:"Her husband is a doctor.", wife:"His wife is a nurse.",
+        house:"They live in a house.", apartment:"We live in an apartment.", school:"The school is near.", work:"I go to work at 8.",
+        Monday:"I start work on Monday.", Tuesday:"Tuesday is busy.", Wednesday:"We meet on Wednesday.", Thursday:"Thursday is my favorite.", Friday:"Thank God it's Friday!", Saturday:"Saturday is for relaxing.", Sunday:"We have brunch on Sunday.",
+        drive:"I drive to work.", ride:"He rides a bike.", take:"She takes the bus.", walk:"They walk to school.", live:"I live in the city.", work:"She works in an office."
     };
+    const imageBase = "../images/";
+    function imgTag(word) { let name = word.toLowerCase().replace(/ /g, '-'); return `<img src="${imageBase + name}.jpg" style="max-width:150px; border-radius:20px;" onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\'font-size:3rem;\'>🚗</div>';">`; }
     function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
-    // HANGMAN implementation (same as previous)
+    // HANGMAN (standard)
     let hangmanWord = "", guessedLetters = [], wrongGuesses = 0;
     const canvas = document.getElementById("hangmanCanvas");
     const ctx = canvas.getContext("2d");
     function drawHangman() {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.lineWidth=3; ctx.strokeStyle="#333";
+        ctx.clearRect(0,0,canvas.width,canvas.height); ctx.lineWidth=3; ctx.strokeStyle="#333";
         ctx.beginPath(); ctx.moveTo(30,160); ctx.lineTo(220,160); ctx.stroke();
         ctx.moveTo(60,160); ctx.lineTo(60,20); ctx.stroke();
         ctx.moveTo(60,20); ctx.lineTo(150,20); ctx.stroke();
         ctx.moveTo(150,20); ctx.lineTo(150,40); ctx.stroke();
-        if(wrongGuesses>0){ctx.beginPath(); ctx.arc(150,55,15,0,Math.PI*2); ctx.stroke();}
-        if(wrongGuesses>1){ctx.beginPath(); ctx.moveTo(150,70); ctx.lineTo(150,110); ctx.stroke();}
-        if(wrongGuesses>2){ctx.beginPath(); ctx.moveTo(150,80); ctx.lineTo(130,100); ctx.stroke();}
-        if(wrongGuesses>3){ctx.beginPath(); ctx.moveTo(150,80); ctx.lineTo(170,100); ctx.stroke();}
-        if(wrongGuesses>4){ctx.beginPath(); ctx.moveTo(150,110); ctx.lineTo(130,140); ctx.stroke();}
-        if(wrongGuesses>5){ctx.beginPath(); ctx.moveTo(150,110); ctx.lineTo(170,140); ctx.stroke();}
+        if(wrongGuesses>0){ctx.beginPath();ctx.arc(150,55,15,0,Math.PI*2);ctx.stroke();}
+        if(wrongGuesses>1){ctx.beginPath();ctx.moveTo(150,70);ctx.lineTo(150,110);ctx.stroke();}
+        if(wrongGuesses>2){ctx.beginPath();ctx.moveTo(150,80);ctx.lineTo(130,100);ctx.stroke();}
+        if(wrongGuesses>3){ctx.beginPath();ctx.moveTo(150,80);ctx.lineTo(170,100);ctx.stroke();}
+        if(wrongGuesses>4){ctx.beginPath();ctx.moveTo(150,110);ctx.lineTo(130,140);ctx.stroke();}
+        if(wrongGuesses>5){ctx.beginPath();ctx.moveTo(150,110);ctx.lineTo(170,140);ctx.stroke();}
     }
-    function updateHangmanDisplay(){
+    function updateHangmanDisplay() {
         let display = hangmanWord.split('').map(l=>guessedLetters.includes(l)?l:'_').join(' ');
         document.getElementById("hangmanWord").innerText=display; drawHangman();
         let msg=document.getElementById("hangmanMessage");
-        if(display.replace(/ /g,'')===hangmanWord.replace(/ /g,'')){msg.innerHTML="<span style='color:green'>🎉 You won!</span>"; disableHangmanLetters(true);}
-        else if(wrongGuesses>=6){msg.innerHTML=`<span style='color:red'>💀 Game over! The word was ${hangmanWord}</span>`; disableHangmanLetters(true);}
-        else{msg.innerHTML=""; disableHangmanLetters(false);}
+        if(display.replace(/ /g,'')===hangmanWord){ msg.innerHTML="<span style='color:green'>🎉 You won!</span>"; disableHangmanLetters(true); }
+        else if(wrongGuesses>=6){ msg.innerHTML=`<span style='color:red'>💀 Game over! Word: ${hangmanWord}</span>`; disableHangmanLetters(true); }
+        else { msg.innerHTML=""; disableHangmanLetters(false); }
     }
-    function disableHangmanLetters(d){document.querySelectorAll("#hangmanLetters button").forEach(btn=>btn.disabled=d);}
-    function newHangmanGame(){hangmanWord=words[Math.floor(Math.random()*words.length)]; guessedLetters=[]; wrongGuesses=0; updateHangmanDisplay(); generateHangmanLetters();}
-    function generateHangmanLetters(){
-        const lettersDiv=document.getElementById("hangmanLetters"); lettersDiv.innerHTML="";
-        "abcdefghijklmnopqrstuvwxyz".split('').forEach(l=>{
-            let btn=document.createElement("button"); btn.innerText=l;
-            btn.onclick=()=>{if(guessedLetters.includes(l))return; guessedLetters.push(l); if(hangmanWord.toLowerCase().includes(l))updateHangmanDisplay(); else{wrongGuesses++; updateHangmanDisplay();} btn.disabled=true;};
-            lettersDiv.appendChild(btn);
-        });
-    }
+    function disableHangmanLetters(disabled){ document.querySelectorAll("#hangmanLetters button").forEach(btn=>btn.disabled=disabled); }
+    function newHangmanGame(){ hangmanWord=words[Math.floor(Math.random()*words.length)]; guessedLetters=[]; wrongGuesses=0; updateHangmanDisplay(); generateHangmanLetters(); }
+    function generateHangmanLetters(){ let div=document.getElementById("hangmanLetters"); div.innerHTML=""; "abcdefghijklmnopqrstuvwxyz".split('').forEach(l=>{ let btn=document.createElement("button"); btn.innerText=l; btn.onclick=()=>{ if(guessedLetters.includes(l))return; guessedLetters.push(l); if(hangmanWord.toLowerCase().includes(l)) updateHangmanDisplay(); else { wrongGuesses++; updateHangmanDisplay(); } btn.disabled=true; }; div.appendChild(btn); }); }
     document.getElementById("newHangmanGame").onclick=newHangmanGame; newHangmanGame();
     // MISSING LETTER
     let missingWord="", missingIndex=0;
-    function updateMissing(){
-        missingWord=words[Math.floor(Math.random()*words.length)];
-        let lettersOnly=missingWord.replace(/ /g,'');
-        if(lettersOnly.length===0){updateMissing(); return;}
-        let idxInLetters=Math.floor(Math.random()*lettersOnly.length), count=0;
-        for(let i=0;i<missingWord.length;i++){if(missingWord[i]!==' '){if(count===idxInLetters){missingIndex=i;break;} count++;}}
-        let display=missingWord.split('').map((c,i)=>i===missingIndex?'___':c).join('');
-        document.getElementById("missingQuestion").innerHTML=`<div style="font-size:1.8rem; background:#f0f0f0; padding:10px; border-radius:20px;">${display}</div>`;
-        document.getElementById("missingInput").value=""; document.getElementById("missingResult").innerHTML="";
-    }
-    document.getElementById("checkMissing").onclick=()=>{let ans=document.getElementById("missingInput").value.trim().toLowerCase(); if(ans===missingWord[missingIndex].toLowerCase()) document.getElementById("missingResult").innerHTML="<div class='correct'>✅ Correct!</div>"; else document.getElementById("missingResult").innerHTML=`<div class='wrong'>❌ Wrong! The letter is '${missingWord[missingIndex]}'</div>`;};
+    function updateMissing(){ missingWord=words[Math.floor(Math.random()*words.length)]; missingIndex=Math.floor(Math.random()*missingWord.length); let display=missingWord.split('').map((c,i)=>i===missingIndex?'___':c).join(''); document.getElementById("missingQuestion").innerHTML=`<div style="font-size:1.8rem;">${display}</div>`; document.getElementById("missingInput").value=""; document.getElementById("missingResult").innerHTML=""; }
+    document.getElementById("checkMissing").onclick=()=>{ let ans=document.getElementById("missingInput").value.trim().toLowerCase(); if(ans===missingWord[missingIndex]) document.getElementById("missingResult").innerHTML="<div class='correct'>✅ Correct!</div>"; else document.getElementById("missingResult").innerHTML=`<div class='wrong'>❌ Wrong! Letter: ${missingWord[missingIndex]}</div>`; };
     document.getElementById("newMissing").onclick=updateMissing; updateMissing();
     // MATCH
     let matchWord="";
-    function updateMatch(){matchWord=words[Math.floor(Math.random()*words.length)]; document.getElementById("matchQuestion").innerHTML=`<div style="font-size:1.5rem;">✏️ Match the word: ______</div>`; let select=document.getElementById("matchSelect"); select.innerHTML=""; let opts=[...words].sort(()=>Math.random()-0.5); opts.forEach(w=>{let opt=document.createElement("option"); opt.value=w; opt.innerText=w; select.appendChild(opt);}); document.getElementById("matchResult").innerHTML="";}
-    document.getElementById("checkMatch").onclick=()=>{let selected=document.getElementById("matchSelect").value; if(selected===matchWord) document.getElementById("matchResult").innerHTML="<div class='correct'>✅ Correct match!</div>"; else document.getElementById("matchResult").innerHTML=`<div class='wrong'>❌ Wrong! The correct word is ${matchWord}</div>`;};
+    function updateMatch(){ matchWord=words[Math.floor(Math.random()*words.length)]; document.getElementById("matchQuestion").innerHTML=imgTag(matchWord)+"<br>Choose the matching word:"; let select=document.getElementById("matchSelect"); select.innerHTML=""; let opts=[...words].sort(()=>Math.random()-0.5); opts.forEach(w=>{ let opt=document.createElement("option"); opt.value=w; opt.innerText=w; select.appendChild(opt); }); document.getElementById("matchResult").innerHTML=""; }
+    document.getElementById("checkMatch").onclick=()=>{ let selected=document.getElementById("matchSelect").value; if(selected===matchWord) document.getElementById("matchResult").innerHTML="<div class='correct'>✅ Correct match!</div>"; else document.getElementById("matchResult").innerHTML=`<div class='wrong'>❌ Wrong! Correct: ${matchWord}</div>`; };
     document.getElementById("newMatch").onclick=updateMatch; updateMatch();
     // FILL GAP
     let fillWord="";
-    function updateFill(){fillWord=words[Math.floor(Math.random()*words.length)]; let sentence=sentences[fillWord]||`This is a sentence about ${fillWord}.`; let blankSentence=sentence.replace(fillWord,'______'); document.getElementById("fillSentence").innerHTML=`<div style="font-size:1.2rem;">${blankSentence}</div>`; document.getElementById("fillInput").value=""; document.getElementById("fillResult").innerHTML="";}
-    document.getElementById("checkFill").onclick=()=>{let ans=document.getElementById("fillInput").value.trim().toLowerCase(); if(ans===fillWord.toLowerCase()) document.getElementById("fillResult").innerHTML="<div class='correct'>✅ Correct!</div>"; else document.getElementById("fillResult").innerHTML=`<div class='wrong'>❌ Wrong! The correct word is ${fillWord}</div>`;};
+    function updateFill(){ fillWord=words[Math.floor(Math.random()*words.length)]; let sentence=sentences[fillWord]; let blank=sentence.replace(fillWord,'______'); document.getElementById("fillSentence").innerHTML=`<div style="font-size:1.2rem;">${blank}</div>`; document.getElementById("fillInput").value=""; document.getElementById("fillResult").innerHTML=""; }
+    document.getElementById("checkFill").onclick=()=>{ let ans=document.getElementById("fillInput").value.trim().toLowerCase(); if(ans===fillWord) document.getElementById("fillResult").innerHTML="<div class='correct'>✅ Correct!</div>"; else document.getElementById("fillResult").innerHTML=`<div class='wrong'>❌ Wrong! Correct: ${fillWord}</div>`; };
     document.getElementById("newFill").onclick=updateFill; updateFill();
     // CLASSIC DICTATION
     let dictWord="";
-    function updateDict(){dictWord=words[Math.floor(Math.random()*words.length)]; document.getElementById("dictIcon").innerHTML=`📖 ${dictWord}`; document.getElementById("dictInput").value=""; document.getElementById("dictResult").innerHTML="";}
+    function updateDict(){ dictWord=words[Math.floor(Math.random()*words.length)]; let name=dictWord.toLowerCase().replace(/ /g,'-'); document.getElementById("dictImg").src=imageBase+name+".jpg"; document.getElementById("dictImg").onerror=function(){ this.onerror=null; this.parentElement.innerHTML='<div style="font-size:3rem;">🚌</div>'; }; document.getElementById("dictInput").value=""; document.getElementById("dictResult").innerHTML=""; }
     document.getElementById("speakDict").onclick=()=>speak(dictWord);
-    document.getElementById("checkDict").onclick=()=>{let ans=document.getElementById("dictInput").value.trim().toLowerCase(); if(ans===dictWord.toLowerCase()) document.getElementById("dictResult").innerHTML="<div class='correct'>✅ Correct!</div>"; else document.getElementById("dictResult").innerHTML=`<div class='wrong'>❌ Wrong! Correct: ${dictWord}</div>`;};
+    document.getElementById("checkDict").onclick=()=>{ let ans=document.getElementById("dictInput").value.trim().toLowerCase(); if(ans===dictWord) document.getElementById("dictResult").innerHTML="<div class='correct'>✅ Correct!</div>"; else document.getElementById("dictResult").innerHTML=`<div class='wrong'>❌ Wrong! Correct: ${dictWord}</div>`; };
     document.getElementById("newDict").onclick=updateDict; updateDict();
 </script>
 </body>

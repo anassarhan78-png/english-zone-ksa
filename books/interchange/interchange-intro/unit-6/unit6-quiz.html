@@ -6,72 +6,97 @@
     <title>Interchange Intro - Unit 6 Quiz</title>
     <style>
         body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
-        .container { max-width: 800px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        .container { max-width: 1000px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
         h1 { color: #d35400; text-align: center; }
         .question { background: #fff5e6; padding: 15px; border-radius: 25px; margin: 15px 0; }
-        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
-        .result { background: #e9ecef; padding: 15px; border-radius: 20px; margin-top: 20px; }
+        button { background: #d35400; border: none; color: white; padding: 12px 24px; border-radius: 40px; cursor: pointer; font-size: 1rem; margin-top: 20px; }
+        .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; font-size: 1.2rem; }
         input, select { margin: 5px; padding: 8px; border-radius: 20px; border: 1px solid #ccc; }
+        .img-quiz { max-width: 80px; display: block; margin-bottom: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📝 Unit 6 Quiz - Transportation & Family</h1>
-    <div>
-        <div class="question">1. What is a vehicle that goes underground?<br>
-            <input type="text" id="q1" placeholder="subway / train">
-        </div>
-        <div class="question">2. Choose the correct word: "My ______ is a doctor." (father / brother)<br>
-            <select id="q2"><option value="">Select</option><option value="father">father</option><option value="brother">brother</option></select>
-        </div>
-        <div class="question">3. Complete: "I ______ the bus to work every day."<br>
-            <input type="text" id="q3" placeholder="take / ride">
-        </div>
-        <div class="question">4. True or False: "A motorcycle has four wheels."<br>
-            <select id="q4"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
-        </div>
-        <div class="question">5. Complete the question: "______ you live in a house?" (Do / Does)<br>
-            <input type="text" id="q5" placeholder="Do / Does">
-        </div>
-        <div class="question">6. Which word means "father" in informal English?<br>
-            <select id="q6"><option value="">Select</option><option value="dad">dad</option><option value="father">father</option><option value="parent">parent</option></select>
-        </div>
-        <div class="question">7. What is the plural of "bus"?<br>
-            <input type="text" id="q7" placeholder="buses / busses">
-        </div>
-        <div class="question">8. "On weekends" means...<br>
-            <select id="q8"><option value="">Select</option><option value="Saturday and Sunday">Saturday and Sunday</option><option value="Monday to Friday">Monday to Friday</option></select>
-        </div>
-        <div class="question">9. Complete the sentence: "My sister and I ______ together." (live / lives)<br>
-            <input type="text" id="q9" placeholder="live / lives">
-        </div>
-        <div class="question">10. What time do you get up? (Write a complete sentence)<br>
-            <input type="text" id="q10" placeholder="e.g., I get up at 7 AM">
-        </div>
-    </div>
+    <h1>📝 Unit 6 Quiz - Transportation & Family (50+ questions)</h1>
+    <div id="quizContainer"></div>
     <button id="submitQuiz">Submit Quiz</button>
     <div id="quizResult" class="result"></div>
 </div>
 <script>
-    document.getElementById('submitQuiz').onclick = () => {
-        let score = 0;
-        if (document.getElementById('q1').value.trim().toLowerCase() === 'subway') score++;
-        if (document.getElementById('q2').value === 'father') score++;
-        if (document.getElementById('q3').value.trim().toLowerCase() === 'take') score++;
-        if (document.getElementById('q4').value === 'false') score++;
-        if (document.getElementById('q5').value.trim().toLowerCase() === 'do') score++;
-        if (document.getElementById('q6').value === 'dad') score++;
-        if (document.getElementById('q7').value.trim().toLowerCase() === 'buses') score++;
-        if (document.getElementById('q8').value === 'Saturday and Sunday') score++;
-        if (document.getElementById('q9').value.trim().toLowerCase() === 'live') score++;
-        if (document.getElementById('q10').value.trim().length > 0) score++;
-        let percent = (score/10)*100;
-        let message = `You got ${score}/10 (${percent}%). `;
-        if (percent >= 80) message += "Excellent!";
-        else if (percent >= 60) message += "Good! Review your mistakes.";
-        else message += "Try again after studying the unit.";
-        document.getElementById('quizResult').innerHTML = message;
-    };
+    const imageBase = "../images/";
+    const questions = [];
+    // Part 1: Transportation (10 questions)
+    const transports = ["bike","bus","car","motorcycle","subway","train","taxi","drive","ride","walk"];
+    for (let i=0;i<10;i++) questions.push({ type:"mc", text:`What do you use to ${transports[i]==="drive"?"drive":transports[i]==="ride"?"ride":transports[i]==="walk"?"walk":"travel"}?`, options:[transports[i],"book","desk"], answer:transports[i] });
+    // Part 2: Family members (10 questions)
+    const family = ["father","mother","brother","sister","son","daughter","husband","wife","parents","children"];
+    for (let i=0;i<10;i++) questions.push({ type:"short", text:`What is the English word for ${family[i]==="father"?"أب":family[i]==="mother"?"أم":family[i]==="brother"?"أخ":family[i]==="sister"?"أخت":family[i]==="son"?"ابن":family[i]==="daughter"?"ابنة":family[i]==="husband"?"زوج":family[i]==="wife"?"زوجة":"والدان"}?`, answer:family[i] });
+    // Part 3: Days of the week (7 questions)
+    const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+    for (let i=0;i<7;i++) questions.push({ type:"short", text:`What day comes after ${days[i]}?`, answer:days[(i+1)%7] });
+    // Part 4: Simple present Wh-questions (5 questions)
+    const wh = [{text:"Where ___ you live?",ans:"do"},{text:"What time ___ she get up?",ans:"does"},{text:"How ___ they go to work?",ans:"do"},{text:"___ your father drive?",ans:"Does"},{text:"___ you take the bus?",ans:"Do"}];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:wh[i].text, answer:wh[i].ans });
+    // Part 5: Object pronouns (me, him, her, us, them) - 5 questions
+    const obj = [{text:"I love my mother. I love ___ (she)",ans:"her"},{text:"He helps my brother. He helps ___ (he)",ans:"him"},{text:"We visit our friends. We visit ___ (they)",ans:"them"},{text:"She calls me. She calls ___ (I)",ans:"me"},{text:"They invite us. They invite ___ (we)",ans:"us"}];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:obj[i].text, answer:obj[i].ans });
+    // Part 6: Conversation comprehension (5 questions based on p.??)
+    const conv = [
+        {text:"What does Jason's sister drive to?",ans:"train station"},
+        {text:"Where does Jason's sister work?",ans:"downtown"},
+        {text:"What does Ashley take?",ans:"bus"},
+        {text:"What time does Jack get up on Sundays?",ans:"ten"},
+        {text:"Where does Amy go for brunch?",ans:"restaurant at the corner"}
+    ];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:conv[i].text, answer:conv[i].ans.toLowerCase() });
+    // Part 7: Image-based (5 images)
+    const imgNames = ["bus","car","train","family","house"];
+    for (let i=0;i<5;i++) questions.push({ type:"img", img:imgNames[i]+".jpg", text:"What is this?", answer:imgNames[i] });
+    // Part 8: True/False (5 questions)
+    const tf = [["A motorcycle has four wheels.",false],["'Parents' means mother and father.",true],["You take the subway underground.",true],["'Ride' is used for cars.",false],["Saturday is a weekday.",false]];
+    for (let i=0;i<5;i++) questions.push({ type:"tf", text:tf[i][0], answer:tf[i][1]?"true":"false" });
+    // Build HTML
+    function buildQuiz() {
+        let html='';
+        questions.forEach((q,idx)=>{
+            html+=`<div class="question"><strong>${idx+1}. `;
+            if(q.type==='img') html+=`<img src="${imageBase+q.img}" class="img-quiz" onerror="this.onerror=null;this.parentElement.innerHTML+='🚗';">${q.text}`;
+            else html+=q.text;
+            html+=`</strong><br>`;
+            if(q.type==='mc'){
+                q.options.forEach(opt=>{ html+=`<label><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label> `; });
+            } else if(q.type==='tf'){
+                html+=`<label><input type="radio" name="q${idx}" value="true"> True</label> <label><input type="radio" name="q${idx}" value="false"> False</label>`;
+            } else {
+                html+=`<input type="text" name="q${idx}" placeholder="Type answer">`;
+            }
+            html+=`</div>`;
+        });
+        document.getElementById('quizContainer').innerHTML=html;
+    }
+    function submitQuiz(){
+        let score=0;
+        for(let i=0;i<questions.length;i++){
+            let q=questions[i], ans=null;
+            if(q.type==='mc'||q.type==='tf'){
+                let radios=document.querySelectorAll(`input[name="q${i}"]`);
+                for(let r of radios) if(r.checked){ ans=r.value; break; }
+            } else {
+                let inp=document.querySelector(`input[name="q${i}"]`);
+                if(inp) ans=inp.value.trim().toLowerCase();
+            }
+            if(ans===q.answer.toLowerCase()) score++;
+        }
+        let percent=(score/questions.length)*100;
+        let msg=`You got ${score}/${questions.length} (${percent}%). `;
+        if(percent>=90) msg+="Excellent!";
+        else if(percent>=75) msg+="Very good!";
+        else if(percent>=60) msg+="Good. Review some points.";
+        else msg+="Need more practice.";
+        document.getElementById('quizResult').innerHTML=msg;
+    }
+    buildQuiz();
+    document.getElementById('submitQuiz').onclick=submitQuiz;
 </script>
 </body>
 </html>
