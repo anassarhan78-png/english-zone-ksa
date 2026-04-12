@@ -1,38 +1,202 @@
 <!DOCTYPE html>
-<html>
-<head><title>Rubric Unit 8</title>
-<style>
-body{font-family:Arial;background:#eef2ff;padding:20px}
-.container{max-width:600px;margin:auto;background:white;border-radius:40px;padding:25px}
-h1{color:#d45a1e}
-.criteria{background:#fef9c3;padding:15px;border-radius:24px;margin:15px 0}
-.slider-row{margin:10px 0}
-button{background:#10b981;color:white;border:none;padding:10px 20px;border-radius:30px;cursor:pointer}
-.result{background:#e0e7ff;padding:15px;border-radius:24px;margin-top:20px}
-</style>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Time 1 - Unit 8: At the Supermarket (Fruits & Vegetables) - Parent Guide</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        body { background: linear-gradient(135deg, #1e5f8e, #0d3b55); margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; margin-top: 0; }
+        .toolbar { display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .toolbar button { background: #d35400; border: none; color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-weight: bold; }
+        .toolbar button:hover { background: #a04000; }
+        .section { background: #fff5e6; border-radius: 30px; padding: 20px; margin: 20px 0; }
+        .section h2 { background: #d35400; display: inline-block; padding: 5px 20px; border-radius: 40px; color: white; font-size: 1.3rem; margin-top: 0; }
+        .criteria { margin: 15px 0; padding: 10px; background: #fef9e8; border-radius: 20px; }
+        .slider { width: 100%; }
+        .score { font-weight: bold; color: #d35400; margin-left: 10px; }
+        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; margin: 10px 0; }
+        .result { background: #e9ecef; padding: 15px; border-radius: 20px; margin-top: 15px; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #f0c0a0; padding: 8px; text-align: left; vertical-align: top; }
+        th { background: #f0c0a0; color: #333; }
+        .tab { overflow: hidden; border-bottom: 1px solid #ccc; margin-bottom: 20px; }
+        .tab button { background-color: inherit; float: left; border: none; outline: none; cursor: pointer; padding: 10px 20px; transition: 0.3s; font-size: 1rem; margin: 0; border-radius: 30px 30px 0 0; }
+        .tab button:hover { background-color: #f0c0a0; }
+        .tab button.active { background-color: #d35400; color: white; }
+        .tabcontent { display: none; padding: 20px 0; animation: fadeEffect 0.3s; }
+        @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } }
+        .dictation-words { background: #fff0d6; padding: 5px 10px; border-radius: 20px; display: inline-block; margin: 2px; }
+        .parent-note { background: #d4edda; border-left: 6px solid #2e7d64; padding: 10px; border-radius: 20px; margin-bottom: 20px; }
+        @media (max-width: 700px) { .container { padding: 15px; } th, td { font-size: 0.8rem; } }
+    </style>
 </head>
 <body>
 <div class="container">
-<h1>📊 Rubric - Unit 8</h1>
-<div class="criteria">
-<div class="slider-row">Speaking: <input type="range" id="speak" min="1" max="5" value="3"> <span id="speakVal">3</span></div>
-<div class="slider-row">Writing: <input type="range" id="write" min="1" max="5" value="3"> <span id="writeVal">3</span></div>
-<div class="slider-row">Vocabulary: <input type="range" id="vocab" min="1" max="5" value="3"> <span id="vocabVal">3</span></div>
-<div class="slider-row">Listening: <input type="range" id="listen" min="1" max="5" value="3"> <span id="listenVal">3</span></div>
-<div class="slider-row">Effort: <input type="range" id="effort" min="1" max="5" value="3"> <span id="effortVal">3</span></div>
+    <div class="toolbar">
+        <button id="printBtn">🖨️ Print / طباعة</button>
+        <button id="shareBtn">🔗 Share Link / رابط للمشاركة</button>
+    </div>
+    <h1>📘 English Time 1 - Unit 8: At the Supermarket</h1>
+    <div class="parent-note">
+        👪 **Dear parents / أولياء الأمور الكرام:** <br>
+        This guide helps you support your child at home. Each day has a short dictation (5-7 words), fun online games (Quizlet, Kahoot, Wordwall), and a small homework task. No classes on Friday or Saturday. Test will be on <strong>next Sunday</strong>.<br>
+        يوضح هذا الدليل خطة التعلم الأسبوعية. كل يوم يحتوي على إملاء قصير وألعاب تفاعلية وواجب بسيط. لا دوام يومي الجمعة والسبت. الاختبار يوم الأحد التالي.
+    </div>
+    <div class="tab">
+        <button class="tablinks active" onclick="openTab(event, 'Rubric')">⭐ Child's Self Assessment</button>
+        <button class="tablinks" onclick="openTab(event, 'LessonPlan')">📅 Weekly Lesson Plan</button>
+        <button class="tablinks" onclick="openTab(event, 'Syllabus')">📚 Course Syllabus (Level 1)</button>
+    </div>
+
+    <!-- Rubric Tab (for the child) -->
+    <div id="Rubric" class="tabcontent" style="display:block;">
+        <div class="section">
+            <h2>⭐ How well did I do in Unit 8?</h2>
+            <p>Move the stars (1 = needs help, 5 = I can do it alone).</p>
+            <div class="criteria"><strong>🗣️ Speaking</strong><br>I can say "May I borrow a pen? – Sure. Here you are. – Thanks." and "Do you like apples? – Yes, I do. / No, I don't."<br><input type="range" min="1" max="5" value="3" class="slider" id="speakingSlider"><span class="score" id="speakingScore">3</span></div>
+            <div class="criteria"><strong>✍️ Writing</strong><br>I can write the words: apples, oranges, bananas, cucumbers, potatoes, carrots.<br><input type="range" min="1" max="5" value="3" class="slider" id="writingSlider"><span class="score" id="writingScore">3</span></div>
+            <div class="criteria"><strong>📖 Vocabulary</strong><br>I know all the fruits and vegetables.<br><input type="range" min="1" max="5" value="3" class="slider" id="vocabSlider"><span class="score" id="vocabScore">3</span></div>
+            <div class="criteria"><strong>👂 Listening</strong><br>I understand "Do you like bananas?" and the short a sound (ant, bag, hat, map).<br><input type="range" min="1" max="5" value="3" class="slider" id="listenSlider"><span class="score" id="listenScore">3</span></div>
+            <div class="criteria"><strong>💪 Effort</strong><br>I tried my best in class and at home.<br><input type="range" min="1" max="5" value="3" class="slider" id="effortSlider"><span class="score" id="effortScore">3</span></div>
+            <div class="criteria"><strong>🔤 Phonics (short a)</strong><br>I can say "ant, bag, hat, map" with the short a sound.<br><input type="range" min="1" max="5" value="3" class="slider" id="phonicsSlider"><span class="score" id="phonicsScore">3</span></div>
+            <div class="criteria"><strong>🤝 Participation</strong><br>I played the games and did my homework.<br><input type="range" min="1" max="5" value="3" class="slider" id="partSlider"><span class="score" id="partScore">3</span></div>
+            <button id="calculateRubric">Show my score / اعرض نتيجتي</button>
+            <div id="rubricResult" class="result"></div>
+        </div>
+    </div>
+
+    <!-- Lesson Plan Tab (for parents) -->
+    <div id="LessonPlan" class="tabcontent">
+        <div class="section">
+            <h2>📅 Weekly Lesson Plan – Unit 8</h2>
+            <p><strong>Schedule / الجدول:</strong> Sunday – Thursday (1 hour each). <strong>Test:</strong> Next Sunday (1 hour). <strong>No classes on Friday/Saturday.</strong></p>
+            <p><strong>Online tools / الأدوات الرقمية:</strong> <span style="background:#ffd966;">🔊 Quizlet</span> (vocabulary audio), <span style="background:#ffd966;">🎮 Kahoot</span> (review games), <span style="background:#ffd966;">🧩 Wordwall</span> (matching, sorting).</p>
+            <table>
+                <tr><th>Day</th><th>Dictation (5-7 words)</th><th>Class Activities</th><th>Homework (for parents)</th></tr>
+                <tr>
+                    <td><strong>Sunday</strong></th>
+                    <td><span class="dictation-words">apples, oranges, bananas, cucumbers, potatoes, carrots</span></th>
+                    <td>🍎 Introduce fruits and vegetables with real items or flashcards<br>🎮 Wordwall: match word to picture<br>🗣️ Repeat "apples, oranges, bananas..."</th>
+                    <td>Draw a shopping basket with 4 fruits/vegetables and label them.</th>
+                </tr>
+                <tr>
+                    <td><strong>Monday</strong></th>
+                    <td><span class="dictation-words">may, borrow, pen, sure, here, you, are, thanks</span></th>
+                    <td>💬 Conversation: "May I borrow a pen? – Sure. Here you are. – Thanks."<br>🎮 Quizlet: listen and repeat<br>🤝 Role‑play borrowing a pen in class</th>
+                    <td>Practice "May I borrow ___?" at home (pen, book, toy). Write the conversation once.</th>
+                </tr>
+                <tr>
+                    <td><strong>Tuesday</strong></th>
+                    <td><span class="dictation-words">short a: ant, bag, hat, map</span></th>
+                    <td>🔤 Phonics short a sound (as in "cat")<br>🎮 Wordwall: sort short a pictures<br>✏️ Trace and write a words</th>
+                    <td>Find 3 things at home with the short a sound (hat, bag, map, etc.). Say them aloud.</th>
+                </tr>
+                <tr>
+                    <td><strong>Wednesday</strong></th>
+                    <td><span class="dictation-words">like, do, you, yes, no, don't, apples</span></th>
+                    <td>📖 Practice "Do you like apples? – Yes, I do. / No, I don't." with fruit cards<br>🎮 Kahoot: food likes/dislikes quiz<br>🎨 Draw a happy face for "like" and sad face for "don't like"</th>
+                    <td>Ask family members "Do you like bananas?" and write one answer.</th>
+                </tr>
+                <tr>
+                    <td><strong>Thursday</strong></th>
+                    <td><span class="dictation-words">Review: all fruits, vegetables, short a words, like/don't like</span></th>
+                    <td>⭐ Unit review game (Wordwall/Kahoot)<br>🗣️ Students survey each other: "Do you like carrots?"<br>📝 Practice test</th>
+                    <td>Prepare for Sunday test: review all words, "Do you like...?" questions, and short a phonics.</th>
+                </tr>
+                <tr>
+                    <td><strong>Friday</strong></th>
+                    <td colspan="3"><em>No class (official weekend / عطلة رسمية)</em></th>
+                </tr>
+                <tr>
+                    <td><strong>Saturday</strong></th>
+                    <td colspan="3"><em>No class (official weekend / عطلة رسمية)</em></th>
+                </tr>
+                <tr>
+                    <td><strong>Next Sunday</strong></th>
+                    <td colspan="3"><strong>📝 Unit 8 Test</strong> (1 hour)<br>✅ Dictation (5 fruit/vegetable words) – ✅ Fill in the blanks (Do you like...?) – ✅ Matching – ✅ Short speaking (ask and answer about fruit preferences) – ✅ Phonics (short a)</th>
+                </tr>
+            </table>
+            <p><strong>💡 How parents can help / كيف يمكنك مساعدة طفلك:</strong><br>
+            - When shopping, ask "Do you like apples?" in English.<br>
+            - Practice "May I borrow..." during playtime.<br>
+            - Play "I spy" with short a words (e.g., "I spy a hat").<br>
+            - Use Quizlet live or Kahoot at home for fun revision.<br>
+            - Praise effort, not just correct answers.</p>
+        </div>
+    </div>
+
+    <!-- Syllabus Tab -->
+    <div id="Syllabus" class="tabcontent">
+        <div class="section">
+            <h2>📚 English Time 1 – Course Syllabus (Level 1)</h2>
+            <p><strong>Duration:</strong> 10 weeks (10 units) + final review.<br>
+            <strong>Schedule:</strong> Sunday – Thursday (1 hour/day). Test on the next Sunday.<br>
+            <strong>Target:</strong> Young beginners (ages 6-9). Dyslexia-friendly font and activities.</p>
+            <table>
+                <tr><th>Week</th><th>Unit</th><th>Topics</th><th>Test Date</th></tr>
+                <tr><td>1</th><td>Unit 1</th><td>Greetings, names, gender, dog, Bb/Pp</th><td>Next Sunday</th></tr>
+                <tr><td>2</th><td>Unit 2</th><td>Nature vocabulary, This/That, Gg/Kk</th><td>Next Sunday</th></tr>
+                <tr><td>3</th><td>Unit 3</th><td>Farm animals, What's this/that?, Mm/Nn</th><td>Next Sunday</th></tr>
+                <tr><td>4</th><td>Unit 4</th><td>School supplies, Yes/No questions, Dd/Tt</th><td>Next Sunday</th></td>
+                <tr><td>5</th><td>Unit 5</th><td>Numbers 1-12, How many?, first/last name, Hh/Ww</th><td>Next Sunday</th></table>
+                <tr><td>6</th><td>Unit 6</th><td>Feelings, Are you...?, Ff/Vv</th><td>Next Sunday</th></tr>
+                <tr><td>7</th><td>Unit 7</th><td>Food vocabulary, I like / I don't like, Ss/Zz</th><td>Next Sunday</th></tr>
+                <tr><td>8</th><td>Unit 8</th><td>Fruits & vegetables, Do you like...?, short a</th><td>Next Sunday</th></tr>
+                <tr><td colspan="4"><em>Units 9-10 continue with descriptions and occupations.</em></th></tr>
+            </table>
+            <p><strong>Assessment / التقييم:</strong><br>
+            - Daily dictation (10%)<br>
+            - Weekly quiz (20%)<br>
+            - Class participation (10%)<br>
+            - Homework (10%)<br>
+            - Unit test (50%)</p>
+            <p><strong>Dyslexia support / دعم صعوبات التعلم:</strong><br>
+            ✅ OpenDyslexic font – ✅ Audio support (text-to-speech) – ✅ Extra time for tasks – ✅ Multi‑sensory games (Quizlet, Wordwall, Kahoot).</p>
+        </div>
+    </div>
 </div>
-<button onclick="calculate()">Calculate Score</button>
-<div id="result" class="result"></div>
-</div>
+
 <script>
-function update(id){document.getElementById(id+'Val').innerText=document.getElementById(id).value;}
-['speak','write','vocab','listen','effort'].forEach(id=>{document.getElementById(id).oninput=()=>update(id);});
-function calculate(){
- let total=0;
- ['speak','write','vocab','listen','effort'].forEach(id=>total+=parseInt(document.getElementById(id).value));
- let msg=total>=20?"Excellent!":(total>=15?"Good!":"Keep practicing!");
- document.getElementById('result').innerHTML='<strong>Score: '+total+'/25</strong><br>'+msg;
-}
+    // Tabs
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) tabcontent[i].style.display = "none";
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) tablinks[i].className = tablinks[i].className.replace(" active", "");
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Rubric calculation
+    const sliders = ['speaking','writing','vocab','listen','effort','phonics','part'];
+    sliders.forEach(s => {
+        let slider = document.getElementById(`${s}Slider`);
+        let span = document.getElementById(`${s}Score`);
+        if (slider) slider.oninput = () => { span.innerText = slider.value; };
+    });
+    document.getElementById('calculateRubric').onclick = () => {
+        let total = 0;
+        sliders.forEach(s => { total += parseInt(document.getElementById(`${s}Slider`).value); });
+        let percent = (total / 35) * 100;
+        let message = `Your total: ${total} / 35 (${percent}%). `;
+        if (percent >= 85) message += "🎉 Great job! You are a star!";
+        else if (percent >= 65) message += "👍 Good work! Keep practicing.";
+        else message += "🌱 You are learning. Let's try again together!";
+        document.getElementById('rubricResult').innerHTML = message;
+    };
+
+    // Print button
+    document.getElementById('printBtn').onclick = () => window.print();
+
+    // Shareable link
+    document.getElementById('shareBtn').onclick = () => {
+        navigator.clipboard.writeText(window.location.href);
+        alert("✅ Link copied to clipboard / تم نسخ الرابط");
+    };
 </script>
 </body>
 </html>
