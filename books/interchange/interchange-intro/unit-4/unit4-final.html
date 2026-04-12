@@ -37,281 +37,77 @@
         <span>cloudy</span> <span>hot</span> <span>cold</span> <span>warm</span> <span>cool</span>
     </div>
     <div class="games-grid">
-        <!-- HANGMAN -->
-        <div class="game-card">
-            <h2>🪢 Hangman</h2>
-            <canvas id="hangmanCanvas" width="250" height="180" style="width:100%; max-width:250px;"></canvas>
-            <div id="hangmanWord" style="font-size:28px; letter-spacing:8px; text-align:center; margin:10px 0; font-weight:bold;"></div>
-            <div id="hangmanMessage"></div>
-            <div id="hangmanLetters" style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center;"></div>
-            <button id="newHangmanGame">🔄 كلمة جديدة</button>
-        </div>
-
-        <!-- MISSING LETTER -->
-        <div class="game-card">
-            <h2>🔤 Missing Letter</h2>
-            <div id="missingQuestion"></div>
-            <input type="text" id="missingInput" placeholder="اكتب الحرف الناقص" maxlength="1" style="width:80px; text-align:center;">
-            <button id="checkMissing">تحقق</button>
-            <div id="missingResult"></div>
-            <button id="newMissing">كلمة جديدة</button>
-        </div>
-
-        <!-- MATCH -->
-        <div class="game-card">
-            <h2>🃏 Match</h2>
-            <div id="matchQuestion"></div>
-            <select id="matchSelect"></select>
-            <button id="checkMatch">تحقق</button>
-            <div id="matchResult"></div>
-            <button id="newMatch">بطاقة جديدة</button>
-        </div>
-
-        <!-- FILL GAP -->
-        <div class="game-card">
-            <h2>📝 Fill Gap</h2>
-            <div id="fillSentence"></div>
-            <input type="text" id="fillInput" placeholder="أكمل الكلمة">
-            <button id="checkFill">تحقق</button>
-            <div id="fillResult"></div>
-            <button id="newFill">جملة جديدة</button>
-        </div>
-
-        <!-- CLASSIC DICTATION -->
-        <div class="game-card">
-            <h2>🎧 Classic Dictation</h2>
-            <div id="dictImage"><div id="dictIcon" style="font-size:3rem; text-align:center;">📝</div></div>
-            <button id="speakDict" class="speak-btn">🔊 Speak</button>
-            <input type="text" id="dictInput" placeholder="اكتب الكلمة">
-            <button id="checkDict">تحقق</button>
-            <div id="dictResult"></div>
-            <button id="newDict">كلمة جديدة</button>
-        </div>
+        <div class="game-card"><h2>🪢 Hangman</h2><canvas id="hangmanCanvas" width="250" height="180"></canvas><div id="hangmanWord" style="font-size:28px; letter-spacing:8px;"></div><div id="hangmanMessage"></div><div id="hangmanLetters"></div><button id="newHangmanGame">🔄 كلمة جديدة</button></div>
+        <div class="game-card"><h2>🔤 Missing Letter</h2><div id="missingQuestion"></div><input id="missingInput" maxlength="1" style="width:80px;"><button id="checkMissing">تحقق</button><div id="missingResult"></div><button id="newMissing">كلمة جديدة</button></div>
+        <div class="game-card"><h2>🃏 Match</h2><div id="matchQuestion"></div><select id="matchSelect"></select><button id="checkMatch">تحقق</button><div id="matchResult"></div><button id="newMatch">بطاقة جديدة</button></div>
+        <div class="game-card"><h2>📝 Fill Gap</h2><div id="fillSentence"></div><input id="fillInput"><button id="checkFill">تحقق</button><div id="fillResult"></div><button id="newFill">جملة جديدة</button></div>
+        <div class="game-card"><h2>🎧 Classic Dictation</h2><div><img id="dictImg" src="" style="max-width:120px; border-radius:20px;"></div><button id="speakDict" class="speak-btn">🔊 Speak</button><input id="dictInput"><button id="checkDict">تحقق</button><div id="dictResult"></div><button id="newDict">كلمة جديدة</button></div>
     </div>
 </div>
-
 <script>
-    const words = [
-        "shirt", "pants", "jacket", "dress", "skirt", "shoes", "hat", "scarf",
-        "gloves", "coat", "jeans", "sweater", "raincoat", "boots", "socks", "tie",
-        "red", "blue", "green", "yellow", "black", "white", "purple", "orange",
-        "spring", "summer", "fall", "winter", "sunny", "rainy", "snowy", "windy",
-        "cloudy", "hot", "cold", "warm", "cool"
-    ];
-    
+    const words = ["shirt","pants","jacket","dress","skirt","shoes","hat","scarf","gloves","coat","jeans","sweater","raincoat","boots","socks","tie","red","blue","green","yellow","black","white","purple","orange","spring","summer","fall","winter","sunny","rainy","snowy","windy","cloudy","hot","cold","warm","cool"];
     const sentences = {
-        shirt: "This is a white shirt.",
-        pants: "These are blue pants.",
-        jacket: "She is wearing a jacket.",
-        dress: "Her dress is red.",
-        skirt: "That skirt is pretty.",
-        shoes: "My shoes are black.",
-        hat: "He has a hat.",
-        scarf: "The scarf is warm.",
-        gloves: "These gloves are mine.",
-        coat: "I need a coat.",
-        jeans: "Whose jeans are these?",
-        sweater: "This sweater is comfortable.",
-        raincoat: "Put on your raincoat.",
-        boots: "Winter boots are heavy.",
-        socks: "My socks are white.",
-        tie: "He wears a tie to work.",
-        red: "My car is red.",
-        blue: "The sky is blue.",
-        green: "Grass is green.",
-        yellow: "The sun is yellow.",
-        black: "Her hair is black.",
-        white: "Snow is white.",
-        purple: "Purple is my favorite color.",
-        orange: "The orange is orange.",
-        spring: "Spring is warm and rainy.",
-        summer: "Summer is hot and sunny.",
-        fall: "Fall is cool and windy.",
-        winter: "Winter is cold and snowy.",
-        sunny: "It is sunny today.",
-        rainy: "It is rainy in April.",
-        snowy: "It is snowy in December.",
-        windy: "It is windy outside.",
-        cloudy: "It is cloudy today.",
-        hot: "The weather is hot.",
-        cold: "It is very cold.",
-        warm: "The soup is warm.",
-        cool: "It is cool in the evening."
+        shirt:"This is a white shirt.", pants:"These are blue pants.", jacket:"She is wearing a jacket.", dress:"Her dress is red.", skirt:"That skirt is pretty.",
+        shoes:"My shoes are black.", hat:"He has a hat.", scarf:"The scarf is warm.", gloves:"These gloves are mine.", coat:"I need a coat.",
+        jeans:"Whose jeans are these?", sweater:"This sweater is comfortable.", raincoat:"Put on your raincoat.", boots:"Winter boots are heavy.", socks:"My socks are white.",
+        tie:"He wears a tie to work.", red:"My car is red.", blue:"The sky is blue.", green:"Grass is green.", yellow:"The sun is yellow.", black:"Her hair is black.",
+        white:"Snow is white.", purple:"Purple is my favorite.", orange:"The orange is orange.", spring:"Spring is warm.", summer:"Summer is hot.", fall:"Fall is cool.",
+        winter:"Winter is cold.", sunny:"It is sunny today.", rainy:"It is rainy.", snowy:"It is snowy.", windy:"It is windy.", cloudy:"It is cloudy.",
+        hot:"The weather is hot.", cold:"It is very cold.", warm:"The soup is warm.", cool:"It is cool outside."
     };
-    
-    function speak(text) {
-        let utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = "en-US";
-        speechSynthesis.cancel();
-        speechSynthesis.speak(utterance);
-    }
-
-    // HANGMAN (standard implementation as in previous units)
+    const imageBase = "../images/";
+    function imgTag(word) { let name = word.toLowerCase().replace(/ /g, '-'); return `<img src="${imageBase + name}.jpg" style="max-width:150px; border-radius:20px;" onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\'font-size:3rem;\'>👕</div>';">`; }
+    function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+    // HANGMAN (standard)
     let hangmanWord = "", guessedLetters = [], wrongGuesses = 0;
     const canvas = document.getElementById("hangmanCanvas");
     const ctx = canvas.getContext("2d");
     function drawHangman() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = "#333";
-        ctx.beginPath();
-        ctx.moveTo(30, 160); ctx.lineTo(220, 160); ctx.stroke();
-        ctx.moveTo(60, 160); ctx.lineTo(60, 20); ctx.stroke();
-        ctx.moveTo(60, 20); ctx.lineTo(150, 20); ctx.stroke();
-        ctx.moveTo(150, 20); ctx.lineTo(150, 40); ctx.stroke();
-        if (wrongGuesses > 0) { ctx.beginPath(); ctx.arc(150, 55, 15, 0, Math.PI*2); ctx.stroke(); }
-        if (wrongGuesses > 1) { ctx.beginPath(); ctx.moveTo(150, 70); ctx.lineTo(150, 110); ctx.stroke(); }
-        if (wrongGuesses > 2) { ctx.beginPath(); ctx.moveTo(150, 80); ctx.lineTo(130, 100); ctx.stroke(); }
-        if (wrongGuesses > 3) { ctx.beginPath(); ctx.moveTo(150, 80); ctx.lineTo(170, 100); ctx.stroke(); }
-        if (wrongGuesses > 4) { ctx.beginPath(); ctx.moveTo(150, 110); ctx.lineTo(130, 140); ctx.stroke(); }
-        if (wrongGuesses > 5) { ctx.beginPath(); ctx.moveTo(150, 110); ctx.lineTo(170, 140); ctx.stroke(); }
+        ctx.clearRect(0,0,canvas.width,canvas.height); ctx.lineWidth=3; ctx.strokeStyle="#333";
+        ctx.beginPath(); ctx.moveTo(30,160); ctx.lineTo(220,160); ctx.stroke();
+        ctx.moveTo(60,160); ctx.lineTo(60,20); ctx.stroke();
+        ctx.moveTo(60,20); ctx.lineTo(150,20); ctx.stroke();
+        ctx.moveTo(150,20); ctx.lineTo(150,40); ctx.stroke();
+        if(wrongGuesses>0){ctx.beginPath();ctx.arc(150,55,15,0,Math.PI*2);ctx.stroke();}
+        if(wrongGuesses>1){ctx.beginPath();ctx.moveTo(150,70);ctx.lineTo(150,110);ctx.stroke();}
+        if(wrongGuesses>2){ctx.beginPath();ctx.moveTo(150,80);ctx.lineTo(130,100);ctx.stroke();}
+        if(wrongGuesses>3){ctx.beginPath();ctx.moveTo(150,80);ctx.lineTo(170,100);ctx.stroke();}
+        if(wrongGuesses>4){ctx.beginPath();ctx.moveTo(150,110);ctx.lineTo(130,140);ctx.stroke();}
+        if(wrongGuesses>5){ctx.beginPath();ctx.moveTo(150,110);ctx.lineTo(170,140);ctx.stroke();}
     }
     function updateHangmanDisplay() {
-        let display = hangmanWord.split('').map(l => guessedLetters.includes(l) ? l : '_').join(' ');
-        document.getElementById("hangmanWord").innerText = display;
-        drawHangman();
-        let msg = document.getElementById("hangmanMessage");
-        if (display.replace(/ /g, '') === hangmanWord) {
-            msg.innerHTML = "<span style='color:green'>🎉 You won!</span>";
-            disableHangmanLetters(true);
-        } else if (wrongGuesses >= 6) {
-            msg.innerHTML = `<span style='color:red'>💀 Game over! The word was ${hangmanWord}</span>`;
-            disableHangmanLetters(true);
-        } else {
-            msg.innerHTML = "";
-            disableHangmanLetters(false);
-        }
+        let display = hangmanWord.split('').map(l=>guessedLetters.includes(l)?l:'_').join(' ');
+        document.getElementById("hangmanWord").innerText=display; drawHangman();
+        let msg=document.getElementById("hangmanMessage");
+        if(display.replace(/ /g,'')===hangmanWord){ msg.innerHTML="<span style='color:green'>🎉 You won!</span>"; disableHangmanLetters(true); }
+        else if(wrongGuesses>=6){ msg.innerHTML=`<span style='color:red'>💀 Game over! Word: ${hangmanWord}</span>`; disableHangmanLetters(true); }
+        else { msg.innerHTML=""; disableHangmanLetters(false); }
     }
-    function disableHangmanLetters(disabled) {
-        document.querySelectorAll("#hangmanLetters button").forEach(btn => btn.disabled = disabled);
-    }
-    function newHangmanGame() {
-        hangmanWord = words[Math.floor(Math.random() * words.length)];
-        guessedLetters = [];
-        wrongGuesses = 0;
-        updateHangmanDisplay();
-        generateHangmanLetters();
-    }
-    function generateHangmanLetters() {
-        const lettersDiv = document.getElementById("hangmanLetters");
-        lettersDiv.innerHTML = "";
-        "abcdefghijklmnopqrstuvwxyz".split('').forEach(l => {
-            let btn = document.createElement("button");
-            btn.innerText = l;
-            btn.onclick = () => {
-                if (guessedLetters.includes(l)) return;
-                guessedLetters.push(l);
-                if (hangmanWord.toLowerCase().includes(l)) {
-                    updateHangmanDisplay();
-                } else {
-                    wrongGuesses++;
-                    updateHangmanDisplay();
-                }
-                btn.disabled = true;
-            };
-            lettersDiv.appendChild(btn);
-        });
-    }
-    document.getElementById("newHangmanGame").onclick = () => newHangmanGame();
-    newHangmanGame();
-
+    function disableHangmanLetters(disabled){ document.querySelectorAll("#hangmanLetters button").forEach(btn=>btn.disabled=disabled); }
+    function newHangmanGame(){ hangmanWord=words[Math.floor(Math.random()*words.length)]; guessedLetters=[]; wrongGuesses=0; updateHangmanDisplay(); generateHangmanLetters(); }
+    function generateHangmanLetters(){ let div=document.getElementById("hangmanLetters"); div.innerHTML=""; "abcdefghijklmnopqrstuvwxyz".split('').forEach(l=>{ let btn=document.createElement("button"); btn.innerText=l; btn.onclick=()=>{ if(guessedLetters.includes(l))return; guessedLetters.push(l); if(hangmanWord.toLowerCase().includes(l)) updateHangmanDisplay(); else { wrongGuesses++; updateHangmanDisplay(); } btn.disabled=true; }; div.appendChild(btn); }); }
+    document.getElementById("newHangmanGame").onclick=newHangmanGame; newHangmanGame();
     // MISSING LETTER
-    let missingWord = "", missingIndex = 0;
-    function updateMissing() {
-        missingWord = words[Math.floor(Math.random() * words.length)];
-        let lettersOnly = missingWord.replace(/ /g, '');
-        if (lettersOnly.length === 0) { updateMissing(); return; }
-        let idxInLetters = Math.floor(Math.random() * lettersOnly.length);
-        let count = 0;
-        for (let i=0; i<missingWord.length; i++) {
-            if (missingWord[i] !== ' ') {
-                if (count === idxInLetters) { missingIndex = i; break; }
-                count++;
-            }
-        }
-        let display = missingWord.split('').map((c, i) => i === missingIndex ? '___' : c).join('');
-        document.getElementById("missingQuestion").innerHTML = `<div style="font-size:1.8rem; background:#f0f0f0; padding:10px; border-radius:20px;">${display}</div>`;
-        document.getElementById("missingInput").value = "";
-        document.getElementById("missingResult").innerHTML = "";
-    }
-    document.getElementById("checkMissing").onclick = () => {
-        let ans = document.getElementById("missingInput").value.trim().toLowerCase();
-        if (ans === missingWord[missingIndex].toLowerCase()) {
-            document.getElementById("missingResult").innerHTML = "<div class='correct'>✅ Correct!</div>";
-        } else {
-            document.getElementById("missingResult").innerHTML = `<div class='wrong'>❌ Wrong! The letter is '${missingWord[missingIndex]}'</div>`;
-        }
-    };
-    document.getElementById("newMissing").onclick = updateMissing;
-    updateMissing();
-
+    let missingWord="", missingIndex=0;
+    function updateMissing(){ missingWord=words[Math.floor(Math.random()*words.length)]; missingIndex=Math.floor(Math.random()*missingWord.length); let display=missingWord.split('').map((c,i)=>i===missingIndex?'___':c).join(''); document.getElementById("missingQuestion").innerHTML=`<div style="font-size:1.8rem;">${display}</div>`; document.getElementById("missingInput").value=""; document.getElementById("missingResult").innerHTML=""; }
+    document.getElementById("checkMissing").onclick=()=>{ let ans=document.getElementById("missingInput").value.trim().toLowerCase(); if(ans===missingWord[missingIndex]) document.getElementById("missingResult").innerHTML="<div class='correct'>✅ Correct!</div>"; else document.getElementById("missingResult").innerHTML=`<div class='wrong'>❌ Wrong! Letter: ${missingWord[missingIndex]}</div>`; };
+    document.getElementById("newMissing").onclick=updateMissing; updateMissing();
     // MATCH
-    let matchWord = "";
-    function updateMatch() {
-        matchWord = words[Math.floor(Math.random() * words.length)];
-        document.getElementById("matchQuestion").innerHTML = `<div style="font-size:1.5rem;">✏️ Match the word: ______</div>`;
-        let select = document.getElementById("matchSelect");
-        select.innerHTML = "";
-        let opts = [...words].sort(() => Math.random() - 0.5);
-        opts.forEach(w => {
-            let opt = document.createElement("option");
-            opt.value = w;
-            opt.innerText = w;
-            select.appendChild(opt);
-        });
-        document.getElementById("matchResult").innerHTML = "";
-    }
-    document.getElementById("checkMatch").onclick = () => {
-        let selected = document.getElementById("matchSelect").value;
-        if (selected === matchWord) {
-            document.getElementById("matchResult").innerHTML = "<div class='correct'>✅ Correct match!</div>";
-        } else {
-            document.getElementById("matchResult").innerHTML = `<div class='wrong'>❌ Wrong! The correct word is ${matchWord}</div>`;
-        }
-    };
-    document.getElementById("newMatch").onclick = updateMatch;
-    updateMatch();
-
+    let matchWord="";
+    function updateMatch(){ matchWord=words[Math.floor(Math.random()*words.length)]; document.getElementById("matchQuestion").innerHTML=imgTag(matchWord)+"<br>Choose the matching word:"; let select=document.getElementById("matchSelect"); select.innerHTML=""; let opts=[...words].sort(()=>Math.random()-0.5); opts.forEach(w=>{ let opt=document.createElement("option"); opt.value=w; opt.innerText=w; select.appendChild(opt); }); document.getElementById("matchResult").innerHTML=""; }
+    document.getElementById("checkMatch").onclick=()=>{ let selected=document.getElementById("matchSelect").value; if(selected===matchWord) document.getElementById("matchResult").innerHTML="<div class='correct'>✅ Correct match!</div>"; else document.getElementById("matchResult").innerHTML=`<div class='wrong'>❌ Wrong! Correct: ${matchWord}</div>`; };
+    document.getElementById("newMatch").onclick=updateMatch; updateMatch();
     // FILL GAP
-    let fillWord = "";
-    function updateFill() {
-        fillWord = words[Math.floor(Math.random() * words.length)];
-        let sentence = sentences[fillWord] || `This is a sentence about ${fillWord}.`;
-        let blankSentence = sentence.replace(fillWord, '______');
-        document.getElementById("fillSentence").innerHTML = `<div style="font-size:1.2rem;">${blankSentence}</div>`;
-        document.getElementById("fillInput").value = "";
-        document.getElementById("fillResult").innerHTML = "";
-    }
-    document.getElementById("checkFill").onclick = () => {
-        let ans = document.getElementById("fillInput").value.trim().toLowerCase();
-        if (ans === fillWord.toLowerCase()) {
-            document.getElementById("fillResult").innerHTML = "<div class='correct'>✅ Correct!</div>";
-        } else {
-            document.getElementById("fillResult").innerHTML = `<div class='wrong'>❌ Wrong! The correct word is ${fillWord}</div>`;
-        }
-    };
-    document.getElementById("newFill").onclick = updateFill;
-    updateFill();
-
+    let fillWord="";
+    function updateFill(){ fillWord=words[Math.floor(Math.random()*words.length)]; let sentence=sentences[fillWord]; let blank=sentence.replace(fillWord,'______'); document.getElementById("fillSentence").innerHTML=`<div style="font-size:1.2rem;">${blank}</div>`; document.getElementById("fillInput").value=""; document.getElementById("fillResult").innerHTML=""; }
+    document.getElementById("checkFill").onclick=()=>{ let ans=document.getElementById("fillInput").value.trim().toLowerCase(); if(ans===fillWord) document.getElementById("fillResult").innerHTML="<div class='correct'>✅ Correct!</div>"; else document.getElementById("fillResult").innerHTML=`<div class='wrong'>❌ Wrong! Correct: ${fillWord}</div>`; };
+    document.getElementById("newFill").onclick=updateFill; updateFill();
     // CLASSIC DICTATION
-    let dictWord = "";
-    function updateDict() {
-        dictWord = words[Math.floor(Math.random() * words.length)];
-        document.getElementById("dictIcon").innerHTML = `📖 ${dictWord}`;
-        document.getElementById("dictInput").value = "";
-        document.getElementById("dictResult").innerHTML = "";
-    }
-    document.getElementById("speakDict").onclick = () => speak(dictWord);
-    document.getElementById("checkDict").onclick = () => {
-        let ans = document.getElementById("dictInput").value.trim().toLowerCase();
-        if (ans === dictWord.toLowerCase()) {
-            document.getElementById("dictResult").innerHTML = "<div class='correct'>✅ Correct!</div>";
-        } else {
-            document.getElementById("dictResult").innerHTML = `<div class='wrong'>❌ Wrong! Correct: ${dictWord}</div>`;
-        }
-    };
-    document.getElementById("newDict").onclick = updateDict;
-    updateDict();
+    let dictWord="";
+    function updateDict(){ dictWord=words[Math.floor(Math.random()*words.length)]; let name=dictWord.toLowerCase().replace(/ /g,'-'); document.getElementById("dictImg").src=imageBase+name+".jpg"; document.getElementById("dictImg").onerror=function(){ this.onerror=null; this.parentElement.innerHTML='<div style="font-size:3rem;">🧥</div>'; }; document.getElementById("dictInput").value=""; document.getElementById("dictResult").innerHTML=""; }
+    document.getElementById("speakDict").onclick=()=>speak(dictWord);
+    document.getElementById("checkDict").onclick=()=>{ let ans=document.getElementById("dictInput").value.trim().toLowerCase(); if(ans===dictWord) document.getElementById("dictResult").innerHTML="<div class='correct'>✅ Correct!</div>"; else document.getElementById("dictResult").innerHTML=`<div class='wrong'>❌ Wrong! Correct: ${dictWord}</div>`; };
+    document.getElementById("newDict").onclick=updateDict; updateDict();
 </script>
 </body>
 </html>

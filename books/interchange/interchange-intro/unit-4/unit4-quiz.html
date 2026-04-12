@@ -6,56 +6,100 @@
     <title>Interchange Intro - Unit 4 Quiz</title>
     <style>
         body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
-        .container { max-width: 800px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        .container { max-width: 1000px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
         h1 { color: #d35400; text-align: center; }
         .question { background: #fff5e6; padding: 15px; border-radius: 25px; margin: 15px 0; }
-        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
-        .result { background: #e9ecef; padding: 15px; border-radius: 20px; margin-top: 20px; }
+        button { background: #d35400; border: none; color: white; padding: 12px 24px; border-radius: 40px; cursor: pointer; font-size: 1rem; margin-top: 20px; }
+        .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; font-size: 1.2rem; }
         input, select { margin: 5px; padding: 8px; border-radius: 20px; border: 1px solid #ccc; }
+        .img-quiz { max-width: 80px; display: block; margin-bottom: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📝 Unit 4 Quiz - What's it like?</h1>
-    <div>
-        <div class="question">1. Complete: "Whose jeans are these? They're ______." (mine / my)<br>
-            <select id="q1"><option value="">Select</option><option value="my">my</option><option value="mine">mine</option></select>
-        </div>
-        <div class="question">2. What do you wear on your hands in winter?<br>
-            <input type="text" id="q2" placeholder="Answer">
-        </div>
-        <div class="question">3. Choose the correct present continuous: "She ______ a red dress."<br>
-            <select id="q3"><option value="">Select</option><option value="wear">wear</option><option value="wears">wears</option><option value="is wearing">is wearing</option></select>
-        </div>
-        <div class="question">4. Which season is hot and sunny?<br>
-            <select id="q4"><option value="">Select</option><option value="winter">winter</option><option value="summer">summer</option><option value="fall">fall</option></select>
-        </div>
-        <div class="question">5. True or False: "It's snowing and it's very hot." is logical.<br>
-            <select id="q5"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
-        </div>
-        <div class="question">6. Make a question: "______ is the weather like?" → "It's sunny and warm."<br>
-            <input type="text" id="q6" placeholder="What / How">
-        </div>
-    </div>
+    <h1>📝 Unit 4 Quiz - What's it like? (50+ questions)</h1>
+    <div id="quizContainer"></div>
     <button id="submitQuiz">Submit Quiz</button>
     <div id="quizResult" class="result"></div>
 </div>
 <script>
-    document.getElementById('submitQuiz').onclick = () => {
-        let score = 0;
-        if (document.getElementById('q1').value === 'mine') score++;
-        if (document.getElementById('q2').value.trim().toLowerCase() === 'gloves') score++;
-        if (document.getElementById('q3').value === 'is wearing') score++;
-        if (document.getElementById('q4').value === 'summer') score++;
-        if (document.getElementById('q5').value === 'false') score++;
-        if (document.getElementById('q6').value.trim().toLowerCase() === 'what') score++;
-        let percent = (score/6)*100;
-        let message = `You got ${score}/6 (${percent}%). `;
-        if (percent >= 80) message += "Excellent!";
-        else if (percent >= 60) message += "Good! Review your mistakes.";
-        else message += "Try again after studying the unit.";
-        document.getElementById('quizResult').innerHTML = message;
-    };
+    const imageBase = "../images/";
+    const questions = [];
+    // Part 1: Clothes (10 questions)
+    const clothes = ["shirt","pants","jacket","dress","skirt","shoes","hat","scarf","coat","jeans"];
+    for (let i=0;i<10;i++) questions.push({ type:"mc", text:`What do you wear on your ${clothes[i]==="shoes"?"feet":clothes[i]==="hat"?"head":clothes[i]==="scarf"?"neck":"body"}?`, options:[clothes[i],"book","desk"], answer:clothes[i] });
+    // Part 2: Colors (5 questions)
+    const colors = ["red","blue","green","yellow","black"];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:`What color is ${colors[i]==="red"?"an apple":colors[i]==="blue"?"the sky":colors[i]==="green"?"grass":colors[i]==="yellow"?"the sun":"coal"}?`, answer:colors[i] });
+    // Part 3: Weather (10 questions)
+    const weather = ["sunny","rainy","snowy","windy","cloudy","hot","cold","warm","cool","humid"];
+    for (let i=0;i<10;i++) questions.push({ type:"mc", text:`What is the weather like when it is ${weather[i]}?`, options:["good","bad","depends"], answer:"depends" });
+    // Part 4: Present continuous (5 questions)
+    const presCont = [{text:"She ______ (wear) a red dress.",ans:"is wearing"},{text:"They ______ (play) soccer.",ans:"are playing"},{text:"He ______ (not wear) a hat.",ans:"is not wearing"},{text:"I ______ (wear) gloves.",ans:"am wearing"},{text:"It ______ (rain) now.",ans:"is raining"}];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:presCont[i].text, answer:presCont[i].ans });
+    // Part 5: Possessives (mine/yours/his/hers) - 5 questions
+    const poss = [{text:"This is my book. It's ______.",ans:"mine"},{text:"Is this your pen? Yes, it's ______.",ans:"yours"},{text:"That is his jacket. It's ______.",ans:"his"},{text:"Her dress is pretty. It's ______.",ans:"hers"},{text:"Whose jeans are these? They're ______. (Julie)",ans:"Julie's"}];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:poss[i].text, answer:poss[i].ans });
+    // Part 6: Seasons (5 questions)
+    const seasons = ["spring","summer","fall","winter","summer"];
+    for (let i=0;i<4;i++) questions.push({ type:"short", text:`What season comes after ${seasons[i]}?`, answer:seasons[i+1] });
+    // Part 7: Conversation comprehension (5 questions based on p.23-25)
+    const conv = [
+        {text:"What color is Pat's blouse originally?",ans:"white"},
+        {text:"Why are the clothes light blue?",ans:"blue jeans"},
+        {text:"Whose jeans are they?",ans:"Julie's"},
+        {text:"What is the weather like in the second conversation?",ans:"freezing"},
+        {text:"What is Pat wearing?",ans:"Julie's coat"}
+    ];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:conv[i].text, answer:conv[i].ans.toLowerCase() });
+    // Part 8: Image-based (5 images)
+    const imgNames = ["shirt","jacket","rain","snow","sunny"];
+    for (let i=0;i<5;i++) questions.push({ type:"img", img:imgNames[i]+".jpg", text:"What is this?", answer:imgNames[i] });
+    // Part 9: True/False (5 questions)
+    const tf = [["A scarf is worn on your head.",false],["Jeans are a type of pants.",true],["It is hot in winter.",false],["'Gloves' are for hands.",true],["A tie is worn around the neck.",true]];
+    for (let i=0;i<5;i++) questions.push({ type:"tf", text:tf[i][0], answer:tf[i][1]?"true":"false" });
+    // Build HTML
+    function buildQuiz() {
+        let html='';
+        questions.forEach((q,idx)=>{
+            html+=`<div class="question"><strong>${idx+1}. `;
+            if(q.type==='img') html+=`<img src="${imageBase+q.img}" class="img-quiz" onerror="this.onerror=null;this.parentElement.innerHTML+='🧥';">${q.text}`;
+            else html+=q.text;
+            html+=`</strong><br>`;
+            if(q.type==='mc'){
+                q.options.forEach(opt=>{ html+=`<label><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label> `; });
+            } else if(q.type==='tf'){
+                html+=`<label><input type="radio" name="q${idx}" value="true"> True</label> <label><input type="radio" name="q${idx}" value="false"> False</label>`;
+            } else {
+                html+=`<input type="text" name="q${idx}" placeholder="Type answer">`;
+            }
+            html+=`</div>`;
+        });
+        document.getElementById('quizContainer').innerHTML=html;
+    }
+    function submitQuiz(){
+        let score=0;
+        for(let i=0;i<questions.length;i++){
+            let q=questions[i], ans=null;
+            if(q.type==='mc'||q.type==='tf'){
+                let radios=document.querySelectorAll(`input[name="q${i}"]`);
+                for(let r of radios) if(r.checked){ ans=r.value; break; }
+            } else {
+                let inp=document.querySelector(`input[name="q${i}"]`);
+                if(inp) ans=inp.value.trim().toLowerCase();
+            }
+            if(ans===q.answer.toLowerCase()) score++;
+        }
+        let percent=(score/questions.length)*100;
+        let msg=`You got ${score}/${questions.length} (${percent}%). `;
+        if(percent>=90) msg+="Excellent!";
+        else if(percent>=75) msg+="Very good!";
+        else if(percent>=60) msg+="Good. Review some points.";
+        else msg+="Need more practice.";
+        document.getElementById('quizResult').innerHTML=msg;
+    }
+    buildQuiz();
+    document.getElementById('submitQuiz').onclick=submitQuiz;
 </script>
 </body>
 </html>
