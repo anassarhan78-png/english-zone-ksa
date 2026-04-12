@@ -26,174 +26,51 @@
 <div class="container">
     <h1>📖 Interchange Intro - Unit 2 🎲 Extra Activities</h1>
     <div class="activity-grid">
-        <!-- Drag & Drop: Singular/Plural -->
-        <div class="card">
-            <h2>🖱️ Drag & Drop: Singular or Plural</h2>
-            <div id="dragDropArea"></div>
-            <button id="checkDragDrop">Check All</button>
-            <div id="dragDropResult"></div>
-        </div>
-
-        <!-- Crossword Puzzle -->
-        <div class="card">
-            <h2>🔠 Crossword</h2>
-            <div id="crosswordGrid"></div>
-            <div id="crosswordClues" style="margin-top:10px; font-size:0.8rem;"></div>
-            <button id="checkCrossword">Check Crossword</button>
-            <div id="crosswordResult"></div>
-        </div>
-
-        <!-- Unscramble -->
-        <div class="card">
-            <h2>🔀 Unscramble</h2>
-            <div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div>
-            <input type="text" id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button>
-            <div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button>
-        </div>
-
-        <!-- Prepositions Practice -->
-        <div class="card">
-            <h2>📍 Prepositions</h2>
-            <div id="prepQuestion">The book is ______ the desk.</div>
-            <select id="prepSelect">
-                <option value="in">in</option>
-                <option value="on">on</option>
-                <option value="under">under</option>
-                <option value="next to">next to</option>
-                <option value="behind">behind</option>
-                <option value="in front of">in front of</option>
-            </select>
-            <button id="checkPrep">Check</button>
-            <button id="newPrep">Next</button>
-            <div id="prepResult"></div>
-        </div>
+        <div class="card"><h2>🖱️ Drag & Drop: Match word to image</h2><div id="dragDropArea"></div><button id="checkDragDrop">Check All</button><div id="dragDropResult"></div></div>
+        <div class="card"><h2>🔠 Crossword</h2><div id="crosswordGrid"></div><div id="crosswordClues" style="margin-top:10px;"></div><button id="checkCrossword">Check</button><div id="crosswordResult"></div></div>
+        <div class="card"><h2>🔀 Unscramble</h2><div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div><input id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button><div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button></div>
+        <div class="card"><h2>📍 Prepositions Practice</h2><div id="prepQuestion">The book is ______ the desk.</div><select id="prepSelect"><option value="in">in</option><option value="on">on</option><option value="under">under</option><option value="behind">behind</option><option value="next to">next to</option></select><button id="checkPrep">Check</button><button id="newPrep">Next</button><div id="prepResult"></div></div>
     </div>
 </div>
-
 <script>
-    const singularPlural = [
-        { word: "book", type: "singular" },
-        { word: "keys", type: "plural" },
-        { word: "pen", type: "singular" },
-        { word: "sunglasses", type: "plural" },
-        { word: "umbrella", type: "singular" },
-        { word: "watches", type: "plural" }
-    ];
-    
-    function speak(t) { let u = new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
-
+    const items = ["book","pen","desk","chair","map","clock"];
+    function imgTag(word) { let name=word.replace(/ /g,'-').toLowerCase(); return `<img src="../images/${name}.jpg" style="width:50px; border-radius:10px;" onerror="this.onerror=null;this.parentElement.innerHTML+='🔍';">`; }
+    function speak(t){ let u=new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
     // Drag & Drop
-    let selectedWord = null;
-    function initDragDrop() {
-        let container = document.getElementById('dragDropArea');
-        container.innerHTML = '<div><strong>Click a word, then click singular or plural</strong></div><div style="display:flex; flex-wrap:wrap; gap:15px; margin:10px 0;">';
-        singularPlural.forEach(item => {
-            let btn = document.createElement('button');
-            btn.innerText = item.word;
-            btn.classList.add('drag-word');
-            btn.onclick = () => { selectedWord = item.word; };
-            container.appendChild(btn);
-        });
-        container.innerHTML += '</div><div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">';
-        let types = ["singular", "plural"];
-        types.forEach(type => {
-            let zone = document.createElement('div');
-            zone.classList.add('drop-zone');
-            zone.setAttribute('data-type', type);
-            zone.innerHTML = `${type}<br><span class="drop-label">???</span>`;
-            zone.onclick = () => {
-                if (selectedWord) {
-                    let item = singularPlural.find(i => i.word === selectedWord);
-                    if (item && item.type === type) {
-                        zone.querySelector('.drop-label').innerText = selectedWord;
-                        zone.style.background = "#c8e6d9";
-                        selectedWord = null;
-                    } else {
-                        alert(`Wrong! "${selectedWord}" is not ${type}.`);
-                    }
-                } else {
-                    alert("Click a word first.");
-                }
-            };
-            container.appendChild(zone);
-        });
-        container.innerHTML += '</div>';
+    let selected=null;
+    function initDragDrop(){
+        let c=document.getElementById('dragDropArea');
+        c.innerHTML='<div><strong>Click a word, then click its image</strong></div><div style="display:flex;flex-wrap:wrap;gap:15px;margin:10px 0;">';
+        items.forEach(it=>{ let btn=document.createElement('button'); btn.innerText=it; btn.classList.add('drag-word'); btn.onclick=()=>{ selected=it; }; c.appendChild(btn); });
+        c.innerHTML+='</div><div style="display:flex;flex-wrap:wrap;gap:20px;margin-top:20px;">';
+        items.forEach(it=>{ let zone=document.createElement('div'); zone.classList.add('drop-zone'); zone.setAttribute('data-word',it); zone.innerHTML=`${imgTag(it)}<br><span class="drop-label">???</span>`; zone.onclick=()=>{ if(selected && selected===it){ zone.querySelector('.drop-label').innerText=selected; zone.style.background="#c8e6d9"; selected=null; } else if(selected) alert(`Wrong! ${selected} is not this image.`); else alert("Click a word first."); }; c.appendChild(zone); });
+        c.innerHTML+='</div>';
     }
-    document.getElementById('checkDragDrop').onclick = () => {
-        let allOk = true;
-        document.querySelectorAll('#dragDropArea .drop-zone').forEach(zone => {
-            let label = zone.querySelector('.drop-label').innerText;
-            let expectedType = zone.getAttribute('data-type');
-            let expectedWord = singularPlural.find(i => i.type === expectedType)?.word;
-            if (label !== expectedWord) allOk = false;
-        });
-        document.getElementById('dragDropResult').innerHTML = allOk ? "<div class='correct-feedback'>🎉 Perfect! All matched.</div>" : "<div class='wrong-feedback'>⚠️ Some matches are missing or wrong.</div>";
-    };
+    document.getElementById('checkDragDrop').onclick=()=>{ let ok=true; document.querySelectorAll('#dragDropArea .drop-zone').forEach(z=>{ if(z.querySelector('.drop-label').innerText !== z.getAttribute('data-word')) ok=false; }); document.getElementById('dragDropResult').innerHTML=ok?"<div class='correct-feedback'>Perfect!</div>":"<div class='wrong-feedback'>Some wrong.</div>"; };
     initDragDrop();
-
     // Crossword
-    function buildCrossword() {
-        let gridHtml = '<div class="crossword-grid">';
-        let predefined = [
-            ['B','O','O','K','',''],
-            ['','','','','P','E'],
-            ['C','H','A','I','R',''],
-            ['','','','','N','N'],
-            ['D','E','S','K','',''],
-            ['','','','','','']
-        ];
-        for(let i=0;i<6;i++){
-            for(let j=0;j<6;j++){
-                let val = predefined[i][j] ? predefined[i][j] : '';
-                let readonly = val ? 'readonly' : '';
-                gridHtml += `<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" style="text-transform:uppercase" ${readonly}>`;
-            }
-            gridHtml += `<div style="width:100%"></div>`;
-        }
-        gridHtml += '</div>';
-        document.getElementById('crosswordGrid').innerHTML = gridHtml;
-        let clues = `<strong>Clues:</strong> Across: Row0: something you read (BOOK), Row2: you sit on it (CHAIR), Row4: you write on it (DESK). Down: Col5: you write with it (PEN).`;
-        document.getElementById('crosswordClues').innerHTML = clues;
+    function buildCrossword(){
+        let gridHtml='<div class="crossword-grid">';
+        let pre=[['B','O','O','K','',''],['','','','','P','E'],['C','H','A','I','R',''],['','','','','N','N'],['D','E','S','K','',''],['','','','','','']];
+        for(let i=0;i<6;i++){ for(let j=0;j<6;j++){ let val=pre[i][j]||''; gridHtml+=`<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" style="text-transform:uppercase" ${val?'readonly':''}>`; } gridHtml+='<div style="width:100%"></div>'; }
+        gridHtml+='</div>'; document.getElementById('crosswordGrid').innerHTML=gridHtml;
+        document.getElementById('crosswordClues').innerHTML='<strong>Clues:</strong> Row0: something to read (BOOK), Row2: you sit on it (CHAIR), Row4: you write on it (DESK). Down: Col5: writing tool (PEN).';
     }
-    document.getElementById('checkCrossword').onclick = () => {
-        document.getElementById('crosswordResult').innerHTML = "<div class='correct-feedback'>✅ Check your answers with the clues.</div>";
-    };
+    document.getElementById('checkCrossword').onclick=()=>{ document.getElementById('crosswordResult').innerHTML="<div class='correct-feedback'>✅ Check your answers with clues.</div>"; };
     buildCrossword();
-
     // Unscramble
-    const scrambleWords = ["book", "pen", "desk", "chair", "keys", "umbrella"];
-    let currentScramble = "";
-    function getScrambled(w) { let arr = w.split(''); for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr.join(''); }
-    function updateScramble() { currentScramble = scrambleWords[Math.floor(Math.random()*scrambleWords.length)]; document.getElementById("scrambleWord").innerText = getScrambled(currentScramble); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
-    document.getElementById("checkScramble").onclick = () => { let ans = document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans === currentScramble) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${currentScramble}</div>`; };
-    document.getElementById("newScramble").onclick = updateScramble;
-    document.getElementById("speakScramble").onclick = () => speak(currentScramble);
-    updateScramble();
-
+    const wordList=["book","pen","desk","chair","map","clock"];
+    let cur="";
+    function getScrambled(w){ let a=w.split(''); for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a.join(''); }
+    function updateScramble(){ cur=wordList[Math.floor(Math.random()*wordList.length)]; document.getElementById("scrambleWord").innerText=getScrambled(cur); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
+    document.getElementById("checkScramble").onclick=()=>{ let ans=document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans===cur) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${cur}</div>`; };
+    document.getElementById("newScramble").onclick=updateScramble; document.getElementById("speakScramble").onclick=()=>speak(cur); updateScramble();
     // Prepositions
-    const prepQuestions = [
-        { sentence: "The book is ______ the desk.", answer: "on" },
-        { sentence: "The keys are ______ the bag.", answer: "in" },
-        { sentence: "The chair is ______ the desk.", answer: "behind" },
-        { sentence: "The wallet is ______ the book.", answer: "under" }
-    ];
-    let currentPrep = 0;
-    function updatePrep() {
-        currentPrep = Math.floor(Math.random() * prepQuestions.length);
-        document.getElementById("prepQuestion").innerHTML = prepQuestions[currentPrep].sentence;
-        document.getElementById("prepSelect").value = "";
-        document.getElementById("prepResult").innerHTML = "";
-    }
-    document.getElementById("checkPrep").onclick = () => {
-        let selected = document.getElementById("prepSelect").value;
-        if (selected === prepQuestions[currentPrep].answer) {
-            document.getElementById("prepResult").innerHTML = "<div class='correct-feedback'>✅ Correct!</div>";
-        } else {
-            document.getElementById("prepResult").innerHTML = `<div class='wrong-feedback'>❌ Wrong. Correct: ${prepQuestions[currentPrep].answer}</div>`;
-        }
-    };
-    document.getElementById("newPrep").onclick = updatePrep;
-    updatePrep();
+    const prepSentences=[{text:"The book is ______ the desk.",ans:"on"},{text:"The keys are ______ the bag.",ans:"in"},{text:"The chair is ______ the desk.",ans:"behind"},{text:"The wastebasket is ______ the desk.",ans:"under"}];
+    let prepIdx=0;
+    function updatePrep(){ prepIdx=Math.floor(Math.random()*prepSentences.length); document.getElementById("prepQuestion").innerHTML=prepSentences[prepIdx].text; document.getElementById("prepSelect").value=""; document.getElementById("prepResult").innerHTML=""; }
+    document.getElementById("checkPrep").onclick=()=>{ let sel=document.getElementById("prepSelect").value; if(sel===prepSentences[prepIdx].ans) document.getElementById("prepResult").innerHTML="<div class='correct-feedback'>✅ Correct!</div>"; else document.getElementById("prepResult").innerHTML=`<div class='wrong-feedback'>❌ Correct: ${prepSentences[prepIdx].ans}</div>`; };
+    document.getElementById("newPrep").onclick=updatePrep; updatePrep();
 </script>
 </body>
 </html>

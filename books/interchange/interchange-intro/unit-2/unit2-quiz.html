@@ -6,56 +6,97 @@
     <title>Interchange Intro - Unit 2 Quiz</title>
     <style>
         body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
-        .container { max-width: 800px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        .container { max-width: 1000px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
         h1 { color: #d35400; text-align: center; }
         .question { background: #fff5e6; padding: 15px; border-radius: 25px; margin: 15px 0; }
-        button { background: #d35400; border: none; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; }
-        .result { background: #e9ecef; padding: 15px; border-radius: 20px; margin-top: 20px; }
+        button { background: #d35400; border: none; color: white; padding: 12px 24px; border-radius: 40px; cursor: pointer; font-size: 1rem; margin-top: 20px; }
+        .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; font-size: 1.2rem; }
         input, select { margin: 5px; padding: 8px; border-radius: 20px; border: 1px solid #ccc; }
+        .img-quiz { max-width: 80px; display: block; margin-bottom: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📝 Unit 2 Quiz - What's this?</h1>
-    <div>
-        <div class="question">1. Complete: "This is ______ eraser." (a / an)<br>
-            <select id="q1"><option value="">Select</option><option value="a">a</option><option value="an">an</option></select>
-        </div>
-        <div class="question">2. What are these? (picture of keys)<br>
-            <input type="text" id="q2" placeholder="Answer">
-        </div>
-        <div class="question">3. Choose the correct plural: "This is a watch." → "These ______ watches."<br>
-            <select id="q3"><option value="">Select</option><option value="is">is</option><option value="are">are</option></select>
-        </div>
-        <div class="question">4. Where is the wallet? (picture: wallet on the table)<br>
-            <select id="q4"><option value="">Select</option><option value="in">in</option><option value="on">on</option><option value="under">under</option></select>
-        </div>
-        <div class="question">5. True or False: "Sunglasses" is a plural noun.<br>
-            <select id="q5"><option value="">Select</option><option value="true">True</option><option value="false">False</option></select>
-        </div>
-        <div class="question">6. Complete the conversation: "Are these your keys?" → "Yes, ______ are."<br>
-            <input type="text" id="q6" placeholder="they / it">
-        </div>
-    </div>
+    <h1>📝 Unit 2 Quiz - What's this? (50+ questions)</h1>
+    <div id="quizContainer"></div>
     <button id="submitQuiz">Submit Quiz</button>
     <div id="quizResult" class="result"></div>
 </div>
 <script>
-    document.getElementById('submitQuiz').onclick = () => {
-        let score = 0;
-        if (document.getElementById('q1').value === 'an') score++;
-        if (document.getElementById('q2').value.trim().toLowerCase() === 'keys') score++;
-        if (document.getElementById('q3').value === 'are') score++;
-        if (document.getElementById('q4').value === 'on') score++;
-        if (document.getElementById('q5').value === 'true') score++;
-        if (document.getElementById('q6').value.trim().toLowerCase() === 'they') score++;
-        let percent = (score/6)*100;
-        let message = `You got ${score}/6 (${percent}%). `;
-        if (percent >= 80) message += "Excellent!";
-        else if (percent >= 60) message += "Good! Review your mistakes.";
-        else message += "Try again after studying the unit.";
-        document.getElementById('quizResult').innerHTML = message;
-    };
+    const imageBase = "../images/";
+    const questions = [];
+    // Part 1: Vocabulary (10 questions)
+    const vocab = ["book","pen","pencil","eraser","desk","chair","map","clock","window","door"];
+    for (let i=0;i<10;i++) questions.push({ type:"mc", text:`What is this? (${vocab[i]})`, options:[vocab[i],"table","board"], answer:vocab[i] });
+    // Part 2: Articles a/an (10 questions)
+    const art = ["book","pen","eraser","apple","umbrella","notebook","desk","hour","university","orange"];
+    for (let i=0;i<10;i++) { let ans = (art[i][0]=='a'||art[i][0]=='e'||art[i][0]=='i'||art[i][0]=='o'||art[i][0]=='u')?"an":"a"; questions.push({ type:"mc", text:`_____ ${art[i]}`, options:["a","an"], answer:ans }); }
+    // Part 3: This/These (5 questions)
+    const tt = [{text:"___ is a pen.",ans:"This"},{text:"___ are pencils.",ans:"These"},{text:"___ is a book.",ans:"This"},{text:"___ are desks.",ans:"These"},{text:"___ is an eraser.",ans:"This"}];
+    for (let i=0;i<5;i++) questions.push({ type:"mc", text:tt[i].text, options:["This","These"], answer:tt[i].ans });
+    // Part 4: Plural forms (5 questions)
+    const plurals = [["book","books"],["pen","pens"],["desk","desks"],["watch","watches"],["box","boxes"]];
+    for (let i=0;i<5;i++) questions.push({ type:"mc", text:`One ${plurals[i][0]}, two _____`, options:[plurals[i][1],plurals[i][0]+"s"], answer:plurals[i][1] });
+    // Part 5: Prepositions (5 questions)
+    const prep = [{text:"The book is ___ the desk.",ans:"on"},{text:"The keys are ___ the bag.",ans:"in"},{text:"The chair is ___ the desk.",ans:"behind"},{text:"The map is ___ the wall.",ans:"on"},{text:"The wastebasket is ___ the desk.",ans:"under"}];
+    for (let i=0;i<5;i++) questions.push({ type:"mc", text:prep[i].text, options:["in","on","under","behind","next to"], answer:prep[i].ans });
+    // Part 6: Conversation comprehension (5 questions based on page 8-9)
+    const conv = [
+        {text:"What does Wendy thank Helen for?",ans:"earrings"},
+        {text:"What does Rex give Wendy?",ans:"scarf"},
+        {text:"What does Wendy think of the scarf?",ans:"interesting"},
+        {text:"What are Helen's earrings like?",ans:"cool"},
+        {text:"Where are Joe's keys?",ans:"on the table"}
+    ];
+    for (let i=0;i<5;i++) questions.push({ type:"short", text:conv[i].text, answer:conv[i].ans });
+    // Part 7: Image-based (5 images)
+    const imgNames = ["book","pen","chair","watch","umbrella"];
+    for (let i=0;i<5;i++) questions.push({ type:"img", img:imgNames[i]+".jpg", text:"What is this?", answer:imgNames[i] });
+    // Part 8: True/False (5 questions)
+    const tf = [["An umbrella is a classroom object.",false],["'Keys' is a plural noun.",true],["'This' is used for singular near you.",true],["'Those' is used for singular.",false],["A map can be on the wall.",true]];
+    for (let i=0;i<5;i++) questions.push({ type:"tf", text:tf[i][0], answer:tf[i][1]?"true":"false" });
+    // Build HTML
+    function buildQuiz() {
+        let html='';
+        questions.forEach((q,idx)=>{
+            html+=`<div class="question"><strong>${idx+1}. `;
+            if(q.type==='img') html+=`<img src="${imageBase+q.img}" class="img-quiz" onerror="this.onerror=null;this.parentElement.innerHTML+='🔍';">${q.text}`;
+            else html+=q.text;
+            html+=`</strong><br>`;
+            if(q.type==='mc'){
+                q.options.forEach(opt=>{ html+=`<label><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label> `; });
+            } else if(q.type==='tf'){
+                html+=`<label><input type="radio" name="q${idx}" value="true"> True</label> <label><input type="radio" name="q${idx}" value="false"> False</label>`;
+            } else {
+                html+=`<input type="text" name="q${idx}" placeholder="Type answer">`;
+            }
+            html+=`</div>`;
+        });
+        document.getElementById('quizContainer').innerHTML=html;
+    }
+    function submitQuiz(){
+        let score=0;
+        for(let i=0;i<questions.length;i++){
+            let q=questions[i], ans=null;
+            if(q.type==='mc'||q.type==='tf'){
+                let radios=document.querySelectorAll(`input[name="q${i}"]`);
+                for(let r of radios) if(r.checked){ ans=r.value; break; }
+            } else {
+                let inp=document.querySelector(`input[name="q${i}"]`);
+                if(inp) ans=inp.value.trim().toLowerCase();
+            }
+            if(ans===q.answer.toLowerCase()) score++;
+        }
+        let percent=(score/questions.length)*100;
+        let msg=`You got ${score}/${questions.length} (${percent}%). `;
+        if(percent>=90) msg+="Excellent!";
+        else if(percent>=75) msg+="Very good!";
+        else if(percent>=60) msg+="Good. Review some points.";
+        else msg+="Need more practice.";
+        document.getElementById('quizResult').innerHTML=msg;
+    }
+    buildQuiz();
+    document.getElementById('submitQuiz').onclick=submitQuiz;
 </script>
 </body>
 </html>
