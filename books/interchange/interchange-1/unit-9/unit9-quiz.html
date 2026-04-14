@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interchange 1 - Unit 9 Quiz</title>
+    <style>
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        .container { max-width: 1000px; margin: auto; background: #fef9e8; border-radius: 40px; padding: 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .question { background: #fff5e6; padding: 15px; border-radius: 25px; margin: 15px 0; }
+        button { background: #d35400; border: none; color: white; padding: 12px 24px; border-radius: 40px; cursor: pointer; font-size: 1rem; margin-top: 20px; }
+        .result { background: #e9ecef; padding: 20px; border-radius: 25px; margin-top: 20px; font-size: 1.2rem; }
+        input, select { margin: 5px; padding: 8px; border-radius: 20px; border: 1px solid #ccc; }
+        .img-quiz { max-width: 100px; display: block; margin-bottom: 10px; border-radius: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📝 Unit 9 Quiz - Describing People (50+ questions)</h1>
+    <div id="quizContainer"></div>
+    <button id="submitQuiz">Submit Quiz</button>
+    <div id="quizResult" class="result"></div>
+</div>
+<script>
+    const imageBase = "../images/";
+    const questions = [];
+
+    // PART 1: Hair (5 questions with images)
+    const hairImages = ["long-brown-hair","short-blond-hair","straight-black-hair","curly-red-hair","bald"];
+    for (let i=0; i<hairImages.length; i++) {
+        questions.push({ type:"img", img:hairImages[i]+".jpg", text:"What does this person have?", answer:hairImages[i].replace(/-/g,' ') });
+    }
+
+    // PART 2: Facial hair (1 question)
+    questions.push({ type:"img", img:"mustache-beard.jpg", text:"What does he have?", answer:"mustache and beard" });
+
+    // PART 3: Age (3 questions)
+    const ageImages = ["young","middle-aged","elderly"];
+    for (let i=0; i<ageImages.length; i++) {
+        questions.push({ type:"img", img:ageImages[i]+".jpg", text:"How old is this person?", answer:ageImages[i] });
+    }
+
+    // PART 4: Height (5 questions)
+    const heightImages = ["short","fairly-short","medium-height","pretty-tall","very-tall"];
+    for (let i=0; i<heightImages.length; i++) {
+        questions.push({ type:"img", img:heightImages[i]+".jpg", text:"How tall is this person?", answer:heightImages[i].replace(/-/g,' ') });
+    }
+
+    // PART 5: Looks (3 questions)
+    const looksImages = ["handsome","good-looking","pretty"];
+    for (let i=0; i<looksImages.length; i++) {
+        questions.push({ type:"img", img:looksImages[i]+".jpg", text:"What word describes this person?", answer:looksImages[i] });
+    }
+
+    // PART 6: Clothing (4 questions)
+    const clothingImages = ["jeans","green-shirt","sunglasses","hat"];
+    for (let i=0; i<clothingImages.length; i++) {
+        questions.push({ type:"img", img:clothingImages[i]+".jpg", text:"What is this person wearing?", answer:clothingImages[i].replace(/-/g,' ') });
+    }
+
+    // PART 7: Grammar - Modifiers (5 questions)
+    const mod = [
+        {text:"The man ___ a green shirt is my brother.", ans:"wearing"},
+        {text:"The woman ___ short black hair is my aunt.", ans:"with"},
+        {text:"The tall one ___ jeans is over there.", ans:"in"},
+        {text:"The people ___ to the window are my parents.", ans:"next"},
+        {text:"She is the one ___ a hat.", ans:"wearing"}
+    ];
+    for (let i=0; i<mod.length; i++) { questions.push({ type:"short", text:mod[i].text, answer:mod[i].ans }); }
+
+    // PART 8: Conversation comprehension (5 questions)
+    const conv = [
+        {text:"What does the woman look like? (tall, red hair)", ans:"tall with red hair"},
+        {text:"How old is she?", ans:"about 32"},
+        {text:"How tall is she?", ans:"6 feet 2"},
+        {text:"How long is her hair?", ans:"medium length"},
+        {text:"Which one is Julia? (tall one in jeans)", ans:"the tall one in jeans"}
+    ];
+    for (let i=0; i<conv.length; i++) { questions.push({ type:"short", text:conv[i].text, answer:conv[i].ans.toLowerCase() }); }
+
+    // PART 9: Reading vocabulary (6 questions)
+    const vocab = [
+        {word:"neutral", meaning:"a color that is not strong"},
+        {word:"vintage", meaning:"clothing from the past that is still fashionable"},
+        {word:"outdated", meaning:"not modern; no longer in style"},
+        {word:"alter", meaning:"to change or adjust something"},
+        {word:"baggy", meaning:"loose-fitting"},
+        {word:"skinny", meaning:"very slim or tight-fitting"}
+    ];
+    for (let i=0; i<vocab.length; i++) { questions.push({ type:"short", text:`What does "${vocab[i].word}" mean?`, answer:vocab[i].meaning.toLowerCase() }); }
+
+    // PART 10: True/False (5 questions)
+    const tf = [
+        {text:"'Bald' means having no hair.", ans:"true"},
+        {text:"'Elderly' means young.", ans:"false"},
+        {text:"'Good-looking' is only for women.", ans:"false"},
+        {text:"Vintage clothes are from the past.", ans:"true"},
+        {text:"Baggy pants are tight-fitting.", ans:"false"}
+    ];
+    for (let i=0; i<tf.length; i++) { questions.push({ type:"tf", text:tf[i].text, answer:tf[i].ans }); }
+
+    // PART 11: Short answer (5 questions)
+    const short = [
+        {text:"What color is 'blond' hair?", ans:"yellow"},
+        {text:"What is the opposite of 'short' (height)?", ans:"tall"},
+        {text:"Name a piece of clothing that covers your legs.", ans:"jeans"},
+        {text:"What do you call a man with no hair on his head?", ans:"bald"},
+        {text:"What does 'pretty' mean?", ans:"beautiful"}
+    ];
+    for (let i=0; i<short.length; i++) { questions.push({ type:"short", text:short[i].text, answer:short[i].ans.toLowerCase() }); }
+
+    // Build HTML
+    function buildQuiz() {
+        let html = '';
+        questions.forEach((q, idx) => {
+            html += `<div class="question"><strong>${idx+1}. `;
+            if (q.type === 'img') { html += `<img src="${imageBase + q.img}" class="img-quiz" onerror="this.onerror=null;this.parentElement.innerHTML+='📷';">${q.text}`; }
+            else { html += q.text; }
+            html += `</strong><br>`;
+            if (q.type === 'tf') {
+                html += `<label><input type="radio" name="q${idx}" value="true"> True</label> `;
+                html += `<label><input type="radio" name="q${idx}" value="false"> False</label>`;
+            } else if (q.type === 'short' || q.type === 'img') {
+                html += `<input type="text" name="q${idx}" placeholder="Type your answer">`;
+            }
+            html += `</div>`;
+        });
+        document.getElementById('quizContainer').innerHTML = html;
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        for (let i = 0; i < questions.length; i++) {
+            const q = questions[i];
+            let userAnswer = null;
+            if (q.type === 'tf') {
+                const radios = document.querySelectorAll(`input[name="q${i}"]`);
+                for (let r of radios) { if (r.checked) { userAnswer = r.value; break; } }
+            } else {
+                const input = document.querySelector(`input[name="q${i}"]`);
+                if (input) userAnswer = input.value.trim().toLowerCase();
+            }
+            if (userAnswer === q.answer.toLowerCase()) score++;
+        }
+        const percent = (score / questions.length) * 100;
+        let msg = `You got ${score} out of ${questions.length} (${percent}%). `;
+        if (percent >= 90) msg += "Excellent!";
+        else if (percent >= 75) msg += "Very good!";
+        else if (percent >= 60) msg += "Good. Review some points.";
+        else msg += "Need more practice.";
+        document.getElementById('quizResult').innerHTML = msg;
+    }
+
+    buildQuiz();
+    document.getElementById('submitQuiz').onclick = submitQuiz;
+</script>
+</body>
+</html>
