@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Interchange 1 - Unit 9 Extra Activities</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', 'OpenDyslexic', Arial, sans-serif; }
+        body { background: linear-gradient(135deg, #2c3e50, #1a2632); margin: 0; padding: 20px; }
+        .container { max-width: 1300px; margin: auto; background: #fef9e8; border-radius: 45px; padding: 20px 30px; }
+        h1 { color: #d35400; text-align: center; }
+        .activity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; }
+        .card { background: #fff5e6; border-radius: 35px; padding: 20px; border: 1px solid #f0c0a0; }
+        .card h2 { background: #d35400; display: inline-block; padding: 5px 20px; border-radius: 40px; color: white; font-size: 1.3rem; }
+        button { background: #d35400; border: none; color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; margin: 5px; }
+        input, select { padding: 8px; border-radius: 30px; border: 1px solid #ccc; margin: 5px; }
+        .correct-feedback { background: #c8e6d9; border-left: 6px solid #2e7d64; padding: 8px; border-radius: 20px; margin-top: 10px; }
+        .wrong-feedback { background: #ffe0e0; border-left: 6px solid #d9534f; padding: 8px; border-radius: 20px; margin-top: 10px; }
+        .drag-word { background: #2c7da0; color: white; padding: 10px 20px; border-radius: 40px; cursor: grab; display: inline-block; margin: 5px; }
+        .drop-zone { border: 2px dashed #d35400; border-radius: 20px; padding: 12px; min-width: 120px; text-align: center; background: #fff0e0; display: inline-block; margin: 6px; }
+        .crossword-grid { display: grid; grid-template-columns: repeat(6, 45px); gap: 4px; justify-content: center; background: #f0f0f0; padding: 15px; border-radius: 20px; }
+        .crossword-grid input { width: 45px; height: 45px; text-align: center; font-size: 1.2rem; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📖 Interchange 1 - Unit 9 🎲 Extra Activities</h1>
+    <div class="activity-grid">
+        <div class="card"><h2>🖱️ Drag & Drop: Hair → Description</h2><div id="dragDropArea"></div><button id="checkDragDrop">Check</button><div id="dragDropResult"></div></div>
+        <div class="card"><h2>🔠 Crossword (Describing Words)</h2><div id="crosswordGrid"></div><div id="crosswordClues"></div><button id="checkCrossword">Check</button><div id="crosswordResult"></div></div>
+        <div class="card"><h2>🔀 Unscramble (Appearance)</h2><div id="scrambleWord" style="font-size:1.8rem; background:#fff0d6; padding:12px; border-radius:30px;"></div><input id="scrambleInput"><button id="checkScramble">Check</button><button id="newScramble">New</button><div id="scrambleResult"></div><button id="speakScramble">🔊 Speak</button></div>
+        <div class="card"><h2>👔 Modifiers Practice</h2><div id="modQuestion">The man ___ a green shirt is my brother. (wearing / with / in)</div><input id="modInput"><button id="checkMod">Check</button><button id="newMod">Next</button><div id="modResult"></div></div>
+    </div>
+</div>
+<script>
+    const hairTypes = [
+        { hair: "long brown hair", img: "long-brown-hair" },
+        { hair: "short blond hair", img: "short-blond-hair" },
+        { hair: "straight black hair", img: "straight-black-hair" },
+        { hair: "curly red hair", img: "curly-red-hair" },
+        { hair: "bald", img: "bald" },
+        { hair: "mustache and beard", img: "mustache-beard" }
+    ];
+    const imageBase = "../images/";
+    function imgTag(imgName) { return `<img src="${imageBase + imgName}.jpg" style="width:50px; border-radius:10px;" onerror="this.onerror=null;this.parentElement.innerHTML+='📷';">`; }
+    function speak(t){ let u=new SpeechSynthesisUtterance(t); u.lang="en-US"; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+    // Drag & Drop
+    let selected=null;
+    function initDragDrop(){
+        let c=document.getElementById('dragDropArea');
+        c.innerHTML='<div><strong>Click a hair description, then match with picture</strong></div><div style="display:flex;flex-wrap:wrap;gap:15px;margin:10px 0;">';
+        hairTypes.forEach(h=>{ let btn=document.createElement('button'); btn.innerText=h.hair; btn.classList.add('drag-word'); btn.onclick=()=>{ selected=h.hair; }; c.appendChild(btn); });
+        c.innerHTML+='</div><div style="display:flex;flex-wrap:wrap;gap:20px;margin-top:20px;">';
+        hairTypes.forEach(h=>{ let zone=document.createElement('div'); zone.classList.add('drop-zone'); zone.setAttribute('data-hair',h.hair); zone.innerHTML=`${imgTag(h.img)}<br><span class="drop-label">???</span>`; zone.onclick=()=>{ if(selected && selected===h.hair){ zone.querySelector('.drop-label').innerText=selected; zone.style.background="#c8e6d9"; selected=null; } else if(selected) alert(`Wrong! ${selected} does not match this image.`); else alert("Click a hair description first."); }; c.appendChild(zone); });
+        c.innerHTML+='</div>';
+    }
+    document.getElementById('checkDragDrop').onclick=()=>{ let ok=true; document.querySelectorAll('#dragDropArea .drop-zone').forEach(z=>{ let label=z.querySelector('.drop-label').innerText; let expected=z.getAttribute('data-hair'); if(label!==expected) ok=false; }); document.getElementById('dragDropResult').innerHTML=ok?"<div class='correct-feedback'>Perfect!</div>":"<div class='wrong-feedback'>Some wrong.</div>"; };
+    initDragDrop();
+    // Crossword
+    function buildCrossword(){
+        let gridHtml='<div class="crossword-grid">';
+        let pre=[['T','A','L','L','',''],['','','','','S','H'],['S','H','O','R','T',''],['','','','','','O'],['Y','O','U','N','G',''],['','','','','','']];
+        for(let i=0;i<6;i++){ for(let j=0;j<6;j++){ let val=pre[i][j]||''; gridHtml+=`<input type="text" maxlength="1" id="cell_${i}_${j}" value="${val}" ${val?'readonly':''}>`; } gridHtml+='<div style="width:100%"></div>'; }
+        gridHtml+='</div>'; document.getElementById('crosswordGrid').innerHTML=gridHtml;
+        document.getElementById('crosswordClues').innerHTML='<strong>Clues:</strong> Row0: opposite of short (TALL), Row2: opposite of tall (SHORT), Row4: not old (YOUNG). Down: Col5: not short (TALL).';
+    }
+    document.getElementById('checkCrossword').onclick=()=>{ document.getElementById('crosswordResult').innerHTML="<div class='correct-feedback'>✅ Check answers with clues.</div>"; };
+    buildCrossword();
+    // Unscramble
+    const descWords = ["tall","short","young","bald","handsome","pretty"];
+    let cur="";
+    function getScrambled(w){ let a=w.split(''); for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a.join(''); }
+    function updateScramble(){ cur=descWords[Math.floor(Math.random()*descWords.length)]; document.getElementById("scrambleWord").innerText=getScrambled(cur); document.getElementById("scrambleInput").value=""; document.getElementById("scrambleResult").innerHTML=""; }
+    document.getElementById("checkScramble").onclick=()=>{ let ans=document.getElementById("scrambleInput").value.trim().toLowerCase(); if(ans===cur) document.getElementById("scrambleResult").innerHTML="<div class='correct-feedback'>✅ Correct</div>"; else document.getElementById("scrambleResult").innerHTML=`<div class='wrong-feedback'>❌ Wrong: ${cur}</div>`; };
+    document.getElementById("newScramble").onclick=updateScramble; document.getElementById("speakScramble").onclick=()=>speak(cur); updateScramble();
+    // Modifiers practice
+    const modQs = [
+        {s:"The man ___ a green shirt is my brother.", a:"wearing"},
+        {s:"The woman ___ short black hair is my aunt.", a:"with"},
+        {s:"The tall one ___ jeans is over there.", a:"in"},
+        {s:"The people ___ to the window are my parents.", a:"next"},
+        {s:"She is the one ___ a hat.", a:"wearing"}
+    ];
+    let modIdx=0;
+    function updateMod(){ modIdx=Math.floor(Math.random()*modQs.length); document.getElementById("modQuestion").innerHTML=modQs[modIdx].s; document.getElementById("modInput").value=""; document.getElementById("modResult").innerHTML=""; }
+    document.getElementById("checkMod").onclick=()=>{ let ans=document.getElementById("modInput").value.trim().toLowerCase(); if(ans===modQs[modIdx].a) document.getElementById("modResult").innerHTML="<div class='correct-feedback'>✅ Correct!</div>"; else document.getElementById("modResult").innerHTML=`<div class='wrong-feedback'>❌ Correct: ${modQs[modIdx].a}</div>`; };
+    document.getElementById("newMod").onclick=updateMod; updateMod();
+</script>
+</body>
+</html>
